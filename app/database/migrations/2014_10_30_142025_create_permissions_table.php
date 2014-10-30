@@ -12,7 +12,12 @@ class CreatePermissionsTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('permissions', function(Blueprint $table) {
+			$table->timestamps();
+			$table->integer('id_user')->references('id')->on('users');
+			$table->integer('id_rights')->references('id')->on('rights');
+			$table->integer('id_class')->references('id')->on('classes');
+		});
 	}
 
 	/**
@@ -22,7 +27,7 @@ class CreatePermissionsTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('permissions');
 	}
 
 }

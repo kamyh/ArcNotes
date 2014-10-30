@@ -12,7 +12,12 @@ class CreateManuscritsTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('manuscrits', function(Blueprint $table) {
+			$table->increments('id')->unique();
+			$table->timestamps();
+			$table->integer('id_basenotes')->references('id')->on('basenotes');
+			$table->text('content');
+		});
 	}
 
 	/**
@@ -22,7 +27,7 @@ class CreateManuscritsTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('manuscrits');
 	}
 
 }

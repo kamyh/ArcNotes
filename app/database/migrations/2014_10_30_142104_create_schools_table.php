@@ -12,7 +12,12 @@ class CreateSchoolsTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('schools', function(Blueprint $table) {
+			$table->increments('id')->unique();
+			$table->timestamps();
+			$table->integer('id_location')->references('id')->on('cities');
+			$table->string('name', 255);
+		});
 	}
 
 	/**
@@ -22,7 +27,7 @@ class CreateSchoolsTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('schools');
 	}
 
 }
