@@ -14,4 +14,12 @@
 Route::get('/', function()
 {
 	return View::make('hello');
+
 });
+
+Route::get("userTest", array(
+    "as"=>"userTest",
+    "uses"=>"UserController@test"
+));
+
+?>

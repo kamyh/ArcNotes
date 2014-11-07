@@ -9,7 +9,7 @@ class UserController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+
 	}
 
 
@@ -43,7 +43,10 @@ class UserController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+        echo "***";
+        $user = DB::table('users')->where('id', $id)->first();
+        echo "++++";
+        echo $user->lastname;
 	}
 
 
@@ -81,6 +84,22 @@ class UserController extends \BaseController {
 	{
 		//
 	}
+	
+	public function insertIntoDB($firstname, $lastname, $email, $password)
+	{
+        //TODO echappement
+        echo "TR";
+        $id = DB::table('users')->insertGetId(
+            array('firstname' => $firstname,'lastname' => $lastname,'email' => $email,'password' => $password)
+        );
+	}
+
+    public function test()
+    {
+        echo "PLOP";
+        $this->show(1);
+    }
+	
 
 
 }
