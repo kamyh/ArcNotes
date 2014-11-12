@@ -22,6 +22,9 @@ Route::get("userTest", array(
     "uses"=>"UserController@test"
 ));
 
+Route::resource('classes', 'ClassController');
+Route::get('/signclass', array('as' => 'signclass', 'uses' => 'ClassController@signClass'));
+
 /**
  * Login handling
  */

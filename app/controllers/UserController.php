@@ -38,13 +38,6 @@ class UserController extends \BaseController {
             $email = Input::get('email');
             $password = Input::get('password');
 
-            //print_r($data);
-
-            print_r(Auth::user());
-
-            var_dump(Auth::attempt(array('email' => $email, 'password' => $password), true));
-
-
             if (Auth::attempt(array('email' => $email, 'password' => $password), true))
             {
                 Session::put('isLogged', '1');
