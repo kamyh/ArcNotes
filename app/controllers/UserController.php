@@ -32,7 +32,8 @@ class UserController extends \BaseController {
 
         $validator = Validator::make($input, $rulesValidatorUser);
 
-        if(!$validator->fails()) {
+        if(!$validator->fails())
+        {
 
             $email = Input::get('email');
             $password = Input::get('password');
@@ -44,11 +45,12 @@ class UserController extends \BaseController {
             var_dump(Auth::attempt(array('email' => $email, 'password' => $password), true));
 
 
-            if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
-                echo "TRUE";
-                //return Redirect::to('/');
+            if (Auth::attempt(array('email' => $email, 'password' => $password), true))
+            {
+                Session::put('isLogged', '1');
+                return Redirect::to('/');
             }
-            echo "FALSE";
+            return Redirect::to('login')->withInput();
 
         }
         else
