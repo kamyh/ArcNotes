@@ -3,6 +3,12 @@
 <div class="">
         <h2>Register</h2>
         {{ Form::open(array('route' => array('user.store'), 'method' => 'post')) }}
+        @if($errors->any())
+            <div class="">
+                <a class="" data-dismiss="alert">&times;</a>
+                {{ implode('', $errors->all('<li class="error">:message</li>')) }}
+            </div>
+        @endif
         <div class="">
             {{Form::label('firstname','First Name')}}
             {{Form::text('firstname', null,array('class' => ''))}}

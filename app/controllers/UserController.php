@@ -26,24 +26,35 @@ class UserController extends \BaseController {
      */
     public function loginHandler()
     {
-        $email = Input::get('email');
-        $password = Input::get('password');
+        $rulesValidatorUser = array( 'password' => 'required','email' => 'required');
 
-        //print_r($data);
+        $input = Input::All();
 
-        print_r(Auth::user());
+        $validator = Validator::make($input, $rulesValidatorUser);
 
-        var_dump(Auth::attempt(array('email' => $email, 'password' => $password),true));
+        if(!$validator->fails()) {
+
+            $email = Input::get('email');
+            $password = Input::get('password');
+
+            //print_r($data);
+
+            print_r(Auth::user());
+
+            var_dump(Auth::attempt(array('email' => $email, 'password' => $password), true));
 
 
+            if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
+                echo "TRUE";
+                //return Redirect::to('/');
+            }
+            echo "FALSE";
 
-        if(Auth::attempt(array('email' => $email, 'password' => $password),true))
-        {
-            echo "TRUE";
-            //return Redirect::to('/');
         }
-        echo "FALSE";
-        //return Redirect::route('login')->withInput();
+        else
+        {
+            return Redirect::to('login')->withErrors($validator)->withInput();
+        }
     }
 
     /**
@@ -78,38 +89,31 @@ class UserController extends \BaseController {
      *
 	 */
 	public function store()
-	{
-        /*
-        $firstname = Input::get('firstname');
-        $lastname = Input::get('lastname');
-        $email = Input::get('email');
-        $password = Hash::make(Input::get('password'));
-
-        $newUser = User::create(array($firstname,$lastname,$email,$password));
-
-        if($newUser){
-            Auth::login($newUser);
-            return Redirect::to('/');
-        }
-
-        return Redirect::route('user.create')->withInput();
-        */
-
+    {
         $input = Input::all();
 
-        $rules = array( 'firstname' => 'required','lastname' => 'required', 'password' => 'required');
+        $rulesValidatorUser = array( 'firstname' => 'required','lastname' => 'required', 'password' => 'required','email' => 'required');
 
+        $validator = Validator::make($input, $rulesValidatorUser);
 
-        $password = $input['password'];
-        $password = Hash::make($password);
+        if(!$validator->fails()) {
 
-        $user = new User();
+            $password = $input['password'];
+            $password = Hash::make($password);
 
-        $user->email = $input['email'];
-        $user->password = $password;
-        $user->save();
+            $user = new User();
 
-        return Redirect::to('/');
+            $user->email = $input['email'];
+            $user->password = $password;
+            $user->save();
+
+            return Redirect::to('/');
+
+        }
+        else
+        {
+            return Redirect::to('user/create')->withErrors($validator)->withInput();
+        }
 
 
 	}
