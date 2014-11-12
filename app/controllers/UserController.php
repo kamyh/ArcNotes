@@ -12,6 +12,43 @@ class UserController extends \BaseController {
 
 	}
 
+    /**
+     * Display login form
+     *
+     */
+    public function login()
+    {
+        return View::make('users.login');
+    }
+
+    /**
+     * Handle login stuff
+     */
+    public function loginHanler()
+    {
+        $data = Input::only(['email', 'password']);
+
+        if(Auth::attempt(['email' => $data['email'], 'password' => $data['password']]))
+        {
+            return Redirect::to('/');
+        }
+
+        return Redirect::route('login')->withInput();
+    }
+
+    /**
+     * User disconnection
+     */
+    public function logout()
+    {
+        if(Auth::check()){
+            Auth::logout();
+        }
+
+        return Redirect::route('/');
+    }
+	
+
 
 	/**
 	 * Show the form for creating a new resource.

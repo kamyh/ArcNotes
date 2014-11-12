@@ -22,4 +22,12 @@ Route::get("userTest", array(
     "uses"=>"UserController@test"
 ));
 
+/**
+ * Login handling
+ */
+
+Route::resource('user', 'UserController'); // give acces to create and store fct for user controller
+Route::get('/login', array('as' => 'login', 'uses' => 'UserController@login'));
+Route::post('/login', array('as' => 'login', 'uses' => 'UserController@loginHandler'));
+Route::get('/logout', array('as' => 'logout', 'uses' => 'UserController@logout'));
 ?>
