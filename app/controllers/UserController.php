@@ -24,16 +24,26 @@ class UserController extends \BaseController {
     /**
      * Handle login stuff
      */
-    public function loginHanler()
+    public function loginHandler()
     {
-        $data = Input::only(['email', 'password']);
+        $email = Input::get('email');
+        $password = Input::get('password');
 
-        if(Auth::attempt(['email' => $data['email'], 'password' => $data['password']]))
+        //print_r($data);
+
+        print_r(Auth::user());
+
+        var_dump(Auth::attempt(array('email' => $email, 'password' => $password),true));
+
+
+
+        if(Auth::attempt(array('email' => $email, 'password' => $password),true))
         {
-            return Redirect::to('/');
+            echo "TRUE";
+            //return Redirect::to('/');
         }
-
-        return Redirect::route('login')->withInput();
+        echo "FALSE";
+        //return Redirect::route('login')->withInput();
     }
 
     /**
@@ -65,10 +75,43 @@ class UserController extends \BaseController {
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
+     *
 	 */
 	public function store()
 	{
-		//
+        /*
+        $firstname = Input::get('firstname');
+        $lastname = Input::get('lastname');
+        $email = Input::get('email');
+        $password = Hash::make(Input::get('password'));
+
+        $newUser = User::create(array($firstname,$lastname,$email,$password));
+
+        if($newUser){
+            Auth::login($newUser);
+            return Redirect::to('/');
+        }
+
+        return Redirect::route('user.create')->withInput();
+        */
+
+        $input = Input::all();
+
+        $rules = array( 'firstname' => 'required','lastname' => 'required', 'password' => 'required');
+
+
+        $password = $input['password'];
+        $password = Hash::make($password);
+
+        $user = new User();
+
+        $user->email = $input['email'];
+        $user->password = $password;
+        $user->save();
+
+        return Redirect::to('/');
+
+
 	}
 
 
