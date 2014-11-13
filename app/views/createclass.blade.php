@@ -14,27 +14,27 @@
                 {{ implode('', $errors->all('<li class="error">:message</li>')) }}
             </div>
         @endif
-        <div class="">
             {{Form::label('name','Name')}}
             {{Form::text('name', null,array('class' => ''))}}
-        </div>
-        <div>
+        <br/>
+
             {{Form::label('school','School')}}
             {{ Form::select('school', $schoolList, null, array('class' => '')) }}
             <button onclick="openPopup()" class="btn btn-default">New School</button>
-        </div>
-        <div>
+         <br/>
+
             {{Form::label('degree','Degree')}}
             {{Form::text('degree', null,array('class' => ''))}}
-        </div>
-        <div class="">
+            <br/>
+
             {{Form::label('scollaryear','Scollar Year')}}
             {{Form::text('scollaryear', null,array('class' => ''))}}
-        </div>
-        <div class="">
+               <br/>
+
             {{Form::label('domain','Domain')}}
             {{Form::text('domain', null,array('class' => ''))}}
-        </div>
+                <br/>
+
         {{Form::submit('Create', array('class' => ''))}}
         {{ Form::close() }}
 </div>

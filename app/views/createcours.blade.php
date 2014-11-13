@@ -14,10 +14,9 @@
                 {{ implode('', $errors->all('<li class="error">:message</li>')) }}
             </div>
         @endif
-        <div class="">
             {{Form::label('name','Name')}}
             {{Form::text('name', null,array('class' => ''))}}
-        </div>
+                <br/>
 
         {{Form::submit('Create', array('class' => ''))}}
         {{ Form::close() }}

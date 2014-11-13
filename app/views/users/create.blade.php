@@ -9,22 +9,22 @@
                 {{ implode('', $errors->all('<li class="error">:message</li>')) }}
             </div>
         @endif
-        <div class="">
             {{Form::label('firstname','First Name')}}
             {{Form::text('firstname', null,array('class' => ''))}}
-        </div>
-        <div class="">
+                <br/>
+
             {{Form::label('lastname','Last Name')}}
             {{Form::text('lastname', null,array('class' => ''))}}
-        </div>
-        <div class="">
+           <br/>
+
             {{Form::label('email','Email')}}
             {{Form::text('email', null,array('class' => ''))}}
-        </div>
-        <div class="">
+               <br/>
+
             {{Form::label('password','Password')}}
             {{Form::password('password',array('class' => ''))}}
-        </div>
+           <br/>
+
         {{Form::submit('Register', array('class' => ''))}}
         {{ Form::close() }}
 </div>
