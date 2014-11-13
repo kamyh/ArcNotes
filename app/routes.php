@@ -25,6 +25,9 @@ Route::get("userTest", array(
 Route::resource('classes', 'ClassController');
 Route::get('/signclass', array('as' => 'signclass', 'uses' => 'ClassController@signClass'));
 
+Route::resource('courses', 'CourseController');
+Route::get('/signcours', array('as' => 'signcours', 'uses' => 'CourseController@signcours'));
+
 Route::resource('school', 'SchoolController');
 Route::get('/school', array('as' => 'school', 'uses' => 'SchoolController@school')); //TODO pass to post method
 

@@ -7,7 +7,7 @@
         echo Session::get('isLogged');
 
         $cantonList = DB::table('cantons')->lists('name','id');
-        $cityList = DB::table('cities')->lists('name','id');
+        $cityList = DB::table('cities')->distinct()->lists('name','id');
 
         //TODO MODIFICATION
         ?>
