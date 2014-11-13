@@ -3,6 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Arc Notes Project</title>
+    <?php
+    echo Session::get('id');
+    ?>
 	<style>
 		@import url(//fonts.googleapis.com/css?family=Lato:700);
 

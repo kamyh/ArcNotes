@@ -45,7 +45,7 @@ class ClassController extends \BaseController {
     {
         $input = Input::all();
 
-        $rulesValidatorUser = array( 'name' => 'required','scollaryear' => 'required', 'school' => 'required', 'degree' => 'required', 'domain' => 'required');
+        $rulesValidatorUser = array( 'name' => 'required|min:5','scollaryear' => 'required', 'school' => 'required', 'degree' => 'required', 'domain' => 'required');
 
         $validator = Validator::make($input, $rulesValidatorUser);
 

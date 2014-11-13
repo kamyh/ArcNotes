@@ -8,11 +8,14 @@
         </div>
     @endif
     {{Form::label('email','Email')}}
-    {{Form::text('email', null,array('class' => 'form-control'))}}
+    {{Form::text('email', null,array('class' => ''))}}
     {{Form::label('password','Password')}}
-    {{Form::password('password',array('class' => 'form-control'))}}
-    {{Form::submit('Login', array('class' => 'btn btn-primary'))}}
+    {{Form::password('password',array('class' => ''))}}
+    {{Form::submit('Login', array('class' => ''))}}
 {{ Form::close() }}
 
+{{ Form::open(array('url' => 'logout', 'method' => 'post')) }}
+    {{Form::submit('Logout', array('class' => ''))}}
+{{ Form::close() }}
 
 @stop

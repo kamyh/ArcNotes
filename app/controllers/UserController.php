@@ -41,6 +41,7 @@ class UserController extends \BaseController {
             if (Auth::attempt(array('email' => $email, 'password' => $password), true))
             {
                 Session::put('isLogged', '1');
+                Session::put('id',$id = Auth::id());
                 return Redirect::to('/');
             }
             return Redirect::to('login')->withInput();
@@ -57,11 +58,13 @@ class UserController extends \BaseController {
      */
     public function logout()
     {
-        if(Auth::check()){
+        if(Auth::check())
+        {
+            Session::flush();
             Auth::logout();
         }
 
-        return Redirect::route('/');
+        return Redirect::to('/');
     }
 	
 
