@@ -27,14 +27,7 @@ Route::get('/signclass', array('as' => 'signclass', 'uses' => 'ClassController@s
 
 Route::resource('school', 'SchoolController');
 Route::get('/school', array('as' => 'school', 'uses' => 'SchoolController@school')); //TODO pass to post method
-Route::post('/school', array('as' => 'school', 'uses' => 'SchoolController@schoolMaker'));
 
-Route::get('cantons', function()
-{
-    $cantons = Canton::all();
-
-    return View::make('cantons')->with('cantons', $cantons);
-});
 
 /**
  * Login handling

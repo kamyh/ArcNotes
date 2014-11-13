@@ -41,8 +41,27 @@ class SchoolController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
-	}
+        $input = Input::all();
+
+        $rulesValidatorSchool = array( 'name' => 'required|min:4');
+
+        $validator = Validator::make($input, $rulesValidatorSchool);
+
+        if(!$validator->fails()) {
+
+            $school = new School();
+
+            $school->name = $input['name'];
+
+            $school->save();
+
+            Redirect::to('/'); /*TODO view GG school created !*/
+        }
+        else
+        {
+            return Redirect::to('school')->withErrors($validator)->withInput();
+        }
+    }
 
 
 	/**

@@ -6,6 +6,9 @@
         //TODO TEST
         echo Session::get('isLogged');
 
+        $cantonList = DB::table('cantons')->lists('name','id');
+        $cityList = DB::table('cities')->lists('name','id');
+
         //TODO MODIFICATION
         ?>
 
@@ -23,11 +26,6 @@
 
         <div>
             {{Form::label('canton','Canton')}}
-            @foreach($cantons as $canton)
-                <?php
-                    $cantonList = DB::table('cantons')->get();
-                ?>
-            @endforeach
             {{ Form::select('canton', $cantonList, null, array('class' => '')) }}
         </div>
 

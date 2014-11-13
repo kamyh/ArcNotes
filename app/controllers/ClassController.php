@@ -55,6 +55,10 @@ class ClassController extends \BaseController {
 
             $class->name = $input['name'];
             $class->scollaryear = $input['scollaryear'];
+            $class->id_school = $input['school'];
+            $class->degree = $input['degree'];
+            $class->domain = $input['domain'];
+
             $class->save();
 
             return Redirect::to('/');

@@ -3,7 +3,9 @@
 <div class="">
         <h2>new class</h2>
         <?php
-        echo Session::get('isLogged');
+            echo Session::get('isLogged');
+
+            $schoolList = DB::table('schools')->lists('name','id');
         ?>
         {{ Form::open(array('route' => array('classes.store'), 'method' => 'post')) }}
         @if($errors->any())
@@ -18,8 +20,7 @@
         </div>
         <div>
             {{Form::label('school','School')}}
-            {{Form::text('school', null,array('class' => ''))}} <!-- TODO DropDown from existing school -->
-            <!-- TODO new page for new scool Or store attributes already write by user and come back with it here after school creation -->
+            {{ Form::select('school', $schoolList, null, array('class' => '')) }}
             <button onclick="openPopup()" class="btn btn-default">New School</button>
         </div>
         <div>
