@@ -16,9 +16,9 @@ class ClassController extends \BaseController {
      *
      *
      */
-    public function signClass()
+    public function createClass()
     {
-        return View::make('signclass');
+        return View::make('createclass');
     }
 
 
@@ -66,7 +66,7 @@ class ClassController extends \BaseController {
         }
         else
         {
-            return Redirect::to('signclass')->withErrors($validator)->withInput();
+            return Redirect::to('createclass')->withErrors($validator)->withInput();
         }
 
 

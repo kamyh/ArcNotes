@@ -16,9 +16,9 @@ class CourseController extends \BaseController {
      *
      *
      */
-    public function signCours()
+    public function createCours()
     {
-        return View::make('signcours');
+        return View::make('createcours');
     }
 
 
@@ -62,7 +62,7 @@ class CourseController extends \BaseController {
         }
         else
         {
-            return Redirect::to('signcours')->withErrors($validator)->withInput();
+            return Redirect::to('createcours')->withErrors($validator)->withInput();
         }
 
 

@@ -19,7 +19,7 @@
             {{Form::text('name', null,array('class' => ''))}}
         </div>
 
-        {{Form::submit('Sign', array('class' => ''))}}
+        {{Form::submit('Create', array('class' => ''))}}
         {{ Form::close() }}
 </div>
 @stop

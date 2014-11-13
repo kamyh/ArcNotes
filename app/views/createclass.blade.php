@@ -35,7 +35,7 @@
             {{Form::label('domain','Domain')}}
             {{Form::text('domain', null,array('class' => ''))}}
         </div>
-        {{Form::submit('Sign', array('class' => ''))}}
+        {{Form::submit('Create', array('class' => ''))}}
         {{ Form::close() }}
 </div>
 @stop

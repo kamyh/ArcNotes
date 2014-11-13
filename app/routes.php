@@ -23,10 +23,10 @@ Route::get("userTest", array(
 ));
 
 Route::resource('classes', 'ClassController');
-Route::get('/signclass', array('as' => 'signclass', 'uses' => 'ClassController@signClass'));
+Route::get('/createclass', array('as' => 'createclass', 'uses' => 'ClassController@createClass'));
 
 Route::resource('courses', 'CourseController');
-Route::get('/signcours', array('as' => 'signcours', 'uses' => 'CourseController@signcours'));
+Route::get('/createcours', array('as' => 'createcours', 'uses' => 'CourseController@createcours'));
 
 Route::resource('school', 'SchoolController');
 Route::get('/school', array('as' => 'school', 'uses' => 'SchoolController@school')); //TODO pass to post method
