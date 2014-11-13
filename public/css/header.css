@@ -1,0 +1,38 @@
+#header-menus, #header-title, #header-search
+{
+	float: left;
+	height: 100%;
+	padding: 0;
+}
+
+#header-title
+{
+	width: 30%;
+}
+
+#header-menus
+{
+	width: 50%;
+	font-size: 120%;
+}
+
+#header-search
+{
+	width: 20%;
+}
+
+.header-menu-tile, .header-search-tile
+{
+	float:left;
+	margin: 20px 10px 0;
+}
+
+.header-menu-tile
+{
+	padding : 7px;
+}
+
+.header-search-tile
+{
+
+}

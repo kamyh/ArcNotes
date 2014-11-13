@@ -1,0 +1,71 @@
+body { 
+	margin: 0;
+    font-family: "Helvetica", Georgia, Serif;
+	font-size: 15px;
+}
+.row, .col { overflow: hidden; position: absolute; }
+.row { left: 0; right: 0; }
+.col { top: 0; bottom: 0; }
+.scroll-x { overflow-x: auto; }
+.scroll-y { overflow-y: auto; }
+/*
+	wetasphalt #34495e
+	midnightblue #2c3e50
+	concrete #95a5a6
+	wtf #7f8c8d
+*/
+.no-scrollbar
+{
+	width: 100%;
+	height: 100%;
+}
+/*goes with body */
+.header.row 
+{
+	height: 75px; top: 0;
+}
+/*goes with header */
+.body.row 
+{ 
+	top: 75px; bottom: 0; 
+}
+/* goes with content */
+.left-dock.col
+{
+	left: 0; width: 300px;
+}
+/* goes with left-dock */
+.content.col
+{
+	left: 300px; right: 0;
+	padding: 20px 20px 20px 20px;
+}
+
+.color-a
+{
+	background-color: #34495e;
+	color: #95a5a6;
+}
+
+.hover-color-a:hover, .hover-color-b:hover
+{
+	cursor: pointer;
+}
+
+.hover-color-a:hover
+{
+	background-color: #34495e;
+	color: #95a5a6;
+}
+
+.color-b
+{
+	background-color: #2c3e50;
+	color: #7f8c8d;
+}
+
+.hover-color-b:hover
+{
+	background-color: #2c3e50;
+	color: #7f8c8d;
+}

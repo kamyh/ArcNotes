@@ -1,0 +1,15 @@
+.profile, .context-menus-dock
+{
+	padding-top: 15px;
+	width: 100%;
+}
+
+.profile
+{
+	padding-left: 12px;
+}
+
+.context-menu-tile
+{
+	padding: 15px;
+}
