@@ -39,13 +39,13 @@ class ClassController extends \BaseController {
      * Store a newly created resource in storage.
      *
      * @return Response
-     *
+     * @param ['name','id_school','scollaryear','degree','domain','previous','visibility']
      */
     public function store()
     {
         $input = Input::all();
 
-        $rulesValidatorUser = array( 'name' => 'required','scollaryear' => 'required');
+        $rulesValidatorUser = array( 'name' => 'required','scollaryear' => 'required', 'school' => 'required', 'degree' => 'required', 'domain' => 'required');
 
         $validator = Validator::make($input, $rulesValidatorUser);
 

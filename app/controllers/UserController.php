@@ -87,7 +87,7 @@ class UserController extends \BaseController {
     {
         $input = Input::all();
 
-        $rulesValidatorUser = array( 'firstname' => 'required','lastname' => 'required', 'password' => 'required','email' => 'required');
+        $rulesValidatorUser = array( 'firstname' => 'required|min:4','lastname' => 'required', 'password' => 'required|min:8','email' => 'required|email');
 
         $validator = Validator::make($input, $rulesValidatorUser);
 
