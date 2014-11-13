@@ -19,21 +19,16 @@
                 {{ implode('', $errors->all('<li class="error">:message</li>')) }}
             </div>
         @endif
-        <div class="">
             {{Form::label('name','Name')}}
             {{Form::text('name', null,array('class' => ''))}}
-        </div>
-
-        <div>
+        <br/>
             {{Form::label('canton','Canton')}}
             {{ Form::select('canton', $cantonList, null, array('class' => '')) }}
-        </div>
+        <br/>
 
-        <div>
             {{Form::label('city','City')}}
             {{ Form::select('city', $cityList, null, array('class' => '')) }}
-        </div>
-
+        <br/>
         {{Form::submit('Create', array('class' => ''))}}
         {{ Form::close() }}
 </div>

@@ -8,9 +8,11 @@
         </div>
     @endif
     {{Form::label('email','Email')}}
-    {{Form::text('email', null,array('class' => ''))}}
+    {{Form::text('email', null,array('class' => ''))}}        <br/>
+
     {{Form::label('password','Password')}}
-    {{Form::password('password',array('class' => ''))}}
+    {{Form::password('password',array('class' => ''))}}        <br/>
+
     {{Form::submit('Login', array('class' => ''))}}
 {{ Form::close() }}
 
