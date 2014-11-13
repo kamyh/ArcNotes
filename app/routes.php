@@ -14,7 +14,6 @@
 Route::get('/', function()
 {
 	return View::make('hello');
-
 });
 
 Route::get("userTest", array(
@@ -31,7 +30,12 @@ Route::get('/createcours', array('as' => 'createcours', 'uses' => 'CourseControl
 Route::resource('school', 'SchoolController');
 Route::get('/school', array('as' => 'school', 'uses' => 'SchoolController@school')); //TODO pass to post method
 
+Route::get('/signclass', function()
+{
+    return View::make('signclass');
+});
 
+Route::get('/joinclass', array('as' => 'joinclass', 'uses' => 'ClassController@join'));
 /**
  * Login handling
  */
