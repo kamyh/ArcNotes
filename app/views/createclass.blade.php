@@ -6,6 +6,8 @@
             echo Session::get('isLogged');
 
             $schoolList = DB::table('schools')->lists('name','id');
+
+            $visibilityList =['0000' => 'public','0001' => 'private'];
         ?>
         {{ Form::open(array('route' => array('classes.store'), 'method' => 'post')) }}
         @if($errors->any())
@@ -33,6 +35,10 @@
 
             {{Form::label('domain','Domain')}}
             {{Form::text('domain', null,array('class' => ''))}}
+                <br/>
+
+            {{Form::label('visibility','Visibility')}}
+            {{ Form::select('visibility', $visibilityList, null, array('class' => '')) }}
                 <br/>
 
         {{Form::submit('Create', array('class' => ''))}}

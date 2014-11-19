@@ -5,6 +5,8 @@
 	{{HTML::style('css/mainlayout.css');}}
 	{{HTML::style('css/header.css');}}
 	{{HTML::style('css/leftdock.css');}}
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <body>
 <div class="header row color-a">

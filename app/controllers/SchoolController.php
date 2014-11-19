@@ -33,6 +33,29 @@ class SchoolController extends \BaseController {
         return View::make('schools.create');
 	}
 
+    /**
+     * @return mixed
+     */
+    public function fetch_sub_category()
+    {
+        $input = Input::get('id_canton');
+
+
+        $cities = DB::table('cities')->where('id_canton', '=', $input)->get();
+
+
+
+        $options = array();
+
+        foreach ($cities as $city)
+        {
+            $options += array($city->id => $city->name);
+        }
+
+
+        return Response::json($options);
+    }
+
 
 	/**
 	 * Store a newly created resource in storage.

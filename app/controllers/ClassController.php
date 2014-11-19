@@ -58,6 +58,7 @@ class ClassController extends \BaseController {
             $class->id_school = $input['school'];
             $class->degree = $input['degree'];
             $class->domain = $input['domain'];
+            $class->visibility = $input['visibility'];
 
             $class->save();
 

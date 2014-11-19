@@ -41,4 +41,7 @@ Route::resource('user', 'UserController'); // give acces to create and store fct
 Route::get('/', array('as' => 'login', 'uses' => 'UserController@login'));
 Route::post('/', array('as' => 'login', 'uses' => 'UserController@loginHandler'));
 Route::post('/logout', array('as' => 'logout', 'uses' => 'UserController@logout'));
+
+Route::get('searchcities/{id_canton}', 'SchoolController@fetch_sub_category');
+
 ?>
