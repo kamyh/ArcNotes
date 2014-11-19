@@ -21,7 +21,10 @@ class ClassController extends \BaseController {
         return View::make('createclass');
     }
 
-
+    public function load()
+    {
+        return View::make('signclass');
+    }
 
 
     /**

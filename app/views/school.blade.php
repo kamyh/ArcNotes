@@ -28,16 +28,6 @@
 
         $cantonList = DB::table('cantons')->lists('name','id');
 
-        if(isset($_SESSION['id_canton']))
-        {
-            $id_selected_canton = $_SESSION['id_canton'];
-        }
-        else
-        {
-            $id_selected_canton = 0;
-        }
-
-        echo "-----> ".$id_selected_canton;
 
         $cityList = DB::table('cities')->distinct()->lists('name','id');
 

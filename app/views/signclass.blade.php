@@ -6,21 +6,51 @@
         //TODO TEST
         echo Session::get('isLogged');
 
-        $classesList = DB::table('classes')->lists('name','id');
+        $orderOptionList = ['name','scollaryear','domain'];
 
-        //TODO MODIFICATION
+        if(isset($_SESSION['orderOption']))
+        {
+            $orderOption = $_SESSION['orderOption'];
+        }
+        else
+        {
+            $orderOption = 'name';
+        }
+
+        $classesList = DB::table('classes')->orderBy($orderOption, 'DESC')->get();
+
+        //TODO MODIFICATION --> display by table with search field filter
         ?>
 
-        @foreach($classesList as $key => $value)
-            <p>class {{ $value }}</p>
+        <h2>Classes</h2>
 
-        {{ Form::open(array('route' => array('joinclass'), 'method' => 'post')) }}
+        {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
+            {{Form::label('orderOption','Order By')}}
+            {{ Form::select('orderOption', $orderOptionList, null, array('class' => 'orderOptionClass' , 'id' => 'orderOptionID')) }}
 
-            {{ Form::hidden('id', $key) }}
-            {{Form::submit('Join', array('class' => ''))}}
+            {{Form::submit('Validate', array('class' => ''))}}
         {{ Form::close() }}
+        <br/>
+
+        <?php
+        var_dump($classesList);
+        ?>
+
+        @foreach($classesList as $class)
+
+            <p>Name:  {{ $class->name }}</p>
+
+
+
+            {{ Form::open(array('route' => array('joinclass'), 'method' => 'post')) }}
+
+                {{ Form::hidden('id', $class->id) }}
+                {{Form::submit('Join', array('class' => ''))}}
+            {{ Form::close() }}
 
 
         @endforeach
+
+
 </div>
 @stop
