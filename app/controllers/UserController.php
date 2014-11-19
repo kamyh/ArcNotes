@@ -103,6 +103,8 @@ class UserController extends \BaseController {
 
             $user->email = $input['email'];
             $user->password = $password;
+            $user->lastname = $input['lastname'];
+            $user->firstname = $input['firstname'];
             $user->save();
 
             return Redirect::to('/');
@@ -166,15 +168,7 @@ class UserController extends \BaseController {
 	{
 		//
 	}
-	
-	public function insertIntoDB($firstname, $lastname, $email, $password)
-	{
-        //TODO echappement
-        echo "TR";
-        $id = DB::table('users')->insertGetId(
-            array('firstname' => $firstname,'lastname' => $lastname,'email' => $email,'password' => $password)
-        );
-	}
+
 
     public function test()
     {
