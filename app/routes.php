@@ -18,9 +18,9 @@ Route::get("userTest", array(
     "uses"=>"UserController@test"
 ));
 
-Route::get('/invitation', function()
+Route::get('/gestionClass', function()
 {
-    return View::make('users/invitation');
+    return View::make('users/gestionClass');
 });
 
 Route::resource('classes', 'ClassController');

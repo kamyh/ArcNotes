@@ -16,7 +16,6 @@ class CreateAssocclasscourseTable extends Migration {
 			$table->timestamps();
 			$table->integer('id_class')->references('id')->on('classes');
 			$table->integer('id_course')->reference('id')->on('courses');
-			$table->unique('id_class','id_course');
 		});
 	}
 
