@@ -57,33 +57,33 @@
 
 
         @foreach($classesList as $class)
+            @if($class->visibility == 'public')
+                <?php
+                    $id_school = $class->id_school;
+                    $school = DB::table('schools')->where('id','=',$id_school)->first();
 
-            <?php
-                $id_school = $class->id_school;
-                $school = DB::table('schools')->where('id','=',$id_school)->first();
+                    $id_location = $school->id_location;
+                    $location = DB::table('cities')->where('id','=',$id_location)->first();
 
-                $id_location = $school->id_location;
-                $location = DB::table('cities')->where('id','=',$id_location)->first();
+                    $id_canton = $location->id_canton;
+                    $canton = DB::table('cantons')->where('id','=',$id_canton)->first();
+                ?>
 
-                $id_canton = $location->id_canton;
-                $canton = DB::table('cantons')->where('id','=',$id_canton)->first();
-            ?>
-
-            <p>Name:  {{ $class->name }}</p>
-            <p>Scollar year:  {{ $class->scollaryear }}</p>
-            <p>Domain:  {{ $class->domain }}</p>
-            <p>Degree:  {{ $class->degree }}</p>
-            <p>School:  {{ $school->name }} - {{$location->name}} - {{$canton->name}}</p>
-
-
-
-            {{ Form::open(array('route' => array('joinclass'), 'method' => 'post')) }}
-
-                {{ Form::hidden('id', $class->id) }}
-                {{Form::submit('Join', array('class' => ''))}}
-            {{ Form::close() }}
+                <p>Name:  {{ $class->name }}</p>
+                <p>Scollar year:  {{ $class->scollaryear }}</p>
+                <p>Domain:  {{ $class->domain }}</p>
+                <p>Degree:  {{ $class->degree }}</p>
+                <p>School:  {{ $school->name }} - {{$location->name}} - {{$canton->name}}</p>
 
 
+
+                {{ Form::open(array('route' => array('joinclass'), 'method' => 'post')) }}
+
+                    {{ Form::hidden('id', $class->id) }}
+                    {{Form::submit('Join', array('class' => ''))}}
+                {{ Form::close() }}
+
+            @endif
         @endforeach
 
 
