@@ -42,7 +42,7 @@ class UserController extends \BaseController {
             {
                 Session::put('isLogged', '1');
                 Session::put('id',$id = Auth::id());
-                return Redirect::to('/');
+                return Redirect::to('login');
             }
             return Redirect::to('login')->withInput();
 
