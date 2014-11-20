@@ -24,7 +24,10 @@
 			<div class="left-dock col scroll-y color-a">
 				<div class="profile">
 				         @if(Session::get('isLogged') == 1)
-				            Welcome user: //missing
+				            <?php
+				                $user = DB::table('users')->where('id','=',Session::get('id'))->first();
+				            ?>
+				            Welcome: {{$user->firstname}} {{$user->lastname}}
                             {{ Form::open(array('url' => 'logout', 'method' => 'get')) }}
                                 {{Form::submit('Logout', array('class' => ''))}}
                             {{ Form::close() }}
