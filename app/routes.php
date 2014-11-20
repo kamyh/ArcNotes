@@ -18,6 +18,11 @@ Route::get("userTest", array(
     "uses"=>"UserController@test"
 ));
 
+Route::get('/invitation', function()
+{
+    return View::make('users/invitation');
+});
+
 Route::resource('classes', 'ClassController');
 Route::get('/createclass', array('as' => 'createclass', 'uses' => 'ClassController@createClass'));
 
