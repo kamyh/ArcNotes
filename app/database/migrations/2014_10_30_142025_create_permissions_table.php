@@ -17,6 +17,7 @@ class CreatePermissionsTable extends Migration {
 			$table->integer('id_user')->references('id')->on('users');
 			$table->integer('id_rights')->references('id')->on('rights');
 			$table->integer('id_class')->references('id')->on('classes');
+            $table->increments('id')->unique();
 		});
 	}
 

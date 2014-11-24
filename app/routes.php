@@ -52,4 +52,29 @@ Route::post('/logout', array('as' => 'logout', 'uses' => 'UserController@logout'
 
 Route::get('searchcities/{id_canton}', 'SchoolController@fetch_sub_category');
 
+
+/*
+ * Routes Gestion Classes
+ */
+
+//TODO CREATE Fct in controller
+Route::post('/accept_member', array('as' => 'accept_member', 'uses' => 'ClassController@accept_member'));
+Route::post('/remove_course', array('as' => 'remove_course', 'uses' => 'ClassController@remove_course'));
+Route::post('/remove_member', array('as' => 'remove_member', 'uses' => 'ClassController@remove_member'));
+Route::post('/chgt_rights', array('as' => 'chgt_rights', 'uses' => 'ClassController@chgt_rights'));
+Route::post('/chgt_visibility', array('as' => 'chgt_visibility', 'uses' => 'ClassController@chgt_visibility'));
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

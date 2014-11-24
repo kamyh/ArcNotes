@@ -32,14 +32,16 @@
             {{ $user->firstname }} {{ $user->lastname }}
 
             @if($userIDSeeker->id_rights < 1)
-                {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }} <!-- TODO route to create -->
+                {{ Form::open(array('route' => array('accept_member'), 'method' => 'post')) }}
                     {{Form::submit('Accept', array('class' => ''))}}
+                    {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
+                    {{ Form::hidden('id_class', $idClass) }}
                 {{ Form::close() }}
             @elseif($userIDSeeker->id_rights != 15)
-                {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }} <!--  TODO route to create -->
+                {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
                     {{Form::submit('Remove', array('class' => ''))}}
                 {{ Form::close() }}
-                {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }} <!--  TODO route to create -->
+                {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
                     <!-- TODO chkBox rights -->
                     {{Form::submit('Validate', array('class' => ''))}}
                 {{ Form::close() }}
