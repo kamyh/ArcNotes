@@ -139,7 +139,7 @@ class ClassController extends \BaseController {
         if($user_invited == null)
         {
             $error = "No such user registered !";
-            return Redirect::to('gestionClass')->withErrors($error)->withInput();
+            return Redirect::to('gestionclassowner')->withErrors($error)->withInput();
         }
         else
         {
@@ -150,7 +150,7 @@ class ClassController extends \BaseController {
 
             $permission->save();
 
-            return Redirect::to('gestionClass');
+            return Redirect::to('gestionclassowner');
         }
     }
 
@@ -163,7 +163,7 @@ class ClassController extends \BaseController {
 
         $permission->save();
 
-        return Redirect::to('gestionClass');
+        return Redirect::to('gestionclassowner');
     }
 
     public function refuse_member()
@@ -174,7 +174,7 @@ class ClassController extends \BaseController {
 
         $permission->delete();
 
-        return Redirect::to('gestionClass');
+        return Redirect::to('gestionclassowner');
     }
 
     public function remove_course()
@@ -184,7 +184,7 @@ class ClassController extends \BaseController {
         $course = Courses::find($input['id_course']);
         $course->delete();
 
-        return Redirect::to('gestionClass');
+        return Redirect::to('gestionclassowner');
     }
 
     public function remove_member()
@@ -195,7 +195,7 @@ class ClassController extends \BaseController {
 
         $permission->delete();
 
-        return Redirect::to('gestionClass');
+        return Redirect::to('gestionclassowner');
     }
 
     public function chgt_rights()
@@ -222,19 +222,37 @@ class ClassController extends \BaseController {
 
         $permission->save();
 
-        return Redirect::to('gestionClass');
+        return Redirect::to('gestionclassowner');
     }
 
     public function chgt_visibility()
     {
         $input = Input::all();
 
+        $class = Classes::where('id','=',$input['id_class'])->first();
+
+        if($class->visibility == 'public')
+        {
+            $class->visibility = 'private';
+        }
+        else
+        {
+            $class->visibility = 'public';
+        }
+
+        $class->save();
+
+        return Redirect::to('gestionclassowner');
     }
 
     public function remove_class()
     {
+        $input = Input::all();
 
+        $class = Classes::where('id','=',$input['id_class'])->first();
+
+        $class->delete();
+
+        return Redirect::to('gestionclassowner');
     }
-
-
 }
