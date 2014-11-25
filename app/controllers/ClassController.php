@@ -202,6 +202,27 @@ class ClassController extends \BaseController {
     {
         $input = Input::all();
 
+        $rights = 0;
+
+        if(isset($input['read']))
+        {
+            $rights += 4;
+        }
+        if(isset($input['edition']))
+        {
+            $rights += 2;
+        }
+        if(isset($input['creation']))
+        {
+            $rights += 1;
+        }
+
+        $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
+        $permission->id_rights = $rights;
+
+        $permission->save();
+
+        return Redirect::to('gestionClass');
     }
 
     public function chgt_visibility()

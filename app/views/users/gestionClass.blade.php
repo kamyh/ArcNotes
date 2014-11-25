@@ -65,8 +65,8 @@
                         {{ Form::hidden('id_class', $idClass) }}
                         {{Form::submit('Remove', array('class' => ''))}}
                     {{ Form::close() }}
-                    {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
 
+                    {{ Form::open(array('route' => array('chgt_rights'), 'method' => 'post')) }}
                         <?php
                         $perm = DB::table('permissions')->where('id_user','=',$userIDSeeker->id_user)->where('id_class','=',$idClass)->first();
 
@@ -99,6 +99,8 @@
                         {{Form::label('creation','Création/Suppression')}}
                         <br/>
                         {{Form::submit('Validate', array('class' => ''))}}
+                        {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
+                        {{ Form::hidden('id_class', $idClass) }}
                     {{ Form::close() }}
                 @endif
             @endforeach
