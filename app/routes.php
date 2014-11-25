@@ -57,7 +57,7 @@ Route::get('searchcities/{id_canton}', 'SchoolController@fetch_sub_category');
  * Routes Gestion Classes
  */
 
-//TODO CREATE Fct in controller
+Route::post('/invite_member', array('as' => 'invite_member', 'uses' => 'ClassController@invite_member'));
 Route::post('/accept_member', array('as' => 'accept_member', 'uses' => 'ClassController@accept_member'));
 Route::post('/remove_course', array('as' => 'remove_course', 'uses' => 'ClassController@remove_course'));
 Route::post('/remove_member', array('as' => 'remove_member', 'uses' => 'ClassController@remove_member'));

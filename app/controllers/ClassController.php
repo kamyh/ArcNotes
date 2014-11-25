@@ -130,35 +130,51 @@ class ClassController extends \BaseController {
      * Fct Modif Datas
      */
 
+    public function invite_member()
+    {
+        $input = Input::all();
+
+        $user_invited = User::where('email','=',$input['email']);
+
+        $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
+        $permission->id_rights = 1;
+
+        $permission->save();
+
+        return Redirect::to('gestionClass');
+    }
+
     public function accept_member()
     {
         $input = Input::all();
 
         $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
-        //$permission->id_user = $input['id_user'];
-        //$permission->id_class = $input['id_class'];
         $permission->id_rights = 1;
-
-        echo $input['id_user'];
-        echo $input['id_class'];
-
-        var_dump($permission);
 
         $permission->save();
 
-        //return Redirect::to('gestionClass');
+        return Redirect::to('gestionClass');
     }
 
     public function remove_course()
     {
         $input = Input::all();
 
+        $course = Courses::find($input['id_course']);
+        $course->delete();
+
+        return Redirect::to('gestionClass');
     }
 
     public function remove_member()
     {
         $input = Input::all();
 
+        $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
+
+        $permission->delete();
+
+        return Redirect::to('gestionClass');
     }
 
     public function chgt_rights()

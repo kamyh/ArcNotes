@@ -1,8 +1,23 @@
 @extends('layouts.default')
 @section('body')
     <?php
-        $classesOwned = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->get();
+        $classesOwned = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->get(); //TODO chck if removable
+
+        $classID = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->lists('id_class');
+        $listClasses = DB::table('classes')->whereIn('id',$classID)->lists('id','name');
+
+        var_dump($listClasses);
     ?>
+
+    {{ Form::open(array('route' => array('invite_member'), 'method' => 'post')) }}
+        {{Form::label('email','User E-mail Adresse')}}
+        {{Form::text('email', null,array('class' => ''))}}
+        <br/>
+        {{Form::label('class','Classes')}}
+        {{ Form::select('class', [], null, array('class' => '')) }}
+        <br/>
+        {{Form::submit('Invite', array('class' => ''))}}
+    {{ Form::close() }}
 
     @foreach($classesOwned as $classOwned)
 
@@ -38,7 +53,9 @@
                     {{ Form::hidden('id_class', $idClass) }}
                 {{ Form::close() }}
             @elseif($userIDSeeker->id_rights != 15)
-                {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
+                {{ Form::open(array('route' => array('remove_member'), 'method' => 'post')) }}
+                    {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
+                    {{ Form::hidden('id_class', $idClass) }}
                     {{Form::submit('Remove', array('class' => ''))}}
                 {{ Form::close() }}
                 {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
@@ -63,11 +80,14 @@
                 $course = DB::table('courses')->where('id','=',$idCourse)->first();
             ?>
 
-            {{ $course->name }}
-            {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }} <!-- TODO route to create -->
-                {{Form::submit('Remove', array('class' => ''))}}
-            {{ Form::close() }}
-            </br>
+            @if($course != null)
+                {{ $course->name }}
+                {{ Form::open(array('route' => array('remove_course'), 'method' => 'post')) }}
+                    {{ Form::hidden('id_course', $courseSeeker->id_course) }}
+                    {{Form::submit('Remove', array('class' => ''))}}
+                {{ Form::close() }}
+                </br>
+            @endif
 
         @endforeach
     @endforeach
