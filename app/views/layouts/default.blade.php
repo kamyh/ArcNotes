@@ -23,12 +23,12 @@
 		<div class="body row">
 			<div class="left-dock col scroll-y color-a">
 				<div class="profile">
-				         @if(Session::get('isLogged') == 1)
+				         @if(Auth::check())
 				            <?php
-				                $user = DB::table('users')->where('id','=',Session::get('id'))->first();
+				                $user = DB::table('users')->where('id','=',Auth::id())->first();
 				            ?>
 				            Welcome: {{$user->firstname}} {{$user->lastname}}
-                            {{ Form::open(array('url' => 'logout', 'method' => 'get')) }}
+                            {{ Form::open(array('route' => 'logout', 'method' => 'post')) }}
                                 {{Form::submit('Logout', array('class' => ''))}}
                             {{ Form::close() }}
 

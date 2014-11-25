@@ -18,10 +18,11 @@ Route::get("userTest", array(
     "uses"=>"UserController@test"
 ));
 
-Route::get('/gestionclassowner', function()
+Route::get('/gestionclassowner',array('before' => 'auth', function()
 {
     return View::make('users/gestionclassowner');
-});
+}));
+
 Route::get('/gestionclasspart', function()
 {
     return View::make('users/gestionclasspart');

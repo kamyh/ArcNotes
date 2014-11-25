@@ -45,7 +45,6 @@ class UserController extends \BaseController {
                 return Redirect::to('login');
             }
             return Redirect::to('login')->withInput();
-
         }
         else
         {
@@ -58,11 +57,7 @@ class UserController extends \BaseController {
      */
     public function logout()
     {
-        if(Auth::check())
-        {
-            Session::flush();
-            Auth::logout();
-        }
+        Auth::logout();
 
         return Redirect::to('/');
     }
