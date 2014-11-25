@@ -134,14 +134,19 @@ class ClassController extends \BaseController {
     {
         $input = Input::all();
 
-        $user_invited = User::where('email','=',$input['email']);
+        $user_invited = User::where('email','=',$input['email'])->first();
 
-        $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
-        $permission->id_rights = 1;
+        var_dump($user_invited);
 
-        $permission->save();
+        if($user_invited == null)
+        {
+            $error = "No such user registered !";
+            return Redirect::to('gestionClass')->withErrors($error)->withInput();
+        }
+        else
+        {
 
-        return Redirect::to('gestionClass');
+        }
     }
 
     public function accept_member()
