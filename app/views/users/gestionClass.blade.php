@@ -10,7 +10,7 @@
         ?>
         @if($errors->any())
             <div class="">
-                <a class="" data-dismiss="alert">&times;</a>
+                <a class="error-msg" data-dismiss="alert">&times;</a>
                 {{ implode('', $errors->all('<li class="error">:message</li>')) }}
             </div>
         @endif
@@ -44,16 +44,18 @@
                 <?php
                     $idUser = $userIDSeeker->id_user;
                     $user = DB::table('users')->where('id','=',$idUser)->first();
-
                 ?>
-
-
 
                 {{ $user->firstname }} {{ $user->lastname }}
 
                 @if($userIDSeeker->id_rights < 1)
                     {{ Form::open(array('route' => array('accept_member'), 'method' => 'post')) }}
                         {{Form::submit('Accept', array('class' => ''))}}
+                        {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
+                        {{ Form::hidden('id_class', $idClass) }}
+                    {{ Form::close() }}
+                    {{ Form::open(array('route' => array('refuse_member'), 'method' => 'post')) }}
+                        {{Form::submit('Refuse', array('class' => ''))}}
                         {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
                         {{ Form::hidden('id_class', $idClass) }}
                     {{ Form::close() }}
@@ -64,7 +66,38 @@
                         {{Form::submit('Remove', array('class' => ''))}}
                     {{ Form::close() }}
                     {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
-                        <!-- TODO chkBox rights -->
+
+                        <?php
+                        $perm = DB::table('permissions')->where('id_user','=',$userIDSeeker->id_user)->where('id_class','=',$idClass)->first();
+
+                        $isCheckRead = 0;
+                        $isCheckEdition = 0;
+                        $isCheckCreation = 0;
+
+                        if(($perm->id_rights & 4) != 0)
+                        {
+                             $isCheckRead = true;
+                        }
+                        if(($perm->id_rights & 2) != 0)
+                        {
+                             $isCheckEdition = true;
+                        }
+                        if(($perm->id_rights & 1) != 0)
+                        {
+                             $isCheckCreation = true;
+                        }
+
+                        ?>
+
+                        {{Form::checkbox('read', '4',$isCheckRead)}}
+                        {{Form::label('read','Read')}}
+                        <br/>
+                        {{Form::checkbox('edition', '2',$isCheckEdition)}}
+                        {{Form::label('edition','Edition')}}
+                        <br/>
+                        {{Form::checkbox('creation', '1',$isCheckCreation)}}
+                        {{Form::label('creation','Création/Suppression')}}
+                        <br/>
                         {{Form::submit('Validate', array('class' => ''))}}
                     {{ Form::close() }}
                 @endif

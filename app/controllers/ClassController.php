@@ -136,8 +136,6 @@ class ClassController extends \BaseController {
 
         $user_invited = User::where('email','=',$input['email'])->first();
 
-        var_dump($user_invited);
-
         if($user_invited == null)
         {
             $error = "No such user registered !";
@@ -145,7 +143,14 @@ class ClassController extends \BaseController {
         }
         else
         {
+            $permission = new Permissions();
+            $permission->id_user = $user_invited->id;
+            $permission->id_class = $input['class'];
+            $permission->id_rights = 1;
 
+            $permission->save();
+
+            return Redirect::to('gestionClass');
         }
     }
 
@@ -154,9 +159,20 @@ class ClassController extends \BaseController {
         $input = Input::all();
 
         $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
-        $permission->id_rights = 1;
+        $permission->id_rights = 4;
 
         $permission->save();
+
+        return Redirect::to('gestionClass');
+    }
+
+    public function refuse_member()
+    {
+        $input = Input::all();
+
+        $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
+
+        $permission->delete();
 
         return Redirect::to('gestionClass');
     }
@@ -194,7 +210,10 @@ class ClassController extends \BaseController {
 
     }
 
+    public function remove_class()
+    {
 
+    }
 
 
 }
