@@ -136,16 +136,21 @@ class ClassController extends \BaseController {
 
         $user_invited = User::where('email','=',$input['email'])->first();
 
-        var_dump($user_invited);
-
         if($user_invited == null)
         {
             $error = "No such user registered !";
-            return Redirect::to('gestionClass')->withErrors($error)->withInput();
+            return Redirect::to('gestionclassowner')->withErrors($error)->withInput();
         }
         else
         {
+            $permission = new Permissions();
+            $permission->id_user = $user_invited->id;
+            $permission->id_class = $input['class'];
+            $permission->id_rights = 1;
 
+            $permission->save();
+
+            return Redirect::to('gestionclassowner');
         }
     }
 
@@ -154,11 +159,22 @@ class ClassController extends \BaseController {
         $input = Input::all();
 
         $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
-        $permission->id_rights = 1;
+        $permission->id_rights = 4;
 
         $permission->save();
 
-        return Redirect::to('gestionClass');
+        return Redirect::to('gestionclassowner');
+    }
+
+    public function refuse_member()
+    {
+        $input = Input::all();
+
+        $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
+
+        $permission->delete();
+
+        return Redirect::to('gestionclassowner');
     }
 
     public function remove_course()
@@ -168,7 +184,7 @@ class ClassController extends \BaseController {
         $course = Courses::find($input['id_course']);
         $course->delete();
 
-        return Redirect::to('gestionClass');
+        return Redirect::to('gestionclassowner');
     }
 
     public function remove_member()
@@ -179,22 +195,105 @@ class ClassController extends \BaseController {
 
         $permission->delete();
 
-        return Redirect::to('gestionClass');
+        return Redirect::to('gestionclassowner');
     }
 
     public function chgt_rights()
     {
         $input = Input::all();
 
+        $rights = 0;
+
+        if(isset($input['read']))
+        {
+            $rights += 4;
+        }
+        if(isset($input['edition']))
+        {
+            $rights += 2;
+        }
+        if(isset($input['creation']))
+        {
+            $rights += 1;
+        }
+
+        $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
+        $permission->id_rights = $rights;
+
+        $permission->save();
+
+        return Redirect::to('gestionclassowner');
     }
 
     public function chgt_visibility()
     {
         $input = Input::all();
 
+        $class = Classes::where('id','=',$input['id_class'])->first();
+
+        if($class->visibility == 'public')
+        {
+            $class->visibility = 'private';
+        }
+        else
+        {
+            $class->visibility = 'public';
+        }
+
+        $class->save();
+
+        return Redirect::to('gestionclassowner');
     }
 
+    public function remove_class()
+    {
+        $input = Input::all();
 
+        $class = Classes::where('id','=',$input['id_class'])->first();
 
+        $class->delete();
+
+        return Redirect::to('gestionclassowner');
+    }
+
+    public function resign_class()
+    {
+
+    }
+
+    public function lists_classes_courses()
+    {
+        $classID = DB::table('permissions')->where('id_user','=',Auth::id())->lists('id_class');
+        $listClasses = DB::table('classes')->whereIn('id',$classID)->get();
+
+        $response = [];
+
+        foreach($listClasses as $class)
+        {
+            $listCourses = DB::table('assocclasscourse')->where('id_class', '=', $class->id);
+            $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_course'))->lists('name','id');
+
+            array_push($response, $class->name, $courses);
+        }
+
+        return Response::json($response);
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

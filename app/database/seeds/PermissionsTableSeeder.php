@@ -11,9 +11,11 @@ class PermissionsTableSeeder extends Seeder {
             array('id_user'=>'2','id_rights'=>'0','id_class'=>'1'),
             array('id_user'=>'3','id_rights'=>'0','id_class'=>'1'),
             array('id_user'=>'1','id_rights'=>'15','id_class'=>'1'),
-            array('id_user'=>'2','id_rights'=>'1','id_class'=>'2'),
+            array('id_user'=>'2','id_rights'=>'5','id_class'=>'2'),
             array('id_user'=>'3','id_rights'=>'0','id_class'=>'2'),
             array('id_user'=>'1','id_rights'=>'15','id_class'=>'2'),
+            array('id_user'=>'1','id_rights'=>'5','id_class'=>'3'),
+            array('id_user'=>'1','id_rights'=>'7','id_class'=>'4'),
         ));
     }
 

@@ -2,7 +2,7 @@
 @section('body')
 {{ Form::open(array('url' => 'login', 'method' => 'post')) }}
     @if($errors->any())
-        <div class="">
+        <div class="error">
             <a class="" data-dismiss="alert">&times;</a>
             {{ implode('', $errors->all('<li class="error">:message</li>')) }}
         </div>
