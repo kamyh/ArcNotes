@@ -255,4 +255,45 @@ class ClassController extends \BaseController {
 
         return Redirect::to('gestionclassowner');
     }
+
+    public function resign_class()
+    {
+
+    }
+
+    public function lists_classes_courses()
+    {
+        $classID = DB::table('permissions')->where('id_user','=',Auth::id())->lists('id_class');
+        $listClasses = DB::table('classes')->whereIn('id',$classID)->get();
+
+        $response = [];
+
+        foreach($listClasses as $class)
+        {
+            $listCourses = DB::table('assocclasscourse')->where('id_class', '=', $class->id);
+            $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_course'))->lists('name','id');
+
+            array_push($response, $class->name, $courses);
+        }
+
+        return Response::json($response);
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

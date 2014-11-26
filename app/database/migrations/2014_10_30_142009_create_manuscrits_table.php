@@ -16,7 +16,8 @@ class CreateManuscritsTable extends Migration {
 			$table->increments('id')->unique();
 			$table->timestamps();
 			$table->integer('id_basenotes')->references('id')->on('basenotes');
-			$table->text('content');
+            $table->text('content');
+            $table->text('title');
 		});
 	}
 
