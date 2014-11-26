@@ -23,21 +23,21 @@ Route::get('/manager/classowned',array('before' => 'auth', function()
     return View::make('users/gestionclassowner');
 }));
 
-Route::get('//manager/class', function()
+Route::get('/manager/class', function()
 {
     return View::make('users/gestionclasspart');
 });
 
 Route::resource('classes', 'ClassController');
-Route::get('/createclass', array('as' => 'createclass', 'uses' => 'ClassController@createClass'));
+Route::get('/class/create', array('as' => '/class/create', 'uses' => 'ClassController@createClass'));
 
 Route::resource('courses', 'CourseController');
-Route::get('/createcours', array('as' => 'createcours', 'uses' => 'CourseController@createcours'));
+Route::get('/courses/create', array('as' => '/courses/create', 'uses' => 'CourseController@createcours'));
 
 Route::resource('school', 'SchoolController');
 Route::get('/school', array('as' => 'school', 'uses' => 'SchoolController@school')); //TODO pass to post method
 
-Route::get('/signclass', function()
+Route::get('/class/join', function()
 {
     return View::make('signclass');
 });

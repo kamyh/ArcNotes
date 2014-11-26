@@ -46,7 +46,7 @@
         ?>
 
         <h2>Classes</h2>
-
+        <?php //TODO FINISH/DEBUG?>
         {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
             {{Form::label('orderOption','Order By')}}
             {{ Form::select('orderOption', $orderOptionList, Session::get('orderOption'), array('class' => 'orderOptionClass' , 'id' => 'orderOptionID')) }}
