@@ -13,7 +13,7 @@
             @foreach($listClasses as $class)
                 <h1>{{$class->name}}</h1>
 
-                {{ Form::open(array('route' => array('resign_class'), 'method' => 'post')) }}
+                {{ Form::open(array('route' => array('/class/resign'), 'method' => 'post')) }}
                     {{Form::submit('Resign', array('class' => ''))}}
                     {{ Form::hidden('id_class', $class->id) }}
                 {{ Form::close() }}

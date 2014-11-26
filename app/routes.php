@@ -18,12 +18,12 @@ Route::get("userTest", array(
     "uses"=>"UserController@test"
 ));
 
-Route::get('/gestionclassowner',array('before' => 'auth', function()
+Route::get('/manager/classowned',array('before' => 'auth', function()
 {
     return View::make('users/gestionclassowner');
 }));
 
-Route::get('/gestionclasspart', function()
+Route::get('//manager/class', function()
 {
     return View::make('users/gestionclasspart');
 });

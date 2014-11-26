@@ -30,7 +30,7 @@
                         {
                             $.each(value,function(entry)
                             {
-                                $display.append('<div onClick="location.href=\'/cours/open/'+ entry +'\'" class="context-menu-tile hover-color-b">' + value[entry] + "</a></div>");
+                                $display.append('<div onClick="location.href=\'/cours/open/'+ entry +'\'" class="context-menu-tile hover-color-b">' + value[entry] + "</div>");
                             });
                         }
                     });
@@ -44,7 +44,8 @@
 				{{ HTML::image('img/logo.png') }}
 			</div>
 			<div id="header-menus" class="scroll-x">
-				<?php generateLorem(5, "<div class=\"header-menu-tile color-b hover-color-a\">menu</div>"); ?>
+			    <div onClick='location.href="/manager/classowned/"' class="header-menu-tile color-b hover-color-a">Owner Manager</div>
+			    <div onClick='location.href="/manager/class/"' class="header-menu-tile color-b hover-color-a">Participant Manager</div>
 			</div>
 			<div id="header-search">
 				<div class="header-search-tile" > search bar </div>
