@@ -63,18 +63,16 @@ Route::post('/remove_course', array('as' => 'remove_course', 'uses' => 'ClassCon
 Route::post('/remove_member', array('as' => 'remove_member', 'uses' => 'ClassController@remove_member'));
 Route::post('/chgt_rights', array('as' => 'chgt_rights', 'uses' => 'ClassController@chgt_rights'));
 Route::post('/chgt_visibility', array('as' => 'chgt_visibility', 'uses' => 'ClassController@chgt_visibility'));
-?>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+ * Routes pour gestions notes
+ */
+Route::get('/notes/write/{idcourse}','NoteController@getWritingForm')->where('idcourse','[0-9]+');
+Route::post('/notes/save/{id}',array('as' => '/notes/save/{id}', 'uses' =>'NoteController@saveNote'))->where('id','[0-9]+');
+Route::get('/notes/edit/{idnote}',array('as'=> '/notes/edit/{idnote}', 'uses' => 'NoteController@getEditingForm'))->where('idnote','[0-9]+');
+Route::post('/notes/delete/{idnote}',array('as'=> '/notes/delete/{idnote}', 'uses' => 'NoteController@removeNote'))->where('idnote','[0-9]+');
+Route::post('/notes/update/{idnote}',array('as'=> '/notes/update/{idnote}', 'uses' => 'NoteController@updateNote'))->where('idnote','[0-9]+');
+Route::get('/notes/add/{idcourse}',array('as'=> '/notes/add/{idnote}', 'uses' => 'NoteController@getUploadingForm'))->where('idcourse','[0-9]+');
+Route::post('/notes/upload/{idcourse}',array('as'=> '/notes/upload/{idcourse}', 'uses' => 'NoteController@uploadFileNote'))->where('idcourse','[0-9]+');
+Route::post('/notes/deletefile/{idfile}',array('as'=> '/notes/deletefile/{idfile}', 'uses' => 'NoteController@removeFileNote'))->where('idfile','[0-9]+');
