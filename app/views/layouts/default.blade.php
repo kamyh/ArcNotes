@@ -7,6 +7,36 @@
 	{{HTML::style('css/leftdock.css');}}
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+	<script type="text/javascript">
+        isObject = function(a) {
+            return (!!a) && (a.constructor === Object);
+        };
+
+        $(document).ready(function() {
+                $.getJSON("/lists_classes_courses" ,
+                 { id: 0 },
+                 function(data) {
+                    var $display = $("#list-class-course");
+                    $display.empty();
+
+                    $.each(data, function(index, value)
+                    {
+                        if(!isObject(value))
+                        {
+                            $display.append("</h1><h1>" + value);
+                        }
+                        else
+                        {
+                            $.each(value,function(entry)
+                            {
+                                $display.append('<div onClick="location.href=\'/cours/open/'+ entry +'\'" class="context-menu-tile hover-color-b">' + value[entry] + "</a></div>");
+                            });
+                        }
+                    });
+                });
+        });
+    </script>
 </head>
 <body>
 <div class="header row color-a">
@@ -52,8 +82,8 @@
                             <a href="/user/create">Sign up.</a>
                         @endif
 				</div>
-				<div class="context-menus-dock scroll-y">
-					<?php generateLorem(10, "<div class=\"context-menu-tile hover-color-b\">context menu stuff</div>"); ?>
+				<div class="context-menus-dock scroll-y" id="list-class-course">
+
 				</div>
 			</div>
 			<div class="content col scroll-y color-b">

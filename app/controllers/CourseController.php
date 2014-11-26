@@ -116,6 +116,21 @@ class CourseController extends \BaseController {
         //
     }
 
+    public function open($idcourse)
+    {
+        $filesManuscrit = [];
+        $files = [];
 
+        $course = DB::table('courses')->where('id','=',$idcourse)->first();
+        $id_basenotes = DB::table('basenotes')->where('id_cours','=',$idcourse)->lists('id');
+
+        if(!empty($id_basenotes))
+        {
+            $filesManuscrit = DB::table('manuscrits')->whereIn('id', $id_basenotes)->get();
+            $files = DB::table('files')->whereIn('id', $id_basenotes)->get();
+        }
+
+        return View::make('course.selectnote')->with(array('name' => $course->name, 'filesManuscrit' => $filesManuscrit, 'files' => $files));
+    }
 
 }

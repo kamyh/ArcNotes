@@ -57,24 +57,20 @@ Route::post('/logout', array('as' => 'logout', 'uses' => 'UserController@logout'
 
 Route::get('searchcities/{id_canton}', 'SchoolController@fetch_sub_category');
 
-Route::get('/lateralmanu', function()
-{
-    return View::make('lateralmanu');
-});
 
 /*
  * Routes Gestion Classes
  */
 
-Route::post('/invite_member', array('as' => 'invite_member', 'uses' => 'ClassController@invite_member'));
-Route::post('/accept_member', array('as' => 'accept_member', 'uses' => 'ClassController@accept_member'));
-Route::post('/refuse_member', array('as' => 'refuse_member', 'uses' => 'ClassController@refuse_member'));
-Route::post('/remove_course', array('as' => 'remove_course', 'uses' => 'ClassController@remove_course'));
-Route::post('/remove_class', array('as' => 'remove_class', 'uses' => 'ClassController@remove_class'));
-Route::post('/resign_class', array('as' => 'resign_class', 'uses' => 'ClassController@resign_class'));
-Route::post('/remove_member', array('as' => 'remove_member', 'uses' => 'ClassController@remove_member'));
-Route::post('/chgt_rights', array('as' => 'chgt_rights', 'uses' => 'ClassController@chgt_rights'));
-Route::post('/chgt_visibility', array('as' => 'chgt_visibility', 'uses' => 'ClassController@chgt_visibility'));
+Route::post('/class/invite', array('as' => '/class/invite', 'uses' => 'ClassController@invite_member'));
+Route::post('/class/accept', array('as' => '/class/accept', 'uses' => 'ClassController@accept_member'));
+Route::post('/class/refuse', array('as' => '/class/refuse', 'uses' => 'ClassController@refuse_member'));
+Route::post('/course/remove', array('as' => '/course/remove', 'uses' => 'ClassController@remove_course'));
+Route::post('/class/remove', array('as' => '/class/remove', 'uses' => 'ClassController@remove_class'));
+Route::post('/class/resign', array('as' => '/class/resign', 'uses' => 'ClassController@resign_class'));
+Route::post('/member/remove', array('as' => '/member/remove', 'uses' => 'ClassController@remove_member'));
+Route::post('/rights/change', array('as' => '/rights/change', 'uses' => 'ClassController@chgt_rights'));
+Route::post('/visibility/change', array('as' => '/visibility/change', 'uses' => 'ClassController@chgt_visibility'));
 
 /*
  * TEST Routes
@@ -84,6 +80,11 @@ Route::get("lists_classes_courses", array(
     "as"=>"lists_classes_courses",
     "uses"=>"ClassController@lists_classes_courses"
 ));
+
+/*
+ * Course
+ */
+Route::get('/cours/open/{idnote}',array('before' => 'auth','as'=> '/cours/open/{idnote}', 'uses' => 'CourseController@open'))->where('idcourse','[0-9]+');
 
 
 /*

@@ -15,7 +15,7 @@
                 {{ implode('', $errors->all('<li class="error">:message</li>')) }}
             </div>
         @endif
-        {{ Form::open(array('route' => array('invite_member'), 'method' => 'post')) }}
+        {{ Form::open(array('route' => array('/class/invite'), 'method' => 'post')) }}
             {{Form::label('email','User E-mail Adresse')}}
             {{Form::text('email', null,array('class' => ''))}}
             <br/>
@@ -34,7 +34,7 @@
             @if($class != null)
                 <h1>
                     Class Name: {{ $class->name  }}
-                    {{ Form::open(array('route' => array('chgt_visibility'), 'method' => 'post')) }}
+                    {{ Form::open(array('route' => array('/visibility/change'), 'method' => 'post')) }}
                         @if($class->visibility == 'public')
                             {{Form::submit('Make Private', array('class' => ''))}}
                         @else
@@ -42,7 +42,7 @@
                         @endif
                         {{ Form::hidden('id_class', $idClass) }}
                     {{ Form::close() }}
-                    {{ Form::open(array('route' => array('remove_class'), 'method' => 'post')) }}
+                    {{ Form::open(array('route' => array('/class/remove'), 'method' => 'post')) }}
                         {{Form::submit('Delete', array('class' => ''))}}
                         {{ Form::hidden('id_class', $idClass) }}
                     {{ Form::close() }}
@@ -63,24 +63,24 @@
                     {{ $user->firstname }} {{ $user->lastname }}
 
                     @if($userIDSeeker->id_rights < 1)
-                        {{ Form::open(array('route' => array('accept_member'), 'method' => 'post')) }}
+                        {{ Form::open(array('route' => array('/class/accept'), 'method' => 'post')) }}
                             {{Form::submit('Accept', array('class' => ''))}}
                             {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
                             {{ Form::hidden('id_class', $idClass) }}
                         {{ Form::close() }}
-                        {{ Form::open(array('route' => array('refuse_member'), 'method' => 'post')) }}
+                        {{ Form::open(array('route' => array('/class/refuse'), 'method' => 'post')) }}
                             {{Form::submit('Refuse', array('class' => ''))}}
                             {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
                             {{ Form::hidden('id_class', $idClass) }}
                         {{ Form::close() }}
                     @elseif($userIDSeeker->id_rights != 15)
-                        {{ Form::open(array('route' => array('remove_member'), 'method' => 'post')) }}
+                        {{ Form::open(array('route' => array('/member/remove'), 'method' => 'post')) }}
                             {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
                             {{ Form::hidden('id_class', $idClass) }}
                             {{Form::submit('Remove', array('class' => ''))}}
                         {{ Form::close() }}
 
-                        {{ Form::open(array('route' => array('chgt_rights'), 'method' => 'post')) }}
+                        {{ Form::open(array('route' => array('/rights/change'), 'method' => 'post')) }}
                             <?php
                             $perm = DB::table('permissions')->where('id_user','=',$userIDSeeker->id_user)->where('id_class','=',$idClass)->first();
 
@@ -136,7 +136,7 @@
 
                     @if($course != null)
                         {{ $course->name }}
-                        {{ Form::open(array('route' => array('remove_course'), 'method' => 'post')) }}
+                        {{ Form::open(array('route' => array('/course/remove'), 'method' => 'post')) }}
                             {{ Form::hidden('id_course', $courseSeeker->id_course) }}
                             {{Form::submit('Remove', array('class' => ''))}}
                         {{ Form::close() }}
