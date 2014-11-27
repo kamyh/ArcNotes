@@ -2,8 +2,6 @@
 @section('body')
 <div class="">
         <?php
-        //TODO TEST
-        echo Session::get('isLogged');
 
         $orderOptionList = ['name','scollaryear','domain','degree','school'];
 
@@ -47,14 +45,23 @@
 
         <h2>Classes</h2>
         <?php //TODO FINISH/DEBUG?>
-        {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
-            {{Form::label('orderOption','Order By')}}
-            {{ Form::select('orderOption', $orderOptionList, Session::get('orderOption'), array('class' => 'orderOptionClass' , 'id' => 'orderOptionID')) }}
-
-            {{Form::submit('Validate', array('class' => ''))}}
-        {{ Form::close() }}
-        <br/>
-
+        <table>
+            <tr>
+                {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
+                <td>
+                    {{Form::label('orderOption','Order By')}}
+                </td>
+                <td>
+                    {{ Form::select('orderOption', $orderOptionList, Session::get('orderOption'), array('class' => 'orderOptionClass' , 'id' => 'orderOptionID')) }}
+                </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{Form::submit('Validate', array('class' => ''))}}
+                    </td>
+            </tr>
+            {{ Form::close() }}
+        </table>
 
         @foreach($classesList as $class)
             @if($class->visibility == 'public')
@@ -68,24 +75,56 @@
                     $id_canton = $location->id_canton;
                     $canton = DB::table('cantons')->where('id','=',$id_canton)->first();
                 ?>
+                </br>
+                <table style="border: 1px solid #ffffff">
+                    <tr>
+                        <td>
+                            Name:
+                            </td><td>
+                            {{ $class->name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        Scollar year:
+                        </td><td>
+                        {{ $class->scollaryear }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        Domain:
+                        </td><td>
+                        {{ $class->domain }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        Degree:
+                        </td><td>
+                        {{ $class->degree }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        School:
+                        </td><td>
+                        {{ $school->name }} - {{$location->name}} - {{$canton->name}}
+                        </td>
+                    </tr>
 
-                <p>Name:  {{ $class->name }}</p>
-                <p>Scollar year:  {{ $class->scollaryear }}</p>
-                <p>Domain:  {{ $class->domain }}</p>
-                <p>Degree:  {{ $class->degree }}</p>
-                <p>School:  {{ $school->name }} - {{$location->name}} - {{$canton->name}}</p>
 
-
-
-                {{ Form::open(array('route' => array('joinclass'), 'method' => 'post')) }}
-
-                    {{ Form::hidden('id', $class->id) }}
-                    {{Form::submit('Join', array('class' => ''))}}
-                {{ Form::close() }}
+                    <tr>
+                        <td>
+                        {{ Form::open(array('route' => array('joinclass'), 'method' => 'post')) }}
+                            {{ Form::hidden('id', $class->id) }}
+                            {{Form::submit('Join', array('class' => ''))}}
+                        </td>
+                    </tr>
+                    {{ Form::close() }}
+                </table>
 
             @endif
         @endforeach
-
-
 </div>
 @stop

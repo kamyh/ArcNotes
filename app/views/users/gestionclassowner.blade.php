@@ -15,16 +15,20 @@
                 {{ implode('', $errors->all('<li class="error">:message</li>')) }}
             </div>
         @endif
-        {{ Form::open(array('route' => array('/class/invite'), 'method' => 'post')) }}
-            {{Form::label('email','User E-mail Adresse')}}
-            {{Form::text('email', null,array('class' => ''))}}
-            <br/>
-            {{Form::label('class','Classes')}}
-            {{ Form::select('class', $listClasses, null, array('class' => '')) }}
-            <br/>
-            {{Form::submit('Invite', array('class' => ''))}}
-        {{ Form::close() }}
-
+        <table>
+            {{ Form::open(array('route' => array('/class/invite'), 'method' => 'post')) }}
+                <tr><td>
+                {{Form::label('email','User E-mail Adresse')}}
+                {{Form::text('email', null,array('class' => ''))}}
+                </td><td>
+                {{Form::label('class','Classes')}}
+                {{ Form::select('class', $listClasses, null, array('class' => '')) }}
+                </td></tr>
+                <tr><td>
+                {{Form::submit('Invite', array('class' => ''))}}
+                </td></tr>
+            {{ Form::close() }}
+        </table>
         @foreach($classesOwned as $classOwned)
 
             <?php
@@ -32,22 +36,27 @@
                 $class = DB::table('classes')->where('id','=',$idClass)->first();
             ?>
             @if($class != null)
-                <h1>
-                    Class Name: {{ $class->name  }}
+                <table>
+
+                    <tr><td><h1> Class Name: {{ $class->name  }} </h1></td>
+
                     {{ Form::open(array('route' => array('/visibility/change'), 'method' => 'post')) }}
+                    <td>
                         @if($class->visibility == 'public')
                             {{Form::submit('Make Private', array('class' => ''))}}
                         @else
                             {{Form::submit('Make Public', array('class' => ''))}}
                         @endif
+
                         {{ Form::hidden('id_class', $idClass) }}
                     {{ Form::close() }}
                     {{ Form::open(array('route' => array('/class/remove'), 'method' => 'post')) }}
-                        {{Form::submit('Delete', array('class' => ''))}}
+                        {{Form::submit('Delete', array('class' => ''))}}</td>
                         {{ Form::hidden('id_class', $idClass) }}
                     {{ Form::close() }}
-                </h1>
 
+                </tr>
+                </table>
                 <?php
                     $userOfTheClass = DB::table('permissions')->where('id_class','=',$idClass)->where('id_rights','!=',15)->get();
                 ?>
@@ -59,27 +68,34 @@
                         $idUser = $userIDSeeker->id_user;
                         $user = DB::table('users')->where('id','=',$idUser)->first();
                     ?>
-
-                    {{ $user->firstname }} {{ $user->lastname }}
-
+                    <table>
+                    <tr>
+                        {{ $user->firstname }} {{ $user->lastname }}
+                    </tr>
                     @if($userIDSeeker->id_rights < 1)
+                        <tr><td>
                         {{ Form::open(array('route' => array('/class/accept'), 'method' => 'post')) }}
                             {{Form::submit('Accept', array('class' => ''))}}
                             {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
                             {{ Form::hidden('id_class', $idClass) }}
                         {{ Form::close() }}
+                        </td>
+                        <td>
                         {{ Form::open(array('route' => array('/class/refuse'), 'method' => 'post')) }}
                             {{Form::submit('Refuse', array('class' => ''))}}
                             {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
                             {{ Form::hidden('id_class', $idClass) }}
                         {{ Form::close() }}
+                        </td></tr>
                     @elseif($userIDSeeker->id_rights != 15)
+                        <tr><td>
                         {{ Form::open(array('route' => array('/member/remove'), 'method' => 'post')) }}
                             {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
                             {{ Form::hidden('id_class', $idClass) }}
                             {{Form::submit('Remove', array('class' => ''))}}
                         {{ Form::close() }}
-
+                        </td></tr>
+                        <div>
                         {{ Form::open(array('route' => array('/rights/change'), 'method' => 'post')) }}
                             <?php
                             $perm = DB::table('permissions')->where('id_user','=',$userIDSeeker->id_user)->where('id_class','=',$idClass)->first();
@@ -102,21 +118,35 @@
                             }
 
                             ?>
-
+                        </table>
+                        <table style="border: 1px solid #ffffff">
+                        <tr>
+                            <td>
                             {{Form::checkbox('read', '4',$isCheckRead)}}
                             {{Form::label('read','Read')}}
-                            <br/>
+                            </td>
+                        </tr><tr>
+                            <td>
                             {{Form::checkbox('edition', '2',$isCheckEdition)}}
                             {{Form::label('edition','Edition')}}
-                            <br/>
+                            </td>
+                        </tr><tr>
+                            <td>
                             {{Form::checkbox('creation', '1',$isCheckCreation)}}
-                            {{Form::label('creation','Création/Suppression')}}
-                            <br/>
+                            {{Form::label('creation','Création')}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                             {{Form::submit('Validate', array('class' => ''))}}
                             {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
                             {{ Form::hidden('id_class', $idClass) }}
+                            </td>
+                        </tr>
                         {{ Form::close() }}
+                        </div>
                     @endif
+                    </table>
                 @endforeach
 
 
@@ -135,12 +165,17 @@
                     ?>
 
                     @if($course != null)
-                        {{ $course->name }}
-                        {{ Form::open(array('route' => array('/course/remove'), 'method' => 'post')) }}
-                            {{ Form::hidden('id_course', $courseSeeker->id_course) }}
-                            {{Form::submit('Remove', array('class' => ''))}}
-                        {{ Form::close() }}
-                        </br>
+                        <table>
+                            <tr>
+                                {{ $course->name }}
+                            </tr>
+                            <tr>
+                                {{ Form::open(array('route' => array('/course/remove'), 'method' => 'post')) }}
+                                    {{ Form::hidden('id_course', $courseSeeker->id_course) }}
+                                    {{Form::submit('Remove', array('class' => ''))}}
+                                {{ Form::close() }}
+                            </tr>
+                        </table>
                     @endif
                 @endforeach
             @endif

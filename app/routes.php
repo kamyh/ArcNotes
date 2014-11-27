@@ -35,7 +35,7 @@ Route::resource('courses', 'CourseController');
 Route::get('/courses/create', array('as' => '/courses/create', 'uses' => 'CourseController@createcours'));
 
 Route::resource('school', 'SchoolController');
-Route::get('/school', array('as' => 'school', 'uses' => 'SchoolController@school')); //TODO pass to post method
+Route::get('/school', array('as' => '/school', 'uses' => 'SchoolController@school')); //TODO pass to post method
 
 Route::get('/class/join', function()
 {
