@@ -7,6 +7,36 @@
 	{{HTML::style('css/leftdock.css');}}
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+	<script type="text/javascript">
+        isObject = function(a) {
+            return (!!a) && (a.constructor === Object);
+        };
+
+        $(document).ready(function() {
+                $.getJSON("/lists_classes_courses" ,
+                 { id: 0 },
+                 function(data) {
+                    var $display = $("#list-class-course");
+                    $display.empty();
+
+                    $.each(data, function(index, value)
+                    {
+                        if(!isObject(value))
+                        {
+                            $display.append("</h1><h1>" + value);
+                        }
+                        else
+                        {
+                            $.each(value,function(entry)
+                            {
+                                $display.append('<div onClick="location.href=\'/cours/open/'+ entry +'\'" class="context-menu-tile hover-color-b">' + value[entry] + "</div>");
+                            });
+                        }
+                    });
+                });
+        });
+    </script>
 </head>
 <body>
 <div class="header row color-a">
@@ -14,7 +44,11 @@
 				{{ HTML::image('img/logo.png') }}
 			</div>
 			<div id="header-menus" class="scroll-x">
-				<?php generateLorem(5, "<div class=\"header-menu-tile color-b hover-color-a\">menu</div>"); ?>
+			    <div onClick='location.href="/manager/classowned/"' class="header-menu-tile color-b hover-color-a">Owner Manager</div>
+			    <div onClick='location.href="/manager/class/"' class="header-menu-tile color-b hover-color-a">Participant Manager</div>
+			    <div onClick='location.href="/class/create/"' class="header-menu-tile color-b hover-color-a">New Class</div>
+                <div onClick='location.href="/class/join/"' class="header-menu-tile color-b hover-color-a">Join Class</div>
+			    <div onClick='location.href="/courses/create/"' class="header-menu-tile color-b hover-color-a">New Course</div>
 			</div>
 			<div id="header-search">
 				<div class="header-search-tile" > search bar </div>
@@ -52,8 +86,8 @@
                             <a href="/user/create">Sign up.</a>
                         @endif
 				</div>
-				<div class="context-menus-dock scroll-y">
-					<?php generateLorem(10, "<div class=\"context-menu-tile hover-color-b\">context menu stuff</div>"); ?>
+				<div class="context-menus-dock scroll-y" id="list-class-course">
+
 				</div>
 			</div>
 			<div class="content col scroll-y color-b">

@@ -23,36 +23,63 @@
 <div class="">
         <h2>new school</h2>
         <?php
-        //TODO TEST
-        echo Session::get('isLogged');
 
         $cantonList = DB::table('cantons')->lists('name','id');
-
 
         $cityList = DB::table('cities')->distinct()->lists('name','id');
 
         //TODO set dropdown cities to canton's cities
         ?>
+        <table>
+            {{ Form::open(array('route' => array('school.store'), 'method' => 'post')) }}
+            @if($errors->any())
+            <tr>
+                <td>
+                <div class="">
+                    <a class="" data-dismiss="alert">&times;</a>
+                    {{ implode('', $errors->all('<li class="error">:message</li>')) }}
+                </div>
+                </td>
+            </tr>
+            @endif
+            <tr>
+                <td>
+                {{Form::label('name','Name')}}
+                </td>
+                <td>
+                {{Form::text('name', null,array('class' => ''))}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                {{Form::label('canton','Canton')}}
+                </td>
+                <td>
+                {{ Form::select('canton', $cantonList, null, array('class' => '' , 'id' => 'selectCanton')) }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                {{Form::label('city','City')}}
+                </td><td>
+                {{ Form::select('city', $cityList, null, array('class' => '', 'id' => 'selectCities')) }}
+                </td>
+            </tr>
 
-        {{ Form::open(array('route' => array('school.store'), 'method' => 'post')) }}
-        @if($errors->any())
-            <div class="">
-                <a class="" data-dismiss="alert">&times;</a>
-                {{ implode('', $errors->all('<li class="error">:message</li>')) }}
-            </div>
-        @endif
-            {{Form::label('name','Name')}}
-            {{Form::text('name', null,array('class' => ''))}}
-        <br/>
-            {{Form::label('canton','Canton')}}
-            {{ Form::select('canton', $cantonList, null, array('class' => '' , 'id' => 'selectCanton')) }}
-        <br/>
-
-            {{Form::label('city','City')}}
-            {{ Form::select('city', $cityList, null, array('class' => '', 'id' => 'selectCities')) }}
-        <br/>
-        {{Form::submit('Create', array('class' => ''))}}
-        {{ Form::close() }}
+            @if(isset($input))
+                @foreach(array_keys($input) as $key)
+                    @if($key != '_token')
+                        {{ Form::hidden($key, $input[$key]) }}
+                    @endif
+                @endforeach
+            @endif
+            <tr>
+                <td>
+                {{Form::submit('Create', array('class' => ''))}}
+                </td>
+            </tr>
+            {{ Form::close() }}
+        </table>
 </div>
 @stop
 

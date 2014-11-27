@@ -15,7 +15,8 @@ class CreateBasenotesTable extends Migration {
 		Schema::create('basenotes', function(Blueprint $table) {
 			$table->increments('id')->unique();
 			$table->timestamps();
-			$table->integer('id_author')->references('id')->on('users');
+            $table->integer('id_author')->references('id')->on('users');
+            $table->integer('id_cours')->references('id')->on('courses');
 			$table->string('name',255);
 			$table->string('token',255);
 			$table->text('summary')->nullable();

@@ -3,22 +3,35 @@
 <div class="">
         <h2>new course</h2>
         <?php
-            echo Session::get('isLogged');
-
             $schoolList = DB::table('courses')->lists('name','id');
         ?>
-        {{ Form::open(array('route' => array('courses.store'), 'method' => 'post')) }}
-        @if($errors->any())
-            <div class="">
-                <a class="" data-dismiss="alert">&times;</a>
-                {{ implode('', $errors->all('<li class="error">:message</li>')) }}
-            </div>
-        @endif
-            {{Form::label('name','Name')}}
-            {{Form::text('name', null,array('class' => ''))}}
-                <br/>
+        <table>
+            {{ Form::open(array('route' => array('courses.store'), 'method' => 'post')) }}
+            @if($errors->any())
+                <tr>
+                    <td>
+                        <div class="">
+                            <a class="" data-dismiss="alert">&times;</a>
+                            {{ implode('', $errors->all('<li class="error">:message</li>')) }}
+                        </div>
+                    </td>
+                </tr>
+            @endif
+            <tr>
+                <td>
+                    {{Form::label('name','Name')}}
+                </td>
+                <td>
+                    {{Form::text('name', null,array('class' => ''))}}
+                </td>
+            </tr>
 
-        {{Form::submit('Create', array('class' => ''))}}
-        {{ Form::close() }}
+            <tr>
+                <td>
+                {{Form::submit('Create', array('class' => ''))}}
+                </td>
+            </tr>
+            {{ Form::close() }}
+        </table>
 </div>
 @stop

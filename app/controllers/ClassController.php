@@ -50,32 +50,35 @@ class ClassController extends \BaseController {
     {
         $input = Input::all();
 
-        $rulesValidatorUser = array( 'name' => 'required|min:5','scollaryear' => 'required', 'school' => 'required', 'degree' => 'required', 'domain' => 'required');
-
-        $validator = Validator::make($input, $rulesValidatorUser);
-
-        if(!$validator->fails()) {
-
-            $class = new Classes();
-
-            $class->name = $input['name'];
-            $class->scollaryear = $input['scollaryear'];
-            $class->id_school = $input['school'];
-            $class->degree = $input['degree'];
-            $class->domain = $input['domain'];
-            $class->visibility = $input['visibility'];
-
-            $class->save();
-
-            return Redirect::to('/');
-
-        }
-        else
+        if($input['school'] == 0)
         {
-            return Redirect::to('createclass')->withErrors($validator)->withInput();
+            return View::make('/school')->with(array('input'=>$input));
         }
+        else {
 
+            $rulesValidatorUser = array('name' => 'required|min:5', 'scollaryear' => 'required', 'school' => 'required', 'degree' => 'required', 'domain' => 'required');
 
+            $validator = Validator::make($input, $rulesValidatorUser);
+
+            if (!$validator->fails()) {
+
+                $class = new Classes();
+
+                $class->name = $input['name'];
+                $class->scollaryear = $input['scollaryear'];
+                $class->id_school = $input['school'];
+                $class->degree = $input['degree'];
+                $class->domain = $input['domain'];
+                $class->visibility = $input['visibility'];
+
+                $class->save();
+
+                return Redirect::to('/');
+
+            } else {
+                return Redirect::to('/class/create')->withErrors($validator)->withInput();
+            }
+        }
     }
 
 
