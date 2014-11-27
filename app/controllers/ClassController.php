@@ -142,7 +142,7 @@ class ClassController extends \BaseController {
         if($user_invited == null)
         {
             $error = "No such user registered !";
-            return Redirect::to('gestionclassowner')->withErrors($error)->withInput();
+            return Redirect::to('manager/classowned')->withErrors($error)->withInput();
         }
         else
         {
@@ -153,7 +153,7 @@ class ClassController extends \BaseController {
 
             $permission->save();
 
-            return Redirect::to('gestionclassowner');
+            return Redirect::to('manager/classowned');
         }
     }
 
@@ -166,7 +166,7 @@ class ClassController extends \BaseController {
 
         $permission->save();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function refuse_member()
@@ -177,7 +177,7 @@ class ClassController extends \BaseController {
 
         $permission->delete();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function remove_course()
@@ -187,7 +187,7 @@ class ClassController extends \BaseController {
         $course = Courses::find($input['id_course']);
         $course->delete();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function remove_member()
@@ -198,7 +198,7 @@ class ClassController extends \BaseController {
 
         $permission->delete();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function chgt_rights()
@@ -225,7 +225,7 @@ class ClassController extends \BaseController {
 
         $permission->save();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('/manager/classowned');
     }
 
     public function chgt_visibility()
@@ -245,7 +245,7 @@ class ClassController extends \BaseController {
 
         $class->save();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function remove_class()
@@ -256,7 +256,7 @@ class ClassController extends \BaseController {
 
         $class->delete();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function resign_class()
@@ -276,10 +276,20 @@ class ClassController extends \BaseController {
             $listCourses = DB::table('assocclasscourse')->where('id_class', '=', $class->id);
             $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_course'))->lists('name','id');
 
-            array_push($response, $class->name, $courses);
+            array_push($response, $class->name,$class->id, $courses);
         }
 
+
         return Response::json($response);
+    }
+
+    public function open($idclass)
+    {
+        $info = DB::table('classes')->where('id','=',$idclass)->get();
+        $listCourses = DB::table('assocclasscourse')->where('id_class', '=', $idclass);
+        $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_course'))->get();
+
+        return View::make('class.display')->with(array('class' => $info,'courses'=>$courses));
     }
 
 }

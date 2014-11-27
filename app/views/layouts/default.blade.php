@@ -19,12 +19,23 @@
                  function(data) {
                     var $display = $("#list-class-course");
                     $display.empty();
-
+                    $isId = false;
+                    $name = '';
                     $.each(data, function(index, value)
                     {
+
                         if(!isObject(value))
                         {
-                            $display.append("</h1><h1>" + value);
+                            if(!$isId)
+                            {
+                                $name = value;
+                                $isId = true;
+                            }
+                            else
+                            {
+                                $display.append('<div onClick="location.href=\'/class/open/'+ value +'\'" class="context-menu-tile hover-color-b"><h2>' + $name + "</h2></div>");
+                                $isId = false;
+                            }
                         }
                         else
                         {

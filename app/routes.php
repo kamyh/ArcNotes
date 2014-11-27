@@ -72,6 +72,9 @@ Route::post('/member/remove', array('as' => '/member/remove', 'uses' => 'ClassCo
 Route::post('/rights/change', array('as' => '/rights/change', 'uses' => 'ClassController@chgt_rights'));
 Route::post('/visibility/change', array('as' => '/visibility/change', 'uses' => 'ClassController@chgt_visibility'));
 
+Route::get('/class/open/{idnote}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
+
+
 /*
  * TEST Routes
  */
@@ -79,6 +82,11 @@ Route::post('/visibility/change', array('as' => '/visibility/change', 'uses' => 
 Route::get("lists_classes_courses", array(
     "as"=>"lists_classes_courses",
     "uses"=>"ClassController@lists_classes_courses"
+));
+
+Route::get("lists_classes", array(
+    "as"=>"lists_classes",
+    "uses"=>"ClassController@lists_classes"
 ));
 
 /*
