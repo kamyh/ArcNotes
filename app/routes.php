@@ -89,11 +89,11 @@ Route::get("lists_classes_courses", array(
 /*
  * Routes pour gestions notes
  */
-Route::get('/notes/write/{idcourse}','NoteController@getWritingForm')->where('idcourse','[0-9]+');
-Route::post('/notes/save/{id}',array('as' => '/notes/save/{id}', 'uses' =>'NoteController@saveNote'))->where('id','[0-9]+');
-Route::get('/notes/edit/{idnote}',array('as'=> '/notes/edit/{idnote}', 'uses' => 'NoteController@getEditingForm'))->where('idnote','[0-9]+');
-Route::post('/notes/delete/{idnote}',array('as'=> '/notes/delete/{idnote}', 'uses' => 'NoteController@removeNote'))->where('idnote','[0-9]+');
-Route::post('/notes/update/{idnote}',array('as'=> '/notes/update/{idnote}', 'uses' => 'NoteController@updateNote'))->where('idnote','[0-9]+');
-Route::get('/notes/add/{idcourse}',array('as'=> '/notes/add/{idnote}', 'uses' => 'NoteController@getUploadingForm'))->where('idcourse','[0-9]+');
-Route::post('/notes/upload/{idcourse}',array('as'=> '/notes/upload/{idcourse}', 'uses' => 'NoteController@uploadFileNote'))->where('idcourse','[0-9]+');
-Route::post('/notes/deletefile/{idfile}',array('as'=> '/notes/deletefile/{idfile}', 'uses' => 'NoteController@removeFileNote'))->where('idfile','[0-9]+');
+Route::get('/notes/write/{idcourse}',array('as' => '/notes/write/{idcourse}', 'uses' => 'NoteController@getWritingForm', 'before' => 'auth'))->where('idcourse','[0-9]+');
+Route::post('/notes/save/{id}',array('as' => '/notes/save/{id}', 'uses' =>'NoteController@saveNote', 'before' => 'auth'))->where('id','[0-9]+');
+Route::get('/notes/edit/{idnote}',array('as'=> '/notes/edit/{idnote}', 'uses' => 'NoteController@getEditingForm', 'before' => 'auth'))->where('idnote','[0-9]+');
+Route::post('/notes/delete/{idnote}',array('as'=> '/notes/delete/{idnote}', 'uses' => 'NoteController@removeNote', 'before' => 'auth'))->where('idnote','[0-9]+');
+Route::post('/notes/update/{idnote}',array('as'=> '/notes/update/{idnote}', 'uses' => 'NoteController@updateNote', 'before' => 'auth'))->where('idnote','[0-9]+');
+Route::get('/notes/add/{idcourse}',array('as'=> '/notes/add/{idcourse}', 'uses' => 'NoteController@getUploadingForm', 'before' => 'auth'))->where('idcourse','[0-9]+');
+Route::post('/notes/upload/{idcourse}',array('as'=> '/notes/upload/{idcourse}', 'uses' => 'NoteController@uploadFileNote', 'before' => 'auth'))->where('idcourse','[0-9]+');
+Route::post('/notes/deletefile/{idfile}',array('as'=> '/notes/deletefile/{idfile}', 'uses' => 'NoteController@removeFileNote', 'before' => 'auth'))->where('idfile','[0-9]+');

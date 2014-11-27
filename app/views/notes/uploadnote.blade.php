@@ -5,11 +5,9 @@
     {{ Form::open(array('route' => array('/notes/upload/{idcourse}', 'idcourse' => $idcourse), 'files' => true)); }}
     <table class="form">
         <tr>
-            <td>{{ Form::label('titre', 'Titre', array('class' => 'form-label')) }}</td>
-            <td>{{ Form::text('titre', $titre, array('class' => 'text-input')); }}</td>
+            <td>{{ Form::label('file', 'Sélectionnez un fichier', array('class' => 'form-label')) }}</td>
+            <td>{{ Form::file('file', null, array('class' => 'file-input')); }}</td>
         </tr>
     </table>
     {{Form::close();}}
 @stop
-
-

@@ -114,7 +114,7 @@ class NoteController extends \BaseController {
      */
     public function getUploadingForm($idcourse)
     {
-        return 'asda';
+        return View::make('notes.uploadnote')->with('idcourse',$idcourse);
     }
 
     /**
@@ -124,6 +124,18 @@ class NoteController extends \BaseController {
     {
         //TODO tester l'existence du cours, utilisateur logué, etc.
         //insertion de la note dans la base de données
+
+        $rules = array(
+            'title' => "required|min:3|max:100",
+            'content' => 'required|min:10'
+        );
+
+        $validator = Validator::make(Input::all(),$rules);
+
+        if($validator->fails())
+        {
+            echo "fail";
+        }
     }
 
     /**
