@@ -276,16 +276,16 @@ class ClassController extends \BaseController {
         foreach($listClasses as $class)
         {
 
-            $listCourses = DB::table('assocclasscourse')->where('id_class', '=', $class->id);
+            $listCourses = DB::table('courses')->where('id_class', '=', $class->id);
 
-            if(is_array($listCourses->lists('id_course')))
+            if(is_array($listCourses->lists('id')))
             {
-                $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_course'))->lists('name', 'id');
+                $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id'))->lists('name', 'id');
             }
             else
             {
                 $t = [0];
-                array_push($t,$listCourses->lists('id_course'));
+                array_push($t,$listCourses->lists('id'));
                 $courses = DB::table('courses')->whereIn('id',$t )->lists('name', 'id');
             }
 
@@ -302,7 +302,7 @@ class ClassController extends \BaseController {
     public function open($idclass)
     {
         $info = DB::table('classes')->where('id','=',$idclass)->get();
-        $listCourses = DB::table('assocclasscourse')->where('id_class', '=', $idclass);
+        $listCourses = DB::table('courses')->where('id', '=', $idclass);
         $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_course'))->get();
         $school = DB::table('schools')->where('id','=',$info[0]->id_school)->get();
         $city = DB::table('cities')->find($school[0]->id_location);
