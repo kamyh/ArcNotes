@@ -132,9 +132,9 @@ class NoteController extends \BaseController {
 
         $validator = Validator::make(Input::all(),$rules);
 
-        if($validator->fails())
+        if(!$validator->fails())
         {
-            echo "fail";
+
         }
     }
 

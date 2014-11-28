@@ -24,4 +24,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
+
+    public static function getUserRights($idclass)
+    {
+        return DB::table('permissions')->where('id','=',Auth::id())->where('id_class','=',$idclass)->get();
+    }
+
 }

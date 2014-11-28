@@ -2,7 +2,7 @@
 @section('body')
 
     <h1>Rédiger une note dans {{ $nomcours }}</h1>
-    {{ Form::open(array('route' => array('/notes/save/{id}', 'id' => $idcourse))); }}
+    {{ Form::open(array('route' => array('/notes/save/{idcourse}', 'idcourse' => $idcourse))); }}
     <table class="form">
         <tr>
             <td>{{ Form::label('title', 'Titre', array('class' => 'form-label')) }}</td>
