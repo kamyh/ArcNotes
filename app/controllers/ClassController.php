@@ -266,21 +266,37 @@ class ClassController extends \BaseController {
 
     public function lists_classes_courses()
     {
+
         $classID = DB::table('permissions')->where('id_user','=',Auth::id())->lists('id_class');
+
         $listClasses = DB::table('classes')->whereIn('id',$classID)->get();
 
         $response = [];
 
         foreach($listClasses as $class)
         {
+
             $listCourses = DB::table('assocclasscourse')->where('id_class', '=', $class->id);
-            $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_course'))->lists('name','id');
+
+            if(is_array($listCourses->lists('id_course')))
+            {
+                $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_course'))->lists('name', 'id');
+            }
+            else
+            {
+                $t = [0];
+                array_push($t,$listCourses->lists('id_course'));
+                $courses = DB::table('courses')->whereIn('id',$t )->lists('name', 'id');
+            }
+
+
 
             array_push($response, $class->name,$class->id, $courses);
         }
 
 
         return Response::json($response);
+        return Response::json("caca");
     }
 
     public function open($idclass)
@@ -295,6 +311,19 @@ class ClassController extends \BaseController {
         return View::make('class.display')->with(array('class' => $info,'courses'=>$courses,'school_name'=>$school[0]->name,'school_city'=>$city->name,'canton'=>$canton->name));
     }
 
+    public function join()
+    {
+        $input = Input::All();
+
+        $permission = new Permissions();
+        $permission->id_class = $input['id'];
+        $permission->id_user = Auth::id();
+        $permission->id_rights = 0;
+
+        $permission->save();
+
+        return Redirect::to('/class/join');
+    }
 }
 
 

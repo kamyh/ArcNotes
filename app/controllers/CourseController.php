@@ -130,7 +130,7 @@ class CourseController extends \BaseController {
             $files = DB::table('files')->whereIn('id', $id_basenotes)->get();
         }
 
-        return View::make('course.selectnote')->with(array('name' => $course->name, 'filesManuscrit' => $filesManuscrit, 'files' => $files));
+        return View::make('course.selectnote')->with(array('course' => $course, 'filesManuscrit' => $filesManuscrit, 'files' => $files));
     }
 
 }

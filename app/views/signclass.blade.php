@@ -49,7 +49,7 @@
         <?php //TODO FINISH/DEBUG?>
         <table>
             <tr>
-                {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
+                {{ Form::open(array('route' => array('/class/join'), 'method' => 'post')) }}
                 <td>
                     {{Form::label('orderOption','Order By')}}
                 </td>
@@ -120,7 +120,7 @@
                     </tr>
                     <tr>
                         <td>
-                        {{ Form::open(array('route' => array('joinclass'), 'method' => 'post')) }}
+                        {{ Form::open(array('route' => array('/class/sign'), 'method' => 'post')) }}
                             {{ Form::hidden('id', $class->id) }}
                             {{Form::submit('Join', array('class' => ''))}}
                         </td>

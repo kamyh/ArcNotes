@@ -41,10 +41,10 @@ Route::get('/class/join', function()
 {
     return View::make('signclass');
 });
-Route::post('/signclass', array('as' => 'signclass', 'uses' => 'ClassController@load'));
+Route::post('/class/join', array('as' => '/class/join', 'uses' => 'ClassController@load'));
 
 
-Route::get('/joinclass', array('as' => 'joinclass', 'uses' => 'ClassController@join'));
+Route::post('/class/sign', array('as' => '/class/sign', 'uses' => 'ClassController@join'));
 /**
  * Login handling
  */
