@@ -1,14 +1,7 @@
 @extends('layouts.default')
 @section('body')
 
-        <?php
-        //TODO Replace hidden input for user id by Auth::id()
-            echo "test";
-            $classesOwned = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->get(); //TODO chck if removable
 
-            $classID = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->lists('id_class');
-            $listClasses = DB::table('classes')->whereIn('id',$classID)->lists('name','id');
-        ?>
         @if($errors->any())
             <div class="">
                 <a class="error-msg" data-dismiss="alert">&times;</a>
@@ -154,13 +147,13 @@
                 <h2>Courses</h2>
 
                 <?php
-                    $coursesOfClass = DB::table('assocclasscourse')->where('id_class','=',$idClass)->get();
+                    $coursesOfClass = DB::table('courses')->where('id_class','=',$idClass)->get();
                 ?>
 
                 @foreach($coursesOfClass as $courseSeeker)
 
                     <?php
-                        $idCourse = $courseSeeker->id_course;
+                        $idCourse = $courseSeeker->id;
                         $course = DB::table('courses')->where('id','=',$idCourse)->first();
                     ?>
 
@@ -171,7 +164,7 @@
                             </tr>
                             <tr>
                                 {{ Form::open(array('route' => array('/course/remove'), 'method' => 'post')) }}
-                                    {{ Form::hidden('id_course', $courseSeeker->id_course) }}
+                                    {{ Form::hidden('id_course', $courseSeeker->id) }}
                                     {{Form::submit('Remove', array('class' => ''))}}
                                 {{ Form::close() }}
                             </tr>

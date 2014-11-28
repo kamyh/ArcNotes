@@ -18,10 +18,7 @@ Route::get("userTest", array(
     "uses"=>"UserController@test"
 ));
 
-Route::get('/manager/classowned',array('before' => 'auth', function()
-{
-    return View::make('users/gestionclassowner');
-}));
+
 
 Route::get('/manager/class', function()
 {
@@ -71,6 +68,15 @@ Route::post('/class/resign', array('as' => '/class/resign', 'uses' => 'ClassCont
 Route::post('/member/remove', array('as' => '/member/remove', 'uses' => 'ClassController@remove_member'));
 Route::post('/rights/change', array('as' => '/rights/change', 'uses' => 'ClassController@chgt_rights'));
 Route::post('/visibility/change', array('as' => '/visibility/change', 'uses' => 'ClassController@chgt_visibility'));
+
+Route::get('/manager/classowned', array('as' => '/visibility/change', 'uses' => 'ClassController@class_owned'));
+
+/*
+Route::get('/manager/classowned',array('before' => 'auth', function()
+{
+    return View::make('users/gestionclassowner');
+}));
+*/
 
 Route::get('/class/open/{idnote}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
 

@@ -324,6 +324,18 @@ class ClassController extends \BaseController {
 
         return Redirect::to('/class/join');
     }
+
+    public function class_owned()
+    {
+        $classID = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->lists('id_class');
+        $listClasses = DB::table('classes')->whereIn('id',$classID)->lists('name','id');
+
+        $classesOwned = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->get();
+
+
+
+        return View::make('users/gestionclassowner')->with(array('listClasses'=>$listClasses,'classesOwned'=>$classesOwned));
+    }
 }
 
 
