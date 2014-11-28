@@ -13,6 +13,8 @@ class Classes extends Eloquent
      */
     protected $table = 'classes';
 
-
-
+    public function getCourses()
+    {
+        return DB::table('assocclasscourse')->where('id_class','=',$this->id)->get();
+    }
 }
