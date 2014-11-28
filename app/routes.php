@@ -18,10 +18,7 @@ Route::get("userTest", array(
     "uses"=>"UserController@test"
 ));
 
-Route::get('/manager/classowned',array('before' => 'auth', function()
-{
-    return View::make('users/gestionclassowner');
-}));
+
 
 Route::get('/manager/class', function()
 {
@@ -41,10 +38,10 @@ Route::get('/class/join', function()
 {
     return View::make('signclass');
 });
-Route::post('/signclass', array('as' => 'signclass', 'uses' => 'ClassController@load'));
+Route::post('/class/join', array('as' => '/class/join', 'uses' => 'ClassController@load'));
 
 
-Route::get('/joinclass', array('as' => 'joinclass', 'uses' => 'ClassController@join'));
+Route::post('/class/sign', array('as' => '/class/sign', 'uses' => 'ClassController@join'));
 /**
  * Login handling
  */
@@ -72,6 +69,18 @@ Route::post('/member/remove', array('as' => '/member/remove', 'uses' => 'ClassCo
 Route::post('/rights/change', array('as' => '/rights/change', 'uses' => 'ClassController@chgt_rights'));
 Route::post('/visibility/change', array('as' => '/visibility/change', 'uses' => 'ClassController@chgt_visibility'));
 
+Route::get('/manager/classowned', array('as' => '/visibility/change', 'uses' => 'ClassController@class_owned'));
+
+/*
+Route::get('/manager/classowned',array('before' => 'auth', function()
+{
+    return View::make('users/gestionclassowner');
+}));
+*/
+
+Route::get('/class/open/{idnote}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
+
+
 /*
  * TEST Routes
  */
@@ -79,6 +88,11 @@ Route::post('/visibility/change', array('as' => '/visibility/change', 'uses' => 
 Route::get("lists_classes_courses", array(
     "as"=>"lists_classes_courses",
     "uses"=>"ClassController@lists_classes_courses"
+));
+
+Route::get("lists_classes", array(
+    "as"=>"lists_classes",
+    "uses"=>"ClassController@lists_classes"
 ));
 
 /*

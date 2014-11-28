@@ -1,8 +1,22 @@
 @extends('layouts.default')
 @section('body')
 
-    <h1> {{ $name }}</h1>
+    <h1> {{ $course->name }}</h1>
 
+    <table style="border: solid 1px #ffffff">
+        <tr>
+            <td>Created at</td>
+            <td>{{$course->created_at}}</td>
+        </tr>
+        <tr>
+            <td>Last update</td>
+            <td>{{$course->updated_at}}</td>
+        </tr>
+        <tr>
+            <td>Matter</td>
+            <td>{{$course->matter}}</td>
+        </tr>
+    </table>
     <table>
         @foreach($filesManuscrit as $file)
             <tr>

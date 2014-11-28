@@ -13,18 +13,32 @@
             return (!!a) && (a.constructor === Object);
         };
 
-        $(document).ready(function() {
+        $(document).ready(function()
+        {
                 $.getJSON("/lists_classes_courses" ,
-                 { id: 0 },
-                 function(data) {
+
+                 function(data)
+                 {
+
                     var $display = $("#list-class-course");
                     $display.empty();
-
+                    $isId = false;
+                    $name = '';
                     $.each(data, function(index, value)
                     {
+
                         if(!isObject(value))
                         {
-                            $display.append("</h1><h1>" + value);
+                            if(!$isId)
+                            {
+                                $name = value;
+                                $isId = true;
+                            }
+                            else
+                            {
+                                $display.append('<div onClick="location.href=\'/class/open/'+ value +'\'" class="context-menu-tile hover-color-b"><h2>' + $name + "</h2></div>");
+                                $isId = false;
+                            }
                         }
                         else
                         {
@@ -44,7 +58,7 @@
 				{{ HTML::image('img/logo.png') }}
 			</div>
 			<div id="header-menus" class="scroll-x">
-			    <div onClick='location.href="/manager/classowned/"' class="header-menu-tile color-b hover-color-a">Owner Manager</div>
+			    <div onClick='location.href="/manager/classowned/"' class="header-menu-tile color-b hover-color-a">My Class Manager</div>
 			    <div onClick='location.href="/manager/class/"' class="header-menu-tile color-b hover-color-a">Participant Manager</div>
 			    <div onClick='location.href="/class/create/"' class="header-menu-tile color-b hover-color-a">New Class</div>
                 <div onClick='location.href="/class/join/"' class="header-menu-tile color-b hover-color-a">Join Class</div>

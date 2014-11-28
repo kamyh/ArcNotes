@@ -3,7 +3,7 @@
 <div class="">
         <?php
 
-        $orderOptionList = ['name','scollaryear','domain','degree','school'];
+        $orderOptionList = ['name','scollaryear','domain','degree'];
 
         switch(Session::get('orderOption'))
         {
@@ -38,7 +38,9 @@
             }
         }
 
-        $classesList = DB::table('classes')->orderBy($orderOption, 'DESC')->get();
+        $yourClass = DB::table('permissions')->where('id_user','=',Auth::id())->lists('id_class');
+
+        $classesList = DB::table('classes')->whereNotIn('id',$yourClass)->orderBy($orderOption, 'DESC')->get();
 
         //TODO MODIFICATION --> display by table with search field filter
         ?>
@@ -47,7 +49,7 @@
         <?php //TODO FINISH/DEBUG?>
         <table>
             <tr>
-                {{ Form::open(array('route' => array('signclass'), 'method' => 'post')) }}
+                {{ Form::open(array('route' => array('/class/join'), 'method' => 'post')) }}
                 <td>
                     {{Form::label('orderOption','Order By')}}
                 </td>
@@ -79,44 +81,46 @@
                 <table style="border: 1px solid #ffffff">
                     <tr>
                         <td>
-                            Name:
+                            Name
                             </td><td>
                             {{ $class->name }}
                         </td>
                     </tr>
                     <tr>
                         <td>
-                        Scollar year:
+                        Scollar year
                         </td><td>
                         {{ $class->scollaryear }}
                         </td>
                     </tr>
                     <tr>
                         <td>
-                        Domain:
+                        Domain
                         </td><td>
                         {{ $class->domain }}
                         </td>
                     </tr>
                     <tr>
                         <td>
-                        Degree:
+                        Degree
                         </td><td>
                         {{ $class->degree }}
                         </td>
                     </tr>
                     <tr>
                         <td>
-                        School:
+                        School
                         </td><td>
                         {{ $school->name }} - {{$location->name}} - {{$canton->name}}
                         </td>
                     </tr>
-
-
+                    <tr>
+                        <td>Visibility</td>
+                        <td>{{$class->visibility}}</td>
+                    </tr>
                     <tr>
                         <td>
-                        {{ Form::open(array('route' => array('joinclass'), 'method' => 'post')) }}
+                        {{ Form::open(array('route' => array('/class/sign'), 'method' => 'post')) }}
                             {{ Form::hidden('id', $class->id) }}
                             {{Form::submit('Join', array('class' => ''))}}
                         </td>

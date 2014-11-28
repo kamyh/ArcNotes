@@ -142,7 +142,7 @@ class ClassController extends \BaseController {
         if($user_invited == null)
         {
             $error = "No such user registered !";
-            return Redirect::to('gestionclassowner')->withErrors($error)->withInput();
+            return Redirect::to('manager/classowned')->withErrors($error)->withInput();
         }
         else
         {
@@ -153,7 +153,7 @@ class ClassController extends \BaseController {
 
             $permission->save();
 
-            return Redirect::to('gestionclassowner');
+            return Redirect::to('manager/classowned');
         }
     }
 
@@ -166,7 +166,7 @@ class ClassController extends \BaseController {
 
         $permission->save();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function refuse_member()
@@ -177,7 +177,7 @@ class ClassController extends \BaseController {
 
         $permission->delete();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function remove_course()
@@ -187,7 +187,7 @@ class ClassController extends \BaseController {
         $course = Courses::find($input['id_course']);
         $course->delete();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function remove_member()
@@ -198,7 +198,7 @@ class ClassController extends \BaseController {
 
         $permission->delete();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function chgt_rights()
@@ -225,7 +225,7 @@ class ClassController extends \BaseController {
 
         $permission->save();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('/manager/classowned');
     }
 
     public function chgt_visibility()
@@ -245,7 +245,7 @@ class ClassController extends \BaseController {
 
         $class->save();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function remove_class()
@@ -256,7 +256,7 @@ class ClassController extends \BaseController {
 
         $class->delete();
 
-        return Redirect::to('gestionclassowner');
+        return Redirect::to('manager/classowned');
     }
 
     public function resign_class()
@@ -266,22 +266,76 @@ class ClassController extends \BaseController {
 
     public function lists_classes_courses()
     {
+
         $classID = DB::table('permissions')->where('id_user','=',Auth::id())->lists('id_class');
+
         $listClasses = DB::table('classes')->whereIn('id',$classID)->get();
 
         $response = [];
 
         foreach($listClasses as $class)
         {
-            $listCourses = DB::table('assocclasscourse')->where('id_class', '=', $class->id);
-            $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_course'))->lists('name','id');
 
-            array_push($response, $class->name, $courses);
+            $listCourses = DB::table('courses')->where('id_class', '=', $class->id);
+
+            if(is_array($listCourses->lists('id')))
+            {
+                $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id'))->lists('name', 'id');
+            }
+            else
+            {
+                $t = [0];
+                array_push($t,$listCourses->lists('id'));
+                $courses = DB::table('courses')->whereIn('id',$t )->lists('name', 'id');
+            }
+
+
+
+            array_push($response, $class->name,$class->id, $courses);
         }
 
+
         return Response::json($response);
+        return Response::json("caca");
     }
 
+    public function open($idclass)
+    {
+        $info = DB::table('classes')->where('id','=',$idclass)->get();
+        $listCourses = DB::table('courses')->where('id', '=', $idclass);
+        $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_course'))->get();
+        $school = DB::table('schools')->where('id','=',$info[0]->id_school)->get();
+        $city = DB::table('cities')->find($school[0]->id_location);
+        $canton = DB::table('cantons')->find($city->id_canton);
+
+        return View::make('class.display')->with(array('class' => $info,'courses'=>$courses,'school_name'=>$school[0]->name,'school_city'=>$city->name,'canton'=>$canton->name));
+    }
+
+    public function join()
+    {
+        $input = Input::All();
+
+        $permission = new Permissions();
+        $permission->id_class = $input['id'];
+        $permission->id_user = Auth::id();
+        $permission->id_rights = 0;
+
+        $permission->save();
+
+        return Redirect::to('/class/join');
+    }
+
+    public function class_owned()
+    {
+        $classID = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->lists('id_class');
+        $listClasses = DB::table('classes')->whereIn('id',$classID)->lists('name','id');
+
+        $classesOwned = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->get();
+
+
+
+        return View::make('users/gestionclassowner')->with(array('listClasses'=>$listClasses,'classesOwned'=>$classesOwned));
+    }
 }
 
 

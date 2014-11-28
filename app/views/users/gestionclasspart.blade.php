@@ -25,11 +25,11 @@
                     </tr>
 
                         <?php
-                            $listCourses = DB::table('assocclasscourse')->where('id_class','=',$class->id);
+                            $listCourses = DB::table('courses')->where('id_class','=',$class->id);
                         ?>
                         @if($listCourses->count() > 0)
                             <?php
-                                $courses = DB::table('courses')->whereIn('id',$listCourses->lists('id_course'))->get();
+                                $courses = DB::table('courses')->whereIn('id',$listCourses->lists('id'))->get();
                             ?>
                             @foreach($courses as $course)
                                 <tr>

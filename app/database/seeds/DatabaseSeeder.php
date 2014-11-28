@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder {
         $this->call('PermissionsTableSeeder');
         $this->call('UsersTableSeeder');
         $this->call('RightsTableSeeder');
-        $this->call('AssocClassCourseTableSeeder');
         $this->call('CoursesTableSeeder');
         $this->call('BaseNotesTableSeeder');
         $this->call('ManuscritTableSeeder');
