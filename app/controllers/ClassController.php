@@ -288,8 +288,11 @@ class ClassController extends \BaseController {
         $info = DB::table('classes')->where('id','=',$idclass)->get();
         $listCourses = DB::table('assocclasscourse')->where('id_class', '=', $idclass);
         $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_course'))->get();
+        $school = DB::table('schools')->where('id','=',$info[0]->id_school)->get();
+        $city = DB::table('cities')->find($school[0]->id_location);
+        $canton = DB::table('cantons')->find($city->id_canton);
 
-        return View::make('class.display')->with(array('class' => $info,'courses'=>$courses));
+        return View::make('class.display')->with(array('class' => $info,'courses'=>$courses,'school_name'=>$school[0]->name,'school_city'=>$city->name,'canton'=>$canton->name));
     }
 
 }

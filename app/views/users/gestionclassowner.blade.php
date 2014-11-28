@@ -1,9 +1,9 @@
 @extends('layouts.default')
 @section('body')
 
-    @if(Session::get('isLogged') == 1)
         <?php
         //TODO Replace hidden input for user id by Auth::id()
+            echo "test";
             $classesOwned = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->get(); //TODO chck if removable
 
             $classID = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->lists('id_class');
@@ -180,7 +180,6 @@
                 @endforeach
             @endif
         @endforeach
-    @endif
 @stop
 
 
