@@ -25,6 +25,11 @@ Route::get('/manager/class', function()
     return View::make('users/gestionclasspart');
 });
 
+Route::get('/testing', function()
+{
+    return View::make('testing');
+});
+
 Route::resource('classes', 'ClassController');
 Route::get('/class/create', array('as' => '/class/create', 'uses' => 'ClassController@createClass'));
 
