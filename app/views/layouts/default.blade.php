@@ -59,7 +59,6 @@
 			</div>
 			<div id="header-menus" class="scroll-x">
 			    <div onClick='location.href="/manager/classowned/"' class="header-menu-tile color-b hover-color-a">My Class Manager</div>
-			    <div onClick='location.href="/manager/class/"' class="header-menu-tile color-b hover-color-a">Participant Manager</div>
 			    <div onClick='location.href="/class/create/"' class="header-menu-tile color-b hover-color-a">New Class</div>
                 <div onClick='location.href="/class/join/"' class="header-menu-tile color-b hover-color-a">Join Class</div>
 			    <div onClick='location.href="/courses/create/"' class="header-menu-tile color-b hover-color-a">New Course</div>

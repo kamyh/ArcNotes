@@ -19,12 +19,6 @@ Route::get("userTest", array(
 ));
 
 
-
-Route::get('/manager/class', function()
-{
-    return View::make('users/gestionclasspart');
-});
-
 Route::get('/testing', function()
 {
     return View::make('testing');
@@ -76,12 +70,6 @@ Route::post('/visibility/change', array('as' => '/visibility/change', 'uses' => 
 
 Route::get('/manager/classowned', array('as' => '/manager/classowned', 'uses' => 'ClassController@class_owned'));
 
-/*
-Route::get('/manager/classowned',array('before' => 'auth', function()
-{
-    return View::make('users/gestionclassowner');
-}));
-*/
 
 Route::get('/class/open/{idnote}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
 
