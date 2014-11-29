@@ -330,8 +330,7 @@ class ClassController extends \BaseController {
         $classID = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->lists('id_class');
         $listClasses = DB::table('classes')->whereIn('id',$classID)->lists('name','id');
 
-        $classesOwned = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->get();
-
+        $classesOwned = Classes::whereIn('id',$classID)->get();
 
 
         return View::make('users/gestionclassowner')->with(array('listClasses'=>$listClasses,'classesOwned'=>$classesOwned));

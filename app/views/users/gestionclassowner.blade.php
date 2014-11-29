@@ -22,12 +22,8 @@
                 </td></tr>
             {{ Form::close() }}
         </table>
-        @foreach($classesOwned as $classOwned)
 
-            <?php
-                $idClass = $classOwned->id_class;
-                $class = DB::table('classes')->where('id','=',$idClass)->first();
-            ?>
+        @foreach($classesOwned as $class)
             @if($class != null)
                 <table>
 
@@ -41,121 +37,84 @@
                             {{Form::submit('Make Public', array('class' => ''))}}
                         @endif
 
-                        {{ Form::hidden('id_class', $idClass) }}
+                        {{ Form::hidden('id_class', $class->id) }}
                     {{ Form::close() }}
                     {{ Form::open(array('route' => array('/class/remove'), 'method' => 'post')) }}
                         {{Form::submit('Delete', array('class' => ''))}}</td>
-                        {{ Form::hidden('id_class', $idClass) }}
+                        {{ Form::hidden('id_class', $class->id) }}
                     {{ Form::close() }}
 
                 </tr>
                 </table>
-                <?php
-                    $userOfTheClass = DB::table('permissions')->where('id_class','=',$idClass)->where('id_rights','!=',15)->get();
-                ?>
 
                 <h2>Users</h2>
 
-                @foreach($userOfTheClass as $userIDSeeker)
-                    <?php
-                        $idUser = $userIDSeeker->id_user;
-                        $user = DB::table('users')->where('id','=',$idUser)->first();
-                    ?>
+                @foreach($class->getUsers() as $user)
+
                     <table>
-                    <tr>
-                        {{ $user->firstname }} {{ $user->lastname }}
-                    </tr>
-                    @if($userIDSeeker->id_rights < 1)
-                        <tr><td>
-                        {{ Form::open(array('route' => array('/class/accept'), 'method' => 'post')) }}
-                            {{Form::submit('Accept', array('class' => ''))}}
-                            {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
-                            {{ Form::hidden('id_class', $idClass) }}
-                        {{ Form::close() }}
-                        </td>
-                        <td>
-                        {{ Form::open(array('route' => array('/class/refuse'), 'method' => 'post')) }}
-                            {{Form::submit('Refuse', array('class' => ''))}}
-                            {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
-                            {{ Form::hidden('id_class', $idClass) }}
-                        {{ Form::close() }}
-                        </td></tr>
-                    @elseif($userIDSeeker->id_rights != 15)
-                        <tr><td>
-                        {{ Form::open(array('route' => array('/member/remove'), 'method' => 'post')) }}
-                            {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
-                            {{ Form::hidden('id_class', $idClass) }}
-                            {{Form::submit('Remove', array('class' => ''))}}
-                        {{ Form::close() }}
-                        </td></tr>
-                        <div>
-                        {{ Form::open(array('route' => array('/rights/change'), 'method' => 'post')) }}
-                            <?php
-                            $perm = DB::table('permissions')->where('id_user','=',$userIDSeeker->id_user)->where('id_class','=',$idClass)->first();
-
-                            $isCheckRead = 0;
-                            $isCheckEdition = 0;
-                            $isCheckCreation = 0;
-
-                            if(($perm->id_rights & 4) != 0)
-                            {
-                                 $isCheckRead = true;
-                            }
-                            if(($perm->id_rights & 2) != 0)
-                            {
-                                 $isCheckEdition = true;
-                            }
-                            if(($perm->id_rights & 1) != 0)
-                            {
-                                 $isCheckCreation = true;
-                            }
-
-                            ?>
-                        </table>
-                        <table style="border: 1px solid #ffffff">
                         <tr>
-                            <td>
-                            {{Form::checkbox('read', '4',$isCheckRead)}}
-                            {{Form::label('read','Read')}}
-                            </td>
-                        </tr><tr>
-                            <td>
-                            {{Form::checkbox('edition', '2',$isCheckEdition)}}
-                            {{Form::label('edition','Edition')}}
-                            </td>
-                        </tr><tr>
-                            <td>
-                            {{Form::checkbox('creation', '1',$isCheckCreation)}}
-                            {{Form::label('creation','Création')}}
-                            </td>
+                            {{ $user->firstname }} {{ $user->lastname }}
                         </tr>
-                        <tr>
-                            <td>
-                            {{Form::submit('Validate', array('class' => ''))}}
-                            {{ Form::hidden('id_user', $userIDSeeker->id_user) }}
-                            {{ Form::hidden('id_class', $idClass) }}
+                        @if($user->getUserPermForClass($class->id) < 1)
+                            <tr><td>
+                            {{ Form::open(array('route' => array('/class/accept'), 'method' => 'post')) }}
+                                {{Form::submit('Accept', array('class' => ''))}}
+                                {{ Form::hidden('id_user', $user->id) }}
+                                {{ Form::hidden('id_class', $class->id) }}
+                            {{ Form::close() }}
                             </td>
-                        </tr>
-                        {{ Form::close() }}
-                        </div>
+                            <td>
+                            {{ Form::open(array('route' => array('/class/refuse'), 'method' => 'post')) }}
+                                {{Form::submit('Refuse', array('class' => ''))}}
+                                {{ Form::hidden('id_user', $user->id) }}
+                                {{ Form::hidden('id_class', $class->id) }}
+                            {{ Form::close() }}
+                            </td></tr>
+                        @elseif($user->getUserPermForClass($class->id) != 15)
+                            <tr><td>
+                            {{ Form::open(array('route' => array('/member/remove'), 'method' => 'post')) }}
+                                {{ Form::hidden('id_user', $user->id) }}
+                                {{ Form::hidden('id_class', $class->id) }}
+                                {{Form::submit('Remove', array('class' => ''))}}
+                            {{ Form::close() }}
+                            </td></tr>
+
+                            {{ Form::open(array('route' => array('/rights/change'), 'method' => 'post')) }}
+
+                            <table style="border: 1px solid #ffffff">
+                                <tr>
+                                    <td>
+                                    {{Form::checkbox('read', '4',$class->getPermissionsTab($user->id)[0])}}
+                                    {{Form::label('read','Read')}}
+                                    </td>
+                                </tr><tr>
+                                    <td>
+                                    {{Form::checkbox('edition', '2',$class->getPermissionsTab($user->id)[1])}}
+                                    {{Form::label('edition','Edition')}}
+                                    </td>
+                                </tr><tr>
+                                    <td>
+                                    {{Form::checkbox('creation', '1',$class->getPermissionsTab($user->id)[2])}}
+                                    {{Form::label('creation','Création')}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    {{Form::submit('Validate', array('class' => ''))}}
+                                    {{ Form::hidden('id_user', $user->id) }}
+                                    {{ Form::hidden('id_class', $class->id) }}
+                                    </td>
+                                </tr>
+                                {{ Form::close() }}
+                            </table>
                     @endif
                     </table>
                 @endforeach
 
-
-
                 <h2>Courses</h2>
 
-                <?php
-                    $coursesOfClass = DB::table('courses')->where('id_class','=',$idClass)->get();
-                ?>
+                @foreach($class->getCourses() as $course)
 
-                @foreach($coursesOfClass as $courseSeeker)
-
-                    <?php
-                        $idCourse = $courseSeeker->id;
-                        $course = DB::table('courses')->where('id','=',$idCourse)->first();
-                    ?>
 
                     @if($course != null)
                         <table>
@@ -164,7 +123,7 @@
                             </tr>
                             <tr>
                                 {{ Form::open(array('route' => array('/course/remove'), 'method' => 'post')) }}
-                                    {{ Form::hidden('id_course', $courseSeeker->id) }}
+                                    {{ Form::hidden('id_course', $course->id) }}
                                     {{Form::submit('Remove', array('class' => ''))}}
                                 {{ Form::close() }}
                             </tr>

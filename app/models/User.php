@@ -33,7 +33,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     public function getClasses()
     {
         $ids = DB::table('permissions')->where('id_user','=',Auth::id())->where('id_rights','>',0)->lists('id_class');
-        return DB::table('classes')->whereIn('id',$ids)->get();
+        return Classes::whereIn('id',$ids)->get();
+    }
+
+    public function getUserPermForClass($id_class)
+    {
+        return DB::table('permissions')->where('id_user','=',$this->id)->where('id_class','=',$id_class)->first()->id_rights;
     }
 
 }

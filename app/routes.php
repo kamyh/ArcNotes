@@ -74,7 +74,7 @@ Route::post('/member/remove', array('as' => '/member/remove', 'uses' => 'ClassCo
 Route::post('/rights/change', array('as' => '/rights/change', 'uses' => 'ClassController@chgt_rights'));
 Route::post('/visibility/change', array('as' => '/visibility/change', 'uses' => 'ClassController@chgt_visibility'));
 
-Route::get('/manager/classowned', array('as' => '/visibility/change', 'uses' => 'ClassController@class_owned'));
+Route::get('/manager/classowned', array('as' => '/manager/classowned', 'uses' => 'ClassController@class_owned'));
 
 /*
 Route::get('/manager/classowned',array('before' => 'auth', function()
