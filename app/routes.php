@@ -72,6 +72,7 @@ Route::get('/manager/classowned', array('as' => '/manager/classowned', 'uses' =>
 
 
 Route::get('/class/open/{idnote}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
+Route::get('/class/public/',array('before' => 'auth','as'=> '/class/public/', 'uses' => 'ClassController@getpublic'));
 
 
 /*

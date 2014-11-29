@@ -336,6 +336,14 @@ class ClassController extends \BaseController {
         return View::make('users/gestionclassowner')->with(array('listClasses'=>$listClasses,'classesOwned'=>$classesOwned));
     }
 
+    public function getpublic()
+    {
+
+        $classes_public = Classes::where('visibility','=','public')->get();
+
+        return View::make('/class/public')->with(array('classes_public'=>$classes_public));
+    }
+
 }
 
 
