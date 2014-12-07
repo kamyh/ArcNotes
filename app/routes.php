@@ -71,7 +71,7 @@ Route::post('/visibility/change', array('as' => '/visibility/change', 'uses' => 
 Route::get('/manager/classowned', array('as' => '/manager/classowned', 'uses' => 'ClassController@class_owned'));
 
 
-Route::get('/class/open/{idnote}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
+Route::get('/class/open/{idclass}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
 Route::get('/class/public/',array('before' => 'auth','as'=> '/class/public/', 'uses' => 'ClassController@getpublic'));
 
 
@@ -92,14 +92,14 @@ Route::get("lists_classes", array(
 /*
  * Course
  */
-Route::get('/cours/open/{idnote}',array('before' => 'auth','as'=> '/cours/open/{idnote}', 'uses' => 'CourseController@open'))->where('idcourse','[0-9]+');
+Route::get('/course/open/{idcourse}',array('before' => 'auth','as'=> '/course/open/{idcourse}', 'uses' => 'CourseController@open'))->where('idcourse','[0-9]+');
 
 
 /*
  * Routes pour gestions notes
  */
 Route::get('/notes/write/{idcourse}',array('as' => '/notes/write/{idcourse}', 'uses' => 'NoteController@getWritingForm', 'before' => 'auth'))->where('idcourse','[0-9]+');
-Route::post('/notes/save/{idcourse}',array('as' => '/notes/save/{idcourse}', 'uses' =>'NoteController@saveNote', 'before' => 'auth|crsf'))->where('idcourse','[0-9]+');
+Route::post('/notes/save/{idcourse}',array('as' => '/notes/save/{idcourse}', 'uses' =>'NoteController@saveNote', 'before' => 'auth|csrf'))->where('idcourse','[0-9]+');
 Route::get('/notes/edit/{idnote}',array('as'=> '/notes/edit/{idnote}', 'uses' => 'NoteController@getEditingForm', 'before' => 'auth'))->where('idnote','[0-9]+');
 Route::post('/notes/delete/{idnote}',array('as'=> '/notes/delete/{idnote}', 'uses' => 'NoteController@removeNote', 'before' => 'auth'))->where('idnote','[0-9]+');
 Route::post('/notes/update/{idnote}',array('as'=> '/notes/update/{idnote}', 'uses' => 'NoteController@updateNote', 'before' => 'auth'))->where('idnote','[0-9]+');

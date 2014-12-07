@@ -33,27 +33,18 @@ class Classes extends Eloquent
     {
         $perm = DB::table('permissions')->where('id_user','=',$id_user)->where('id_class','=',$this->id)->first();
 
-        $isCheckRead = 0;
-        $isCheckEdition = 0;
-        $isCheckCreation = 0;
-
-        if(($perm->id_rights & 4) != 0)
-        {
-            $isCheckRead = true;
+        $rep = array();
+        if(!is_null($perm)) {
+            $rep['read'] = $perm->id_rights & 4 != 0;
+            $rep['edit'] = $perm->id_rights & 2 != 0;
+            $rep['create'] = $perm->id_rights & 1 != 0;
         }
-        if(($perm->id_rights & 2) != 0)
+        else
         {
-            $isCheckEdition = true;
+            $rep['read'] = false;
+            $rep['edit'] = false;
+            $rep['create'] = false;
         }
-        if(($perm->id_rights & 1) != 0)
-        {
-            $isCheckCreation = true;
-        }
-
-        $rep = [];
-        array_push($rep,$isCheckRead);
-        array_push($rep,$isCheckEdition);
-        array_push($rep,$isCheckCreation);
 
         return $rep;
     }

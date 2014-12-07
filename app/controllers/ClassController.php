@@ -327,7 +327,7 @@ class ClassController extends \BaseController {
 
     public function class_owned()
     {
-        $classID = DB::table('permissions')->where('id_user','=',Session::get('id'))->where('id_rights','=',15)->lists('id_class');
+        $classID = DB::table('permissions')->where('id_user','=',Auth::id())->where('id_rights','=',15)->lists('id_class');
         $listClasses = DB::table('classes')->whereIn('id',$classID)->lists('name','id');
 
         $classesOwned = Classes::whereIn('id',$classID)->get();

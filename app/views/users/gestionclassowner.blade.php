@@ -84,17 +84,17 @@
                             <table style="border: 1px solid #ffffff">
                                 <tr>
                                     <td>
-                                    {{Form::checkbox('read', '4',$class->getPermissionsTab($user->id)[0])}}
+                                    {{Form::checkbox('read', '4',$class->getPermissionsTab($user->id)['read'])}}
                                     {{Form::label('read','Read')}}
                                     </td>
                                 </tr><tr>
                                     <td>
-                                    {{Form::checkbox('edition', '2',$class->getPermissionsTab($user->id)[1])}}
+                                    {{Form::checkbox('edition', '2',$class->getPermissionsTab($user->id)['edit'])}}
                                     {{Form::label('edition','Edition')}}
                                     </td>
                                 </tr><tr>
                                     <td>
-                                    {{Form::checkbox('creation', '1',$class->getPermissionsTab($user->id)[2])}}
+                                    {{Form::checkbox('creation', '1',$class->getPermissionsTab($user->id)['create'])}}
                                     {{Form::label('creation','Création')}}
                                     </td>
                                 </tr>

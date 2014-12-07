@@ -123,7 +123,7 @@ class UserController extends \BaseController {
 	public function show($id)
 	{
         echo "***";
-        $user = DB::table('users')->where('id', $id)->first();
+        $user = User::find($id);
         echo "++++";
         echo $user->lastname;
 	}

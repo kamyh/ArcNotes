@@ -14,5 +14,16 @@ class Courses extends Eloquent
     protected $table = 'courses';
 
 
+    public function getClassID()
+    {
+        return $this->attributes['id_class'];
+    }
+
+    public function getName()
+    {
+        return $this->attributes['name'];
+    }
+
+
 
 }

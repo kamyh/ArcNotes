@@ -90,9 +90,11 @@ class NoteController extends \BaseController {
     public function getWritingForm($idcourse)
     {
 
-        //TODO tester l'existence du cours et l'appartenance de l'utilisateur à la classe de celui-ci
+        if($this->canUserWriteNote($idcourse)) {
+            $course = Courses::find($idcourse);
 
-        return View::make('notes.writenote')->with(array('idcourse' => $idcourse, 'nomcours' => 'test')); //retourné le nom du cours plutot que son id
+            return View::make('notes.writenote')->with(array('idcourse' => $idcourse, 'nomcours' => $course->getName())); //retourner le nom du cours plutot que son id
+        }
     }
 
     /**
@@ -118,21 +120,31 @@ class NoteController extends \BaseController {
     }
 
     /**
-     * insert the new note into database assuming the user and having rights
+     * insert the new note into database assuming the user having rights
      */
     public function saveNote($idcourse)
     {
-        //TODO tester l'existence du cours, utilisateur logué, etc.
-        //insertion de la note dans la base de données
+        //assuming the user is connected
+        if($this->canUserWriteNote($idcourse)) {
+            $rules = array(
+                'title' => "required|min:3|max:100",
+                'content' => 'required|min:10'
+            );
 
-        $rules = array(
-            'title' => "required|min:3|max:100",
-            'content' => 'required|min:10'
-        );
+            $validator = Validator::make(Input::all(), $rules);
 
-        $validator = Validator::make(Input::all(),$rules);
-
-        if(!$validator->fails())
+            if (!$validator->fails()) {
+                $token = bin2hex(BaseNotes::getNewToken());
+                $note = BaseNotes::create(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token));
+                Manuscrits::create(array('id_basenotes' => $note->getID(), 'content' => Input::get('content'), 'title' => Input::get('title')));
+                return Redirect::to('course/open/'.$idcourse);
+            }
+            else
+            {
+                return Redirect::to('notes/write/'.$idcourse)->withErrors($validator)->withInput();
+            }
+        }
+        else
         {
 
         }
@@ -172,6 +184,25 @@ class NoteController extends \BaseController {
     public function removeFileNote($idfile)
     {
 
+    }
+
+    private function canUserWriteNote($idcourse)
+    {
+        //check if user can write into course
+        //get the class id from the course
+        $course = Courses::find($idcourse);
+        if(!is_null($course)) {
+            $idclass = $course->getClassID();
+            $class = Classes::find($idclass);
+            $perms = $class->getPermissionsTab(Auth::id());
+
+            //if user can write something
+            if($perms['create'])
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
