@@ -44,7 +44,7 @@
                         {
                             $.each(value,function(entry)
                             {
-                                $display.append('<div onClick="location.href=\'/cours/open/'+ entry +'\'" class="context-menu-tile hover-color-b">' + value[entry] + "</div>");
+                                $display.append('<div onClick="location.href=\'/course/open/'+ entry +'\'" class="context-menu-tile hover-color-b">' + value[entry] + "</div>");
                             });
                         }
                     });
