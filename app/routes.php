@@ -38,7 +38,8 @@ Route::resource('classes', 'ClassController');
 Route::get('/class/create', array('as' => '/class/create', 'uses' => 'ClassController@createClass'));
 
 Route::resource('courses', 'CourseController');
-Route::get('/courses/create', array('as' => '/courses/create', 'uses' => 'CourseController@createcours'));
+Route::get('/courses/create/{idclass}', array('before' => 'auth','as' => '/courses/create/{idclass}', 'uses' => 'CourseController@createcours'))->where('idclass','[0-9]+');
+
 
 Route::resource('school', 'SchoolController');
 Route::get('/school', array('as' => '/school', 'uses' => 'SchoolController@school')); //TODO pass to post method

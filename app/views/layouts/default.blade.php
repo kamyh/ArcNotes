@@ -19,7 +19,6 @@
 			    <div onClick='location.href="/manager/classowned/"' class="header-menu-tile color-b hover-color-a">My Class Manager</div>
 			    <div onClick='location.href="/class/create/"' class="header-menu-tile color-b hover-color-a">New Class</div>
                 <div onClick='location.href="/class/join/"' class="header-menu-tile color-b hover-color-a">Join Class</div>
-			    <div onClick='location.href="/courses/create/"' class="header-menu-tile color-b hover-color-a">New Course</div>
 			</div>
 			<div id="header-search">
 				<div class="header-search-tile" > search bar </div>
@@ -58,12 +57,14 @@
                         @endif
 				</div>
 				<div class="context-menus-dock scroll-y" id="list-class-course">
+				 @if(Auth::check())
                     @foreach(Auth::user()->getClasses() as $class)
                             <a href="/class/open/{{$class->id}}" class="context-menu-tile hover-color-b"> <h2>{{$class->name}}</h2></a>
                             @foreach($class->getCourses() as $course)
-                                <a href="/course/open/{{$course->id}}" class="context-menu-tile hover-color-b">{{$course->name}}</a>
+                                <a href="/course/open/{{$course->id}}" class="context-menu-tile hover-color-b">{{$course->name}}</a></br>
                             @endforeach
-                        @endforeach
+                    @endforeach
+                 @endif
 				</div>
 			</div>
 			<div class="content col scroll-y color-b">
