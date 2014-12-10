@@ -36,9 +36,9 @@ class Classes extends Eloquent
         $rep = array();
         if(!is_null($perm))
         {
-            $rep['read'] = $perm->id_rights & 4 != 0;
-            $rep['edit'] = $perm->id_rights & 2 != 0;
-            $rep['create'] = $perm->id_rights & 1 != 0;
+            $rep['read'] = ($perm->id_rights & 4) != 0;
+            $rep['edit'] = ($perm->id_rights & 2) != 0;
+            $rep['create'] = ($perm->id_rights & 1) != 0;
         }
         else
         {
@@ -46,6 +46,8 @@ class Classes extends Eloquent
             $rep['edit'] = false;
             $rep['create'] = false;
         }
+
+
 
         return $rep;
     }
