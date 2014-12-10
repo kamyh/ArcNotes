@@ -52,21 +52,20 @@ Route::post('/login', array('as' => 'login', 'uses' => 'UserController@loginHand
 Route::post('/logout', array('as' => 'logout', 'uses' => 'UserController@logout'));
 
 Route::get('searchcities/{id_canton}', 'SchoolController@fetch_sub_category');
-
+//TODO Test permissions
 
 /*
  * Routes Gestion Classes
  */
-
 Route::post('/class/invite', array('as' => '/class/invite', 'uses' => 'ClassController@invite_member'));
-Route::post('/class/accept', array('as' => '/class/accept', 'uses' => 'ClassController@accept_member'));
-Route::post('/class/refuse', array('as' => '/class/refuse', 'uses' => 'ClassController@refuse_member'));
-Route::post('/course/remove', array('as' => '/course/remove', 'uses' => 'ClassController@remove_course'));
-Route::post('/class/remove', array('as' => '/class/remove', 'uses' => 'ClassController@remove_class'));
-Route::post('/class/resign', array('as' => '/class/resign', 'uses' => 'ClassController@resign_class'));
-Route::post('/member/remove', array('as' => '/member/remove', 'uses' => 'ClassController@remove_member'));
-Route::post('/rights/change', array('as' => '/rights/change', 'uses' => 'ClassController@chgt_rights'));
-Route::post('/visibility/change', array('as' => '/visibility/change', 'uses' => 'ClassController@chgt_visibility'));
+Route::get('/class/accept/{iduser}/{idclass}', array('before' => 'auth','as' => '/class/accept/{iduser}/{idclass}', 'uses' => 'ClassController@accept_member'))->where('iduser','[0-9]+');
+Route::get('/class/refuse/{iduser}/{idclass}', array('before' => 'auth','as' => '/class/refuse/{iduser}/{idclass}', 'uses' => 'ClassController@refuse_member'))->where('iduser','[0-9]+');
+Route::get('/course/remove/{idcourse}', array('before' => 'auth','as' => '/course/remove/{idcourse}', 'uses' => 'ClassController@remove_course'))->where('idcourse','[0-9]+');
+Route::get('/class/remove/{idclass}', array('before' => 'auth','as' => '/class/remove/{idclass}', 'uses' => 'ClassController@remove_class'))->where('idclass','[0-9]+');
+Route::get('/class/resign/{idclass}', array('before' => 'auth','as' => '/class/resign/{idclass}', 'uses' => 'ClassController@resign_class'))->where('idclass','[0-9]+');
+Route::get('/member/remove/{iduser}/{idclass}', array('before' => 'auth','as' => '/member/remove/{iduser}/{idclass}', 'uses' => 'ClassController@remove_member'))->where('idclass','[0-9]+');
+Route::get('/rights/change/{iduser}/{idclass}', array('before' => 'auth','as' => '/rights/change/{iduser}/{idclass}', 'uses' => 'ClassController@chgt_rights'))->where('iduser','[0-9]+');
+Route::get('/visibility/change/{idclass}', array('before' => 'auth','as' => '/visibility/change/{idclass}', 'uses' => 'ClassController@chgt_visibility'))->where('idclass','[0-9]+');
 
 Route::get('/manager/classowned', array('as' => '/manager/classowned', 'uses' => 'ClassController@class_owned'));
 
