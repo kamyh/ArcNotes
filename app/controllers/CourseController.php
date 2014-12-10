@@ -16,9 +16,9 @@ class CourseController extends \BaseController {
      *
      *
      */
-    public function createCours()
+    public function createCours($idclass)
     {
-        return View::make('createcours');
+        return View::make('createcours')->with(array('idclass'=>$idclass));
     }
 
 
@@ -45,7 +45,7 @@ class CourseController extends \BaseController {
     {
         $input = Input::all();
 
-        $rulesValidatorCours = array( 'name' => 'required|min:5');
+        $rulesValidatorCours = array( 'name' => 'required|min:5','matter' => 'required|min:3');
 
         $validator = Validator::make($input, $rulesValidatorCours);
 
@@ -54,6 +54,8 @@ class CourseController extends \BaseController {
             $cours = new Courses();
 
             $cours->name = $input['name'];
+            $cours->matter = $input['matter'];
+            $cours->id_class = $input['idclass'];
 
             $cours->save();
 
@@ -62,7 +64,7 @@ class CourseController extends \BaseController {
         }
         else
         {
-            return Redirect::to('createcours')->withErrors($validator)->withInput();
+            return Redirect::to('courses/create/')->withErrors($validator)->with(array('idclass'=>$input['idclass']));
         }
 
 

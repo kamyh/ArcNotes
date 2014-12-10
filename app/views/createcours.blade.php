@@ -25,9 +25,17 @@
                     {{Form::text('name', null,array('class' => ''))}}
                 </td>
             </tr>
-
             <tr>
                 <td>
+                    {{Form::label('matter','Matter')}}
+                </td>
+                <td>
+                    {{Form::text('matter', null,array('class' => ''))}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                {{ Form::hidden('idclass', $idclass) }}
                 {{Form::submit('Create', array('class' => ''))}}
                 </td>
             </tr>

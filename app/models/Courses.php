@@ -4,7 +4,7 @@
 
 class Courses extends Eloquent
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name','matter'];
 
     /**
      * The database table used by the model.
