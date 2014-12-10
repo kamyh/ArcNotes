@@ -35,7 +35,7 @@ Route::get('/403', function()
 });
 
 Route::resource('classes', 'ClassController');
-Route::get('/class/create', array('as' => '/class/create', 'uses' => 'ClassController@createClass'));
+Route::get('/class/create', array('before' => 'auth','as' => '/class/create', 'uses' => 'ClassController@createClass'));
 
 Route::resource('courses', 'CourseController');
 Route::get('/courses/create/{idclass}', array('before' => 'auth','as' => '/courses/create/{idclass}', 'uses' => 'CourseController@createcours'))->where('idclass','[0-9]+');
@@ -44,10 +44,8 @@ Route::get('/courses/create/{idclass}', array('before' => 'auth','as' => '/cours
 Route::resource('school', 'SchoolController');
 Route::get('/school', array('as' => '/school', 'uses' => 'SchoolController@school')); //TODO pass to post method
 
-Route::get('/class/join', function()
-{
-    return View::make('signclass');
-});
+Route::get('/class/join', array('as' => '/class/join', 'uses' => 'ClassController@getpublic'));
+
 Route::post('/class/join', array('as' => '/class/join', 'uses' => 'ClassController@load'));
 
 
@@ -105,7 +103,7 @@ Route::get('/course/open/{idcourse}',array('before' => 'auth','as'=> '/course/op
 
 
 /*
- * Routes pour gestions notes
+ * notes management routes
  */
 Route::get('/notes/write/{idcourse}',array('as' => '/notes/write/{idcourse}', 'uses' => 'NoteController@getWritingForm', 'before' => 'auth'))->where('idcourse','[0-9]+');
 Route::post('/notes/save/{idcourse}',array('as' => '/notes/save/{idcourse}', 'uses' =>'NoteController@saveNote', 'before' => 'auth|csrf'))->where('idcourse','[0-9]+');

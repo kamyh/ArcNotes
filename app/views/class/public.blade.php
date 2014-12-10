@@ -1,13 +1,14 @@
 @extends('layouts.default')
 @section('body')
-    <table>
-        <tr>
-            <td>Public Classes</td>
-        </tr>
+
+       <h2>Public Classes</h2>
+        <div class="list-classes">
         @foreach($classes_public as $class)
-            <tr>
-                <td><h2><div onClick='location.href="/class/open/{{$class->id}}"' class="header-menu-tile color-b hover-color-a">{{$class->name}}</div></h2></td>
-            </tr>
+        <div class="class-tile color-a">
+            <a href="/class/open/{{$class->id}}" class="class-title-tile color-b hover-color-a">{{$class->name}}</a>
+        <table>
+
+
             <tr>
                 <td>Created at </td>
                 <td> {{ $class->created_at }} </td>
@@ -18,8 +19,7 @@
             </tr>
             <tr>
                 <td>{{$class->getSchoolName()}}</td>
-                <td>{{$class->getCitie()}}</td>
-                <td>{{$class->getCanton()}}</td>
+                <td>{{$class->getCitie()}} {{$class->getCanton()}}</td>
             </tr>
             <tr>
                 <td>Scollar year</td>
@@ -39,11 +39,11 @@
             </tr>
             <tr>
                 <td>
-                    {{ Form::open(array('route' => array('class/'), 'method' => 'post')) }}
-                        {{Form::submit('Register', array('class' => ''))}}
-                    {{ Form::close() }}
+
                 </td>
             </tr>
+            </table>
+            </div>
         @endforeach
-    </table>
+        </div>
 @stop

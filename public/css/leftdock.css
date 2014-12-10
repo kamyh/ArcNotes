@@ -10,6 +10,7 @@
 .context-menus-dock
 {
     display: flex;
+     display: -webkit-flex;
     flex-direction: column;
     justify-content: flex-start;
 }
@@ -17,6 +18,7 @@
 .context-menu-tile-class
 {
     display: flex;
+  display: -webkit-flex;
     padding: 0.5em;
     font-size: 120%;
 }

@@ -23,9 +23,9 @@ class ClassController extends \BaseController {
 
     public function load()
     {
-        $input = Input::All();
-        Session::put('orderOption', $input['orderOption']);
-        return View::make('signclass');
+        //$input = Input::All();
+        //Session::put('orderOption', $input['orderOption']);
+        return View::make('class/public');
     }
 
 

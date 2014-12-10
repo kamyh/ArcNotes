@@ -5,6 +5,7 @@
 	{{HTML::style('css/mainlayout.css');}}
 	{{HTML::style('css/header.css');}}
 	{{HTML::style('css/leftdock.css');}}
+	{{HTML::style('css/contentlayout.css');}}
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
@@ -16,9 +17,10 @@
 				{{ HTML::image('img/logo.png') }}
 			</div>
 			<div id="header-menus" class="scroll-x">
-			     <a href="/manager/classowned/"' class="header-menu-tile color-b hover-color-a">My Class Manager</div>
-			    <div onClick='location.href="/class/create/"' class="header-menu-tile color-b hover-color-a">New Class</div>
-                <div onClick='location.href="/class/join/"' class="header-menu-tile color-b hover-color-a">Join Class</div>
+			     <a href="/manager/classowned/" class="header-menu-tile color-b hover-color-a">My Class Manager</a>
+			     <a href="/class/create/" class="header-menu-tile color-b hover-color-a">New Class</a>
+                 <a href="/class/join/" class="header-menu-tile color-b hover-color-a">Public Classes</a>
+                 <a href="/about/" class="header-menu-tile color-b hover-color-a">About</a>
 			</div>
 			<div id="header-search">
 				<div class="header-search-tile" > search bar </div>
@@ -53,7 +55,7 @@
 
                                 {{Form::submit('Login', array('class' => ''))}}
                             {{ Form::close() }}
-                            <a href="/user/create">Sign up.</a>
+                            <a href="/user/create" class="color-a">Sign up.</a>
                         @endif
 				</div>
 				<div class="context-menus-dock scroll-y">
