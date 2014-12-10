@@ -159,12 +159,20 @@ class ClassController extends \BaseController {
 
     public function accept_member($iduser,$idclass)
     {
-        $permission = Permissions::where('id_user','=',$iduser)->where('id_class','=',$idclass)->first();
-        $permission->id_rights = 4;
+        $class = Classes::find($idclass);
 
-        $permission->save();
+        if($class->isOwner($iduser)) {
+            $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
+            $permission->id_rights = 4;
 
-        return Redirect::to('manager/classowned');
+            $permission->save();
+
+            return Redirect::to('manager/classowned');
+        }
+        else
+        {
+            return Redirect::to('404');
+        }
     }
 
     public function refuse_member($iduser,$idclass)
@@ -321,7 +329,6 @@ class ClassController extends \BaseController {
 
         $classesOwned = Classes::whereIn('id',$classID)->get();
 
-
         return View::make('users/gestionclassowner')->with(array('listClasses'=>$listClasses,'classesOwned'=>$classesOwned));
     }
 
@@ -330,9 +337,8 @@ class ClassController extends \BaseController {
 
         $classes_public = Classes::where('visibility','=','public')->get();
 
-        return View::make('/class/public')->with(array('classes_public'=>$classes_public));
+        return View::make('class.public')->with(array('classes_public'=>$classes_public));
     }
-
 }
 
 

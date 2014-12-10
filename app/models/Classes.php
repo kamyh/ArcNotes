@@ -47,16 +47,40 @@ class Classes extends Eloquent
             $rep['create'] = false;
         }
 
-
-
         return $rep;
     }
 
-    public function isAuthorized($permToTest)
+    private function isAuthorized($permToTest)
     {
         $perms = getPermissionsTab(Auth::id());
 
         return $perms[$permToTest];
+    }
+
+    public function canRead()
+    {
+        return isAuthorized('read');
+    }
+
+    public function canEdit()
+    {
+        return isAuthorized('edit');
+    }
+
+    public function canCreate()
+    {
+        return isAuthorized('create');
+    }
+
+    public function isOwner($id_user)
+    {
+        $perm = DB::table('permissions')->where('id_user','=',$id_user)->where('id_class','=',$this->id)->first();
+
+        if($perm == 15)
+        {
+            return true;
+        }
+        return false;
     }
 
     public function getSchoolName()

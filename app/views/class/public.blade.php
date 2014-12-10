@@ -39,7 +39,7 @@
             </tr>
             <tr>
                 <td>
-                    {{ Form::open(array('route' => array(''), 'method' => 'post')) }}
+                    {{ Form::open(array('route' => array('class/'), 'method' => 'post')) }}
                         {{Form::submit('Register', array('class' => ''))}}
                     {{ Form::close() }}
                 </td>

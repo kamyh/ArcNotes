@@ -8,49 +8,7 @@
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-	<script type="text/javascript">
-        isObject = function(a) {
-            return (!!a) && (a.constructor === Object);
-        };
 
-        $(document).ready(function()
-        {
-                $.getJSON("/lists_classes_courses" ,
-
-                 function(data)
-                 {
-
-                    var $display = $("#list-class-course");
-                    $display.empty();
-                    $isId = false;
-                    $name = '';
-                    $.each(data, function(index, value)
-                    {
-
-                        if(!isObject(value))
-                        {
-                            if(!$isId)
-                            {
-                                $name = value;
-                                $isId = true;
-                            }
-                            else
-                            {
-                                $display.append('<div onClick="location.href=\'/class/open/'+ value +'\'" class="context-menu-tile hover-color-b"><h2>' + $name + "</h2></div>");
-                                $isId = false;
-                            }
-                        }
-                        else
-                        {
-                            $.each(value,function(entry)
-                            {
-                                $display.append('<div onClick="location.href=\'/course/open/'+ entry +'\'" class="context-menu-tile hover-color-b">' + value[entry] + "</div>");
-                            });
-                        }
-                    });
-                });
-        });
-    </script>
 </head>
 <body>
 <div class="header row color-a">
@@ -100,7 +58,12 @@
                         @endif
 				</div>
 				<div class="context-menus-dock scroll-y" id="list-class-course">
-
+                    @foreach(Auth::user()->getClasses() as $class)
+                            <a href="/class/open/{{$class->id}}" class="context-menu-tile hover-color-b"> <h2>{{$class->name}}</h2></a>
+                            @foreach($class->getCourses() as $course)
+                                <a href="/course/open/{{$course->id}}" class="context-menu-tile hover-color-b">{{$course->name}}</a>
+                            @endforeach
+                        @endforeach
 				</div>
 			</div>
 			<div class="content col scroll-y color-b">

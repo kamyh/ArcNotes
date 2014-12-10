@@ -24,6 +24,16 @@ Route::get('/testing', function()
     return View::make('testing');
 });
 
+Route::get('/404', function()
+{
+    return View::make('error/404');
+});
+
+Route::get('/403', function()
+{
+    return View::make('error/403');
+});
+
 Route::resource('classes', 'ClassController');
 Route::get('/class/create', array('as' => '/class/create', 'uses' => 'ClassController@createClass'));
 
@@ -71,7 +81,6 @@ Route::get('/manager/classowned', array('as' => '/manager/classowned', 'uses' =>
 
 
 Route::get('/class/open/{idclass}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
-Route::get('/class/public/',array('before' => 'auth','as'=> '/class/public/', 'uses' => 'ClassController@getpublic'));
 
 
 /*
