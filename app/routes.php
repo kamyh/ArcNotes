@@ -29,9 +29,9 @@ Route::get('/404', function()
     return View::make('error/404');
 });
 
-Route::get('/403', function()
+Route::get('/unauthorized', function()
 {
-    return View::make('error/403');
+    return View::make('error/unauthorized');
 });
 
 Route::resource('classes', 'ClassController');

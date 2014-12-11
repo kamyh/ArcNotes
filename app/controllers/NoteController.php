@@ -135,7 +135,7 @@ class NoteController extends \BaseController {
 
             if (!$validator->fails()) {
                 $token = bin2hex(BaseNotes::getNewToken());
-                $note = BaseNotes::create(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token));
+                $note = BaseNotes::firstOrCreate(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token));
                 Manuscrits::create(array('id_basenotes' => $note->getID(), 'content' => Input::get('content'), 'title' => Input::get('title')));
                 return Redirect::to('course/open/'.$idcourse);
             }
@@ -146,7 +146,7 @@ class NoteController extends \BaseController {
         }
         else
         {
-
+            return Redirect::to('/unauthorized');
         }
     }
 
