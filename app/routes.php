@@ -34,6 +34,10 @@ Route::get('/unauthorized', function()
     return View::make('error/unauthorized');
 });
 
+Route::get('/', function()
+{
+    return View::make('hello');
+});
 
 
 Route::resource('courses', 'CourseController');
@@ -49,7 +53,6 @@ Route::get('/school', array('as' => '/school', 'uses' => 'SchoolController@schoo
  */
 
 Route::resource('user', 'UserController'); // give acces to create and store fct for user controller
-Route::get('/', array('as' => 'login', 'uses' => 'UserController@login'));
 Route::get('/login', array('as' => 'login', 'uses' => 'UserController@login'));
 Route::post('/login', array('as' => 'login', 'uses' => 'UserController@loginHandler'));
 Route::post('/logout', array('as' => 'logout', 'uses' => 'UserController@logout'));

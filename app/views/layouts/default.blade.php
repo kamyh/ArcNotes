@@ -14,7 +14,7 @@
 <body>
 <div class="header row color-a">
 			<div id="header-title">
-				{{ HTML::image('img/logo.png') }}
+				{{ HTML::image('img/logo.png', 'logo', array('class' => 'logo')) }}
 			</div>
 			<div id="header-menus" class="scroll-x">
 			@if(Auth::check())
@@ -23,6 +23,9 @@
             @endif
                  <a href="/class/join/" class="header-menu-tile color-b hover-color-a">Public Classes</a>
                  <a href="/about/" class="header-menu-tile color-b hover-color-a">About</a>
+            @if(!Auth::check())
+                 <a href="/user/create" class="header-menu-tile color-b hover-color-a">Register</a>
+            @endif
 			</div>
 			<div id="header-search">
 				<div class="header-search-tile" > search bar </div>
@@ -63,6 +66,7 @@
 				<div class="context-menus-dock scroll-y">
 				 @if(Auth::check())
                     @foreach(Auth::user()->getClasses() as $class)
+
                             <a href="/class/open/{{$class->id}}" class="context-menu-tile-class color-b">{{$class->name}}</a>
                             @foreach($class->getCourses() as $course)
                                 <a href="/course/open/{{$course->id}}" class="context-menu-tile-course hover-color-b color-a ">{{$course->name}}</a></br>

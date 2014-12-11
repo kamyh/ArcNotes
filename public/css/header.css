@@ -7,15 +7,18 @@
 
 #header-title
 {
-	width:15em;
+    display: -webkit-flex;
+    display: flex;
+	width:18%;
+    padding:.5%;
 }
 
 #header-menus
 {
 	width: 50%;
 	font-size: 120%;
+    display: -webkit-flex;
 	display: flex;
-  display: -webkit-flex;
 	flex-direction:row;
 	flex-wrap:wrap;
 	align-content: center;
@@ -39,8 +42,8 @@
 
  #header-search
 {
+    display: -webkit-flex;
 	display:flex;
-  display: -webkit-flex;
 	flex-direction:row;
 	flex-wrap:wrap;
 	align-content: center;
@@ -49,4 +52,9 @@
 .header-search-tile
 {
 	align-self: center;
+}
+
+.logo{
+    width:auto; /* you can use % */
+    height: 60%;
 }
