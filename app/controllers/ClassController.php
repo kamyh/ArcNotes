@@ -336,8 +336,9 @@ class ClassController extends \BaseController {
     public function open($idclass)
     {
         $info = DB::table('classes')->where('id','=',$idclass)->get();
-        $listCourses = DB::table('courses')->where('id_class', '=', $idclass);
-        $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id'))->get();
+
+        $courses = DB::table('courses')->where('id_class',$idclass)->join('classes', 'classes.id', '=', 'courses.id_class')->orderBy('courses.name')->get();
+
         $school = DB::table('schools')->where('id','=',$info[0]->id_school)->get();
         $city = DB::table('cities')->find($school[0]->id_location);
         $canton = DB::table('cantons')->find($city->id_canton);
@@ -392,6 +393,7 @@ class ClassController extends \BaseController {
         {
             $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
             $classes_public = Classes::where('visibility', '=', 'public')->whereNotIn('id',$listClass)->get();
+
         }
         else
         {
