@@ -1,15 +1,28 @@
 .profile, .context-menus-dock
 {
-	padding-top: 15px;
-	width: 100%;
+    width: 100%;
 }
 
 .profile
 {
-	padding-left: 12px;
+    padding: 1.5em;
+}
+.context-menus-dock
+{
+    display: flex;
+     display: -webkit-flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
-.context-menu-tile
+.context-menu-tile-class
 {
-	padding: 15px;
+    display: flex;
+  display: -webkit-flex;
+    padding: 0.5em;
+    font-size: 120%;
+}
+ .context-menu-tile-course
+{
+    padding: 1em;
 }

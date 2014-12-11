@@ -34,6 +34,14 @@
             <td>Visibility</td>
             <td>{{$class[0]->visibility}}</td>
         </tr>
+        <tr>
+            <td>
+            <!-- TODO chk id permissions -->
+                {{ Form::open(array('route' => array('/courses/create/{idclass}', 'idclass' => $class[0]->id),'method' => 'get')); }}
+                    {{ Form::submit('New Course',null, array('class' => 'button')); }}
+                {{Form::close();}}
+            </td>
+        </tr>
     </table>
 
     <div class="all-course" style="margin-left: 25px">

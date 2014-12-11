@@ -16,6 +16,18 @@
             <td>Matter</td>
             <td>{{$course->matter}}</td>
         </tr>
+        <tr>
+            <td>
+                {{ Form::open(array('route' => array('/notes/write/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
+                    {{ Form::submit('Write Note',null, array('class' => 'button')); }}
+                {{Form::close();}}
+            </td>
+            <td>
+                {{ Form::open(array('route' => array('/notes/add/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
+                    {{ Form::submit('Add Note',null, array('class' => 'button')); }}
+                {{Form::close();}}
+            </td>
+        </tr>
     </table>
     <table>
         @foreach($filesManuscrit as $file)

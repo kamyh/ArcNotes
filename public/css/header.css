@@ -7,13 +7,19 @@
 
 #header-title
 {
-	width: 30%;
+	width:15em;
 }
 
 #header-menus
 {
 	width: 50%;
 	font-size: 120%;
+	display: flex;
+  display: -webkit-flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+	align-content: center;
+	justify-content: space-around;
 }
 
 #header-search
@@ -23,16 +29,24 @@
 
 .header-menu-tile, .header-search-tile
 {
-	float:left;
-	margin: 20px 10px 0;
 }
 
 .header-menu-tile
 {
-	padding : 7px;
+	align-self: flex-end;
+	padding: 0.5em;
 }
 
+ #header-search
+{
+	display:flex;
+  display: -webkit-flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+	align-content: center;
+	justify-content: center;
+}
 .header-search-tile
 {
-
+	align-self: center;
 }

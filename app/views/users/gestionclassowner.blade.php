@@ -29,7 +29,7 @@
 
                     <tr><td><h1> Class Name: {{ $class->name  }} </h1></td>
 
-                    {{ Form::open(array('route' => array('/visibility/change'), 'method' => 'post')) }}
+                    {{ Form::open(array('route' => array('/visibility/change/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                     <td>
                         @if($class->visibility == 'public')
                             {{Form::submit('Make Private', array('class' => ''))}}
@@ -37,11 +37,9 @@
                             {{Form::submit('Make Public', array('class' => ''))}}
                         @endif
 
-                        {{ Form::hidden('id_class', $class->id) }}
                     {{ Form::close() }}
-                    {{ Form::open(array('route' => array('/class/remove'), 'method' => 'post')) }}
+                    {{ Form::open(array('route' => array('/class/remove/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                         {{Form::submit('Delete', array('class' => ''))}}</td>
-                        {{ Form::hidden('id_class', $class->id) }}
                     {{ Form::close() }}
 
                 </tr>
@@ -57,29 +55,23 @@
                         </tr>
                         @if($user->getUserPermForClass($class->id) < 1)
                             <tr><td>
-                            {{ Form::open(array('route' => array('/class/accept'), 'method' => 'post')) }}
+                            {{ Form::open(array('route' => array('/class/accept/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
                                 {{Form::submit('Accept', array('class' => ''))}}
-                                {{ Form::hidden('id_user', $user->id) }}
-                                {{ Form::hidden('id_class', $class->id) }}
                             {{ Form::close() }}
                             </td>
                             <td>
-                            {{ Form::open(array('route' => array('/class/refuse'), 'method' => 'post')) }}
+                            {{ Form::open(array('route' => array('/class/refuse/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
                                 {{Form::submit('Refuse', array('class' => ''))}}
-                                {{ Form::hidden('id_user', $user->id) }}
-                                {{ Form::hidden('id_class', $class->id) }}
                             {{ Form::close() }}
                             </td></tr>
                         @elseif($user->getUserPermForClass($class->id) != 15)
                             <tr><td>
-                            {{ Form::open(array('route' => array('/member/remove'), 'method' => 'post')) }}
-                                {{ Form::hidden('id_user', $user->id) }}
-                                {{ Form::hidden('id_class', $class->id) }}
+                            {{ Form::open(array('route' => array('/member/remove/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
                                 {{Form::submit('Remove', array('class' => ''))}}
                             {{ Form::close() }}
                             </td></tr>
 
-                            {{ Form::open(array('route' => array('/rights/change'), 'method' => 'post')) }}
+                            {{ Form::open(array('route' => array('/rights/change/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
 
                             <table style="border: 1px solid #ffffff">
                                 <tr>
@@ -101,8 +93,6 @@
                                 <tr>
                                     <td>
                                     {{Form::submit('Validate', array('class' => ''))}}
-                                    {{ Form::hidden('id_user', $user->id) }}
-                                    {{ Form::hidden('id_class', $class->id) }}
                                     </td>
                                 </tr>
                                 {{ Form::close() }}
@@ -122,8 +112,7 @@
                                 {{ $course->name }}
                             </tr>
                             <tr>
-                                {{ Form::open(array('route' => array('/course/remove'), 'method' => 'post')) }}
-                                    {{ Form::hidden('id_course', $course->id) }}
+                                {{ Form::open(array('route' => array('/course/remove/{idcourse}','idcourse'=>$course->id), 'method' => 'get')) }}
                                     {{Form::submit('Remove', array('class' => ''))}}
                                 {{ Form::close() }}
                             </tr>

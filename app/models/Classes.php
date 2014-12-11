@@ -34,10 +34,11 @@ class Classes extends Eloquent
         $perm = DB::table('permissions')->where('id_user','=',$id_user)->where('id_class','=',$this->id)->first();
 
         $rep = array();
-        if(!is_null($perm)) {
-            $rep['read'] = $perm->id_rights & 4 != 0;
-            $rep['edit'] = $perm->id_rights & 2 != 0;
-            $rep['create'] = $perm->id_rights & 1 != 0;
+        if(!is_null($perm))
+        {
+            $rep['read'] = ($perm->id_rights & 4) != 0;
+            $rep['edit'] = ($perm->id_rights & 2) != 0;
+            $rep['create'] = ($perm->id_rights & 1) != 0;
         }
         else
         {
@@ -47,6 +48,39 @@ class Classes extends Eloquent
         }
 
         return $rep;
+    }
+
+    private function isAuthorized($permToTest)
+    {
+        $perms = getPermissionsTab(Auth::id());
+
+        return $perms[$permToTest];
+    }
+
+    public function canRead()
+    {
+        return isAuthorized('read');
+    }
+
+    public function canEdit()
+    {
+        return isAuthorized('edit');
+    }
+
+    public function canCreate()
+    {
+        return isAuthorized('create');
+    }
+
+    public function isOwner($id_user)
+    {
+        $perm = DB::table('permissions')->where('id_user','=',$id_user)->where('id_class','=',$this->id)->first();
+
+        if($perm == 15)
+        {
+            return true;
+        }
+        return false;
     }
 
     public function getSchoolName()

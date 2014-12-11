@@ -5,52 +5,11 @@
 	{{HTML::style('css/mainlayout.css');}}
 	{{HTML::style('css/header.css');}}
 	{{HTML::style('css/leftdock.css');}}
+	{{HTML::style('css/contentlayout.css');}}
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-	<script type="text/javascript">
-        isObject = function(a) {
-            return (!!a) && (a.constructor === Object);
-        };
 
-        $(document).ready(function()
-        {
-                $.getJSON("/lists_classes_courses" ,
-
-                 function(data)
-                 {
-
-                    var $display = $("#list-class-course");
-                    $display.empty();
-                    $isId = false;
-                    $name = '';
-                    $.each(data, function(index, value)
-                    {
-
-                        if(!isObject(value))
-                        {
-                            if(!$isId)
-                            {
-                                $name = value;
-                                $isId = true;
-                            }
-                            else
-                            {
-                                $display.append('<div onClick="location.href=\'/class/open/'+ value +'\'" class="context-menu-tile hover-color-b"><h2>' + $name + "</h2></div>");
-                                $isId = false;
-                            }
-                        }
-                        else
-                        {
-                            $.each(value,function(entry)
-                            {
-                                $display.append('<div onClick="location.href=\'/cours/open/'+ entry +'\'" class="context-menu-tile hover-color-b">' + value[entry] + "</div>");
-                            });
-                        }
-                    });
-                });
-        });
-    </script>
 </head>
 <body>
 <div class="header row color-a">
@@ -58,10 +17,10 @@
 				{{ HTML::image('img/logo.png') }}
 			</div>
 			<div id="header-menus" class="scroll-x">
-			    <div onClick='location.href="/manager/classowned/"' class="header-menu-tile color-b hover-color-a">My Class Manager</div>
-			    <div onClick='location.href="/class/create/"' class="header-menu-tile color-b hover-color-a">New Class</div>
-                <div onClick='location.href="/class/join/"' class="header-menu-tile color-b hover-color-a">Join Class</div>
-			    <div onClick='location.href="/courses/create/"' class="header-menu-tile color-b hover-color-a">New Course</div>
+			     <a href="/manager/classowned/" class="header-menu-tile color-b hover-color-a">My Class Manager</a>
+			     <a href="/class/create/" class="header-menu-tile color-b hover-color-a">New Class</a>
+                 <a href="/class/join/" class="header-menu-tile color-b hover-color-a">Public Classes</a>
+                 <a href="/about/" class="header-menu-tile color-b hover-color-a">About</a>
 			</div>
 			<div id="header-search">
 				<div class="header-search-tile" > search bar </div>
@@ -96,11 +55,18 @@
 
                                 {{Form::submit('Login', array('class' => ''))}}
                             {{ Form::close() }}
-                            <a href="/user/create">Sign up.</a>
+                            <a href="/user/create" class="color-a">Sign up.</a>
                         @endif
 				</div>
-				<div class="context-menus-dock scroll-y" id="list-class-course">
-
+				<div class="context-menus-dock scroll-y">
+				 @if(Auth::check())
+                    @foreach(Auth::user()->getClasses() as $class)
+                            <a href="/class/open/{{$class->id}}" class="context-menu-tile-class color-b">{{$class->name}}</a>
+                            @foreach($class->getCourses() as $course)
+                                <a href="/course/open/{{$course->id}}" class="context-menu-tile-course hover-color-b color-a ">{{$course->name}}</a></br>
+                            @endforeach
+                    @endforeach
+                 @endif
 				</div>
 			</div>
 			<div class="content col scroll-y color-b">

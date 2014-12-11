@@ -23,9 +23,9 @@ class ClassController extends \BaseController {
 
     public function load()
     {
-        $input = Input::All();
-        Session::put('orderOption', $input['orderOption']);
-        return View::make('signclass');
+        //$input = Input::All();
+        //Session::put('orderOption', $input['orderOption']);
+        return View::make('class/public');
     }
 
 
@@ -157,51 +157,52 @@ class ClassController extends \BaseController {
         }
     }
 
-    public function accept_member()
+    public function accept_member($iduser,$idclass)
     {
-        $input = Input::all();
+        $class = Classes::find($idclass);
 
-        $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
-        $permission->id_rights = 4;
+        if($class->isOwner($iduser)) {
+            $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
+            $permission->id_rights = 4;
 
-        $permission->save();
+            $permission->save();
 
-        return Redirect::to('manager/classowned');
+            return Redirect::to('manager/classowned');
+        }
+        else
+        {
+            return Redirect::to('404');
+        }
     }
 
-    public function refuse_member()
+    public function refuse_member($iduser,$idclass)
     {
-        $input = Input::all();
-
-        $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
+        $permission = Permissions::where('id_user','=',$iduser)->where('id_class','=',$idclass)->first();
 
         $permission->delete();
 
         return Redirect::to('manager/classowned');
     }
 
-    public function remove_course()
+    public function remove_course($idcourse)
     {
-        $input = Input::all();
-
-        $course = Courses::find($input['id_course']);
+        $course = Courses::find($idcourse);
         $course->delete();
 
         return Redirect::to('manager/classowned');
     }
 
-    public function remove_member()
+    public function remove_member($iduser,$idclass)
     {
-        $input = Input::all();
-
-        $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
+        $permission = Permissions::where('id_user','=',$iduser)->where('id_class','=',$idclass)->first();
 
         $permission->delete();
 
         return Redirect::to('manager/classowned');
     }
 
-    public function chgt_rights()
+    //TODO fix modif return tab assoc
+    public function chgt_rights($iduser,$idclass)
     {
         $input = Input::all();
 
@@ -220,7 +221,7 @@ class ClassController extends \BaseController {
             $rights += 1;
         }
 
-        $permission = Permissions::where('id_user','=',$input['id_user'])->where('id_class','=',$input['id_class'])->first();
+        $permission = Permissions::where('id_user','=',$iduser)->where('id_class','=',$idclass)->first();
         $permission->id_rights = $rights;
 
         $permission->save();
@@ -228,11 +229,9 @@ class ClassController extends \BaseController {
         return Redirect::to('/manager/classowned');
     }
 
-    public function chgt_visibility()
+    public function chgt_visibility($idclass)
     {
-        $input = Input::all();
-
-        $class = Classes::where('id','=',$input['id_class'])->first();
+        $class = Classes::where('id','=',$idclass)->first();
 
         if($class->visibility == 'public')
         {
@@ -248,11 +247,9 @@ class ClassController extends \BaseController {
         return Redirect::to('manager/classowned');
     }
 
-    public function remove_class()
+    public function remove_class($idclass)
     {
-        $input = Input::all();
-
-        $class = Classes::where('id','=',$input['id_class'])->first();
+        $class = Classes::where('id','=',$idclass)->first();
 
         $class->delete();
 
@@ -261,7 +258,7 @@ class ClassController extends \BaseController {
 
     public function resign_class()
     {
-
+        //TODO
     }
 
     public function lists_classes_courses()
@@ -302,8 +299,8 @@ class ClassController extends \BaseController {
     public function open($idclass)
     {
         $info = DB::table('classes')->where('id','=',$idclass)->get();
-        $listCourses = DB::table('courses')->where('id', '=', $idclass);
-        $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id_class'))->get();
+        $listCourses = DB::table('courses')->where('id_class', '=', $idclass);
+        $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id'))->get();
         $school = DB::table('schools')->where('id','=',$info[0]->id_school)->get();
         $city = DB::table('cities')->find($school[0]->id_location);
         $canton = DB::table('cantons')->find($city->id_canton);
@@ -332,7 +329,6 @@ class ClassController extends \BaseController {
 
         $classesOwned = Classes::whereIn('id',$classID)->get();
 
-
         return View::make('users/gestionclassowner')->with(array('listClasses'=>$listClasses,'classesOwned'=>$classesOwned));
     }
 
@@ -341,9 +337,8 @@ class ClassController extends \BaseController {
 
         $classes_public = Classes::where('visibility','=','public')->get();
 
-        return View::make('/class/public')->with(array('classes_public'=>$classes_public));
+        return View::make('class.public')->with(array('classes_public'=>$classes_public));
     }
-
 }
 
 
