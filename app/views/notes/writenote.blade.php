@@ -16,7 +16,7 @@
             <td>{{ Form::textarea('content', null, array('class' => 'textarea-input')); }}</td>
         </tr>
         <tr>
-            <td>&nbsp;</td><td>{{ Form::submit('Enregistrer !',null, array('class' => 'button')); }}</td>
+            <td>&nbsp;</td><td>{{ Form::submit('Enregistrer !',array('class' => 'button')); }}</td>
         </tr>
     </table>
     {{Form::close();}}

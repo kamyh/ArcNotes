@@ -89,7 +89,6 @@ class NoteController extends \BaseController {
      */
     public function getWritingForm($idcourse)
     {
-
         if($this->canUserWriteNote($idcourse)) {
             $course = Courses::find($idcourse);
 
@@ -119,7 +118,11 @@ class NoteController extends \BaseController {
      */
     public function getUploadingForm($idcourse)
     {
-        return View::make('notes.uploadnote')->with('idcourse',$idcourse);
+        if($this->canUserWriteNote($idcourse)) {
+            $course = Courses::find($idcourse);
+            return View::make('notes.uploadnote')->with(array('idcourse' => $idcourse, 'course' => $course->name));
+        }
+        return Redirect::to('unauthorized');
     }
 
     /**
