@@ -45,7 +45,7 @@
 
                         @else
 
-                            {{ Form::open(array('url' => 'login', 'method' => 'post')) }}
+                            {{ Form::open(array('url' => '/', 'method' => 'post')) }}
                                 @if($errors->any())
                                     <div class="">
                                         <a class="" data-dismiss="alert">&times;</a>
