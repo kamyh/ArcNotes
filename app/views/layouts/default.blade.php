@@ -58,7 +58,7 @@
                                 {{Form::label('password','Password')}}
                                 {{Form::password('password',array('class' => ''))}}        <br/>
 
-                                {{Form::submit('Login', array('class' => ''))}}
+                                {{Form::submit('Login', array('class' => 'button'))}}
                             {{ Form::close() }}
                             <a href="/user/create" class="color-a">Sign up.</a>
                         @endif
