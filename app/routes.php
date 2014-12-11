@@ -92,7 +92,7 @@ Route::get("lists_classes", array(
 /*
  * Course
  */
-Route::get('/course/open/{idcourse}',array('before' => 'auth','as'=> '/course/open/{idcourse}', 'uses' => 'CourseController@open'))->where('idcourse','[0-9]+');
+Route::get('/course/open/{idcourse}',array('before' => 'auth','as'=> '/course/open/{course}', 'uses' => 'CourseController@open'))->where('idcourse','[0-9]+');
 
 
 /*
