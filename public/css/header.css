@@ -14,8 +14,8 @@
 {
 	width: 50%;
 	font-size: 120%;
+    display: -webkit-flex;
 	display: flex;
-  display: -webkit-flex;
 	flex-direction:row;
 	flex-wrap:wrap;
 	align-content: center;
@@ -39,8 +39,8 @@
 
  #header-search
 {
+    display: -webkit-flex;
 	display:flex;
-  display: -webkit-flex;
 	flex-direction:row;
 	flex-wrap:wrap;
 	align-content: center;
