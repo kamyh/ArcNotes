@@ -124,7 +124,7 @@ class CourseController extends \BaseController {
 
         if(!is_null($course))
         {
-            $manuscrits = DB::table('basenotes')->where('id_cours',$course->id)->join('manuscrits', 'manuscrits.id_basenotes', '=', 'basenotes.id')->get();
+            $manuscrits = DB::table('basenotes')->where('id_cours',$course->id)->join('manuscrits', 'manuscrits.id_basenotes', '=', 'basenotes.id')->orderBy('title')->get();
             $files = DB::table('basenotes')->where('id_cours',$course->id)->join('files', 'files.id_basenotes', '=', 'basenotes.id')->get();
 
             if(count($manuscrits) == 0) $manuscrits = array();
