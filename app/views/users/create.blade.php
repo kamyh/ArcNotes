@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    Register
+@endsection
 @section('body')
 <div class="">
         <h2>Register</h2>

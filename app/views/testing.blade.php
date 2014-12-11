@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    TEST MOTHERTRUCKER
+@endsection
 @section('body')
 
     @foreach(Auth::user()->getClasses() as $class)

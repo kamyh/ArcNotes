@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    {{ $course->name }}
+@endsection
 @section('body')
 
     <h1> {{ $course->name }}</h1>

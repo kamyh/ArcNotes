@@ -1,4 +1,8 @@
 @extends('layouts.default')
+
+@section('title')
+    Create a new class
+@endsection
 @section('body')
 <div class="">
         <h2>new class</h2>

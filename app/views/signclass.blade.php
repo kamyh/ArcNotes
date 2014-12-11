@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    PLEASE GIVE ME A TITLE
+@endsection
 @section('body')
 <div class="">
         <?php

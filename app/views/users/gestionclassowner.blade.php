@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    Class Manager
+@endsection
 @section('body')
 
 

@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    Login
+@endsection
 @section('body')
 {{ Form::open(array('url' => 'login', 'method' => 'post')) }}
     @if($errors->any())

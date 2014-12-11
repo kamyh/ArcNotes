@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    Upload note
+@endsection
 @section('body')
 
     <h1>Ajouter un fichier de note </h1>

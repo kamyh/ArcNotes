@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>@yield('title')</title>
 	{{HTML::style('css/mainlayout.css');}}
 	{{HTML::style('css/header.css');}}
 	{{HTML::style('css/leftdock.css');}}

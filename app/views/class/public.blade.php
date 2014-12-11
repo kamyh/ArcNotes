@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    Public classes
+@endsection
 @section('body')
 
        <h2>Public Classes</h2>
