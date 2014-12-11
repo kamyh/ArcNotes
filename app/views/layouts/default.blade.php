@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="header row color-a">
-			<div id="header-title">
+			<div id="header-title" class="logo">
 				{{ HTML::image('img/logo.png') }}
 			</div>
 			<div id="header-menus" class="scroll-x">
@@ -23,6 +23,9 @@
             @endif
                  <a href="/class/join/" class="header-menu-tile color-b hover-color-a">Public Classes</a>
                  <a href="/about/" class="header-menu-tile color-b hover-color-a">About</a>
+            @if(!Auth::check())
+                 <a href="/user/create" class="header-menu-tile color-b hover-color-a">Register</a>
+            @endif
 			</div>
 			<div id="header-search">
 				<div class="header-search-tile" > search bar </div>
