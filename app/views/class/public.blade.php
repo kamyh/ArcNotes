@@ -44,7 +44,7 @@
                 <td></td>
                 <td>
                     {{ Form::open(array('route' => array('/class/sign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
-                        {{Form::submit('Join', array('class' => ''))}}
+                        {{Form::submit('Join', array('class' => 'button'))}}
                     {{ Form::close() }}
                 </td>
             </tr>
