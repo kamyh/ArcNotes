@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    Write a note
+@endsection
 @section('body')
 
     <h1>Rédiger une note dans {{ $nomcours }}</h1>

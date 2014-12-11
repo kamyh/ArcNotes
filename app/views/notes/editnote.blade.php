@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    Edit note
+@endsection
 @section('body')
 
     <h1>Modifier une note </h1>

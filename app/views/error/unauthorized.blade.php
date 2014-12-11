@@ -1,9 +1,9 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: derua_000
- * Date: 10.12.2014
- * Time: 13:26
- */
+@extends("layouts.default")
+@section('title')
+    Unauthorized
+@endsection
 
- echo "403";
+@section("body")
+
+    401, motorless tractor
+@endsection

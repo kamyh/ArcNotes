@@ -1,9 +1,9 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: derua_000
- * Date: 10.12.2014
- * Time: 13:25
- */
+@extends("layouts.default")
 
- echo "404";
+@section('title')
+    Page not found!
+@endsection
+@section("body")
+
+    404, motorless tractor
+@endsection

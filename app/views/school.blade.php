@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    School
+@endsection
 @section('body')
 
 <script type="text/javascript">

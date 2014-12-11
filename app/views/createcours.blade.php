@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    Create a new course
+@endsection
 @section('body')
 <div class="">
         <h2>new course</h2>

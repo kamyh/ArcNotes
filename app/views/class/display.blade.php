@@ -1,4 +1,7 @@
 @extends('layouts.default')
+@section('title')
+    {{ $class[0]->name }}
+@endsection
 @section('body')
 
     <table>
