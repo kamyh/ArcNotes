@@ -18,7 +18,20 @@ class ClassController extends \BaseController {
      */
     public function createClass()
     {
-        return View::make('createclass');
+        $schoolList = DB::table('schools')->lists('name','id');
+        array_unshift($schoolList, "------------");
+        array_unshift($schoolList, "New School");
+        $visibilityList =['0000' => 'public','0001' => 'private'];
+
+        $schollarYears = [];
+        $currentYear = Date("Y")-2;
+
+        for($i = 6;$i>0;$i--)
+        {
+            array_unshift($schollarYears, ($currentYear + $i)."-".($currentYear +$i+1));
+        }
+
+        return View::make('createclass')->with(array('schoolList'=>$schoolList,'visibilityList'=>$visibilityList,'schollarYears'=>$schollarYears));
     }
 
     public function load()
@@ -201,7 +214,6 @@ class ClassController extends \BaseController {
         return Redirect::to('manager/classowned');
     }
 
-    //TODO fix modif return tab assoc
     public function chgt_rights($iduser,$idclass)
     {
         $input = Input::all();
@@ -308,14 +320,21 @@ class ClassController extends \BaseController {
         return View::make('class.display')->with(array('class' => $info,'courses'=>$courses,'school_name'=>$school[0]->name,'school_city'=>$city->name,'canton'=>$canton->name));
     }
 
-    public function join()
+    public function join($idclass)
     {
-        $input = Input::All();
+        $class = Classes::find($idclass);
 
         $permission = new Permissions();
-        $permission->id_class = $input['id'];
+        $permission->id_class = $idclass;
         $permission->id_user = Auth::id();
-        $permission->id_rights = 0;
+
+        if($class->visibility == 'public')
+        {
+            $permission->id_rights = 4;
+        }
+        else {
+            $permission->id_rights = 0;
+        }
 
         $permission->save();
 
@@ -334,6 +353,8 @@ class ClassController extends \BaseController {
 
     public function getpublic()
     {
+        //TODO only public classes not already joined
+        //if not auth take all
 
         $classes_public = Classes::where('visibility','=','public')->get();
 

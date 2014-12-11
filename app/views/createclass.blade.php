@@ -2,17 +2,6 @@
 @section('body')
 <div class="">
         <h2>new class</h2>
-        <?php
-            $schoolList = DB::table('schools')->lists('name','id');
-            array_unshift($schoolList, "------------");
-            array_unshift($schoolList, "New School");
-            $visibilityList =['0000' => 'public','0001' => 'private'];
-
-            if(isset($name))
-                echo $name;
-
-
-        ?>
         <table>
             {{ Form::open(array('route' => array('classes.store'), 'method' => 'post')) }}
             @if($errors->any())
@@ -52,7 +41,7 @@
                 {{Form::label('scollaryear','Scollar Year',array('class' => 'label-form'))}}
                 </td>
                 <td>
-                {{Form::text('scollaryear', null,array('class' => ''))}}
+                {{ Form::select('scollaryear', $schollarYears, null, array('class' => '')) }}
                 </td>
             </tr>
             <tr>

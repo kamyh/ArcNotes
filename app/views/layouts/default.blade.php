@@ -17,8 +17,10 @@
 				{{ HTML::image('img/logo.png') }}
 			</div>
 			<div id="header-menus" class="scroll-x">
+			@if(Auth::check())
 			     <a href="/manager/classowned/" class="header-menu-tile color-b hover-color-a">My Class Manager</a>
 			     <a href="/class/create/" class="header-menu-tile color-b hover-color-a">New Class</a>
+            @endif
                  <a href="/class/join/" class="header-menu-tile color-b hover-color-a">Public Classes</a>
                  <a href="/about/" class="header-menu-tile color-b hover-color-a">About</a>
 			</div>

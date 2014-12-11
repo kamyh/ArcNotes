@@ -1,0 +1,26 @@
+
+.list-classes
+{
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.class-title-tile{
+  font-size: 120%;
+  width:100%;
+  margin-top:0.2em;
+  padding: 0.3em;
+}
+
+.class-tile {
+  padding: 0.4em;
+  margin: 0.4em;
+  display: flex;
+  display: -webkit-flex;
+  flex-basis: row;
+  flex-wrap:wrap;
+  width:30%;
+}

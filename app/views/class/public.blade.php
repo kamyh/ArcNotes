@@ -22,7 +22,7 @@
                 <td>{{$class->getCitie()}} {{$class->getCanton()}}</td>
             </tr>
             <tr>
-                <td>Scollar year</td>
+                <td>Schollar year</td>
                 <td>{{$class->scollaryear}}</td>
             </tr>
             <tr>
@@ -36,6 +36,11 @@
             <tr>
                 <td>Visibility</td>
                 <td>{{$class->visibility}}</td>
+                <td>
+                    {{ Form::open(array('route' => array('/class/sign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
+                        {{Form::submit('Join', array('class' => ''))}}
+                    {{ Form::close() }}
+                </td>
             </tr>
             <tr>
                 <td>
