@@ -104,9 +104,12 @@ class NoteController extends \BaseController {
      */
     public function getEditingForm($idnote)
     {
-        //TODO tester l'existence du cours et l'appartenance de l'utilisateur à la classe de celui-ci
-
-        return View::make('notes.editnote')->with(array('idnote' => $idnote, 'titre' => 'Titre de la note', 'content' => 'contenu')); //retourné le nom du cours plutot que son id
+        if($this->canUserEditNote($idnote))
+        {
+            $note = Manuscrits::find($idnote);
+            return View::make('notes.editnote')->with(array('idnote' => $idnote, 'title' => $note->getTitle(), 'content' => $note->getContent()));
+        }
+        return Redirect::to('404');
     }
 
     /**
@@ -136,7 +139,7 @@ class NoteController extends \BaseController {
             if (!$validator->fails()) {
                 $token = bin2hex(BaseNotes::getNewToken());
                 $note = BaseNotes::firstOrCreate(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token));
-                Manuscrits::create(array('id_basenotes' => $note->getID(), 'content' => Input::get('content'), 'title' => Input::get('title')));
+                Manuscrits::firstOrCreate(array('id_basenotes' => $note->getID(), 'content' => Input::get('content'), 'title' => Input::get('title')));
                 return Redirect::to('course/open/'.$idcourse);
             }
             else
@@ -156,7 +159,32 @@ class NoteController extends \BaseController {
      */
     public function updateNote($idnote)
     {
+        if($this->canUserEditNote($idnote))
+        {
+            $rules = array(
+                'title' => "required|min:3|max:100",
+                'content' => 'required|min:10'
+            );
 
+            $validator = Validator::make(Input::all(), $rules);
+
+            echo $validator->fails();
+            if (!$validator->fails()) {
+                $note = Manuscrits::find($idnote);
+                $note->title = Input::get('title');
+                $note->content = Input::get('content');
+                $note->save();
+                return Redirect::to('notes/edit/'.$idnote);
+            }
+            else
+            {
+                return Redirect::to('notes/edit/'.$idnote)->withErrors($validator)->withInput();
+            }
+        }
+        else
+        {
+            return Redirect::to('unauthorized');
+        }
     }
 
     /**
@@ -200,6 +228,26 @@ class NoteController extends \BaseController {
             if($perms['create'])
             {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    private function canUserEditNote($idnote)
+    {
+        $note = Manuscrits::find($idnote);
+        //does the note exist
+        if(!is_null($note)) {
+            $basenote = $note->getParent();
+            $course = Courses::find($basenote->getParentCourseID());
+            $class = Classes::find($course->getClassID());
+
+
+            if (!is_null($class)) {
+                $perms = $class->getPermissionsTab(Auth::Id());
+                if ($perms['edit']) {
+                    return true;
+                }
             }
         }
         return false;

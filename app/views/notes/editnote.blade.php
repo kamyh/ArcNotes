@@ -8,8 +8,8 @@
     {{ Form::open(array('route' => array('/notes/update/{idnote}', 'idnote' => $idnote))); }}
     <table class="form">
         <tr>
-            <td>{{ Form::label('titre', 'Titre', array('class' => 'form-label')) }}</td>
-            <td>{{ Form::text('titre', $titre, array('size' => 100, 'maxlength' => 100, 'class' => 'text-input')); }}</td>
+            <td>{{ Form::label('title', 'Titre', array('class' => 'form-label')) }}</td>
+            <td>{{ Form::text('title', $title, array('size' => 100, 'maxlength' => 100, 'class' => 'text-input')); }}</td>
         </tr>
         <tr>
             <td>{{ Form::label('content','Contenu', array('class' => 'form-label')); }}</td>

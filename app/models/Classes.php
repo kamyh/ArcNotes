@@ -53,7 +53,6 @@ class Classes extends Eloquent
     private function isAuthorized($permToTest)
     {
         $perms = getPermissionsTab(Auth::id());
-
         return $perms[$permToTest];
     }
 
