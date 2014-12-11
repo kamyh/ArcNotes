@@ -43,7 +43,7 @@ Route::filter('auth', function()
 		}
 		else
 		{
-			return Redirect::guest('login');
+			return Redirect::guest('unauthorized');
 		}
 	}
 });
@@ -87,4 +87,13 @@ Route::filter('csrf', function()
 	{
 		throw new Illuminate\Session\TokenMismatchException;
 	}
+});
+
+
+/*
+ * 404 NOT FOUND custom view redirection
+ */
+App::missing(function($exception)
+{
+    return Response::view('error.404',array(),404);
 });

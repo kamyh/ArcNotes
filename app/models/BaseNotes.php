@@ -17,7 +17,6 @@ class BaseNotes extends Eloquent
     private $id_cours;
     private $name;
     private $token;
-    private $token_length = 32;
 
 
     public function getManuscrit()
@@ -33,6 +32,11 @@ class BaseNotes extends Eloquent
     public function getID()
     {
         return $this->attributes['id'];
+    }
+
+    public function getParentCourseID()
+    {
+        return $this->attributes['id_cours'];
     }
 
     public static function getNewToken()

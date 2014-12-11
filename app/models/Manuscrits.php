@@ -13,12 +13,24 @@ class Manuscrits extends Eloquent
      */
     protected $table = 'manuscrits';
 
-    private $id_basenote;
+    private $id_basenotes;
+    private $title;
+    private $content;
 
 
     public function getParent()
     {
-        return BaseNotes::find($this->$id_basenote);
+        return BaseNotes::find($this->attributes['id_basenotes']);
+    }
+
+    public function getTitle()
+    {
+        return $this->attributes['title'];
+    }
+
+    public function getContent()
+    {
+        return $this->attributes['content'];
     }
 
 
