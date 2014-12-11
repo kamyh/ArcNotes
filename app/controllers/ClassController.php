@@ -174,7 +174,8 @@ class ClassController extends \BaseController {
     {
         $class = Classes::find($idclass);
 
-        if($class->isOwner($iduser)) {
+        if($class->isOwner($iduser))
+        {
             $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
             $permission->id_rights = 4;
 
@@ -184,17 +185,26 @@ class ClassController extends \BaseController {
         }
         else
         {
-            return Redirect::to('404');
+            return Redirect::to('unauthorized');
         }
     }
 
     public function refuse_member($iduser,$idclass)
     {
-        $permission = Permissions::where('id_user','=',$iduser)->where('id_class','=',$idclass)->first();
+        $class = Classes::find($idclass);
 
-        $permission->delete();
+        if($class->isOwner($iduser))
+        {
+            $permission = Permissions::where('id_user','=',$iduser)->where('id_class','=',$idclass)->first();
+            $permission->delete();
 
-        return Redirect::to('manager/classowned');
+            return Redirect::to('manager/classowned');
+        }
+        else
+        {
+            echo "403";
+            //return Redirect::to('unauthorized');
+        }
     }
 
     public function remove_course($idcourse)
@@ -344,11 +354,18 @@ class ClassController extends \BaseController {
     public function class_owned()
     {
         $classID = DB::table('permissions')->where('id_user','=',Auth::id())->where('id_rights','=',15)->lists('id_class');
-        $listClasses = DB::table('classes')->whereIn('id',$classID)->lists('name','id');
 
-        $classesOwned = Classes::whereIn('id',$classID)->get();
+        if(!is_null($classID)) {
+            if (count($classID) > 0) {
+                $listClasses = DB::table('classes')->whereIn('id', $classID)->lists('name', 'id');
 
-        return View::make('users/gestionclassowner')->with(array('listClasses'=>$listClasses,'classesOwned'=>$classesOwned));
+                $classesOwned = Classes::whereIn('id', $classID)->get();
+                return View::make('users/gestionclassowner')->with(array('listClasses' => $listClasses, 'classesOwned' => $classesOwned));
+
+            }
+        }
+
+        return Redirect::to('/class/create');
     }
 
     public function getpublic()

@@ -76,7 +76,7 @@ class Classes extends Eloquent
     {
         $perm = DB::table('permissions')->where('id_user','=',$id_user)->where('id_class','=',$this->id)->first();
 
-        if($perm == 15)
+        if($perm->id_rights == 15)
         {
             return true;
         }
