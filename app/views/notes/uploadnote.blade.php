@@ -4,7 +4,7 @@
 @endsection
 @section('body')
 
-    <h1>Ajouter un fichier de note dans {{$course}} </h1>
+    <h1>Add a file in {{$course}} </h1>
     {{ Form::open(array('route' => array('/notes/upload/{idcourse}', 'idcourse' => $idcourse), 'files' => true)); }}
     <table class="form">
         <tr>
