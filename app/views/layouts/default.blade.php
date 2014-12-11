@@ -13,8 +13,8 @@
 </head>
 <body>
 <div class="header row color-a">
-			<div id="header-title" class="logo">
-				{{ HTML::image('img/logo.png') }}
+			<div id="header-title">
+				{{ HTML::image('img/logo.png', 'logo', array('class' => 'logo')) }}
 			</div>
 			<div id="header-menus" class="scroll-x">
 			@if(Auth::check())

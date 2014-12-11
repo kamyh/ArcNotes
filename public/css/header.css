@@ -7,7 +7,10 @@
 
 #header-title
 {
-	width:15em;
+    display: -webkit-flex;
+    display: flex;
+	width:18%;
+    padding:.5%;
 }
 
 #header-menus
@@ -49,4 +52,9 @@
 .header-search-tile
 {
 	align-self: center;
+}
+
+.logo{
+    width:auto; /* you can use % */
+    height: 60%;
 }
