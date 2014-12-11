@@ -40,7 +40,7 @@
 				            ?>
 				            Welcome: {{$user->firstname}} {{$user->lastname}}
                             {{ Form::open(array('route' => 'logout', 'method' => 'post')) }}
-                                {{Form::submit('Logout', array('class' => ''))}}
+                                {{Form::submit('Logout', array('class' => 'button'))}}
                             {{ Form::close() }}
 
                         @else
