@@ -356,9 +356,15 @@ class ClassController extends \BaseController {
         //TODO only public classes not already joined
         //if not auth take all
 
-
-        $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
-        $classes_public = Classes::where('visibility','=','public')->whereNotIn($classes_public)->get();
+        if(Auth::check())
+        {
+            $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
+            $classes_public = Classes::where('visibility', '=', 'public')->whereNotIn('id',$listClass)->get();
+        }
+        else
+        {
+            $classes_public = Classes::where('visibility', '=', 'public')->get();
+        }
 
         return View::make('class.public')->with(array('classes_public'=>$classes_public));
     }
