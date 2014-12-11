@@ -39,15 +39,13 @@
             <tr>
                 <td>Visibility</td>
                 <td>{{$class->visibility}}</td>
+            </tr>
+            <tr>
+                <td></td>
                 <td>
                     {{ Form::open(array('route' => array('/class/sign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                         {{Form::submit('Join', array('class' => ''))}}
                     {{ Form::close() }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-
                 </td>
             </tr>
             </table>

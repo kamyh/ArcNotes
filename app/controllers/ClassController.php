@@ -174,7 +174,7 @@ class ClassController extends \BaseController {
     {
         $class = Classes::find($idclass);
 
-        if($class->isOwner($iduser))
+        if($class->isOwner(Auth::id()))
         {
             $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
             $permission->id_rights = 4;
@@ -193,7 +193,7 @@ class ClassController extends \BaseController {
     {
         $class = Classes::find($idclass);
 
-        if($class->isOwner($iduser))
+        if($class->isOwner(Auth::id()))
         {
             $permission = Permissions::where('id_user','=',$iduser)->where('id_class','=',$idclass)->first();
             $permission->delete();
@@ -210,70 +210,85 @@ class ClassController extends \BaseController {
     public function remove_course($idcourse)
     {
         $course = Courses::find($idcourse);
-        $course->delete();
+        $class = Classes::where('id', '=', $course->id_class)->first();
+
+        if($class->isOwner(Auth::id()) || $class->canCreate())
+        {
+            $course->delete();
+        }
 
         return Redirect::to('manager/classowned');
     }
 
     public function remove_member($iduser,$idclass)
     {
-        $permission = Permissions::where('id_user','=',$iduser)->where('id_class','=',$idclass)->first();
+        $class = Classes::find($idclass);
 
-        $permission->delete();
+        if($class->isOwner(Auth::id())) {
+            $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
+
+            $permission->delete();
+        }
 
         return Redirect::to('manager/classowned');
     }
 
     public function chgt_rights($iduser,$idclass)
     {
-        $input = Input::all();
+        $class = Classes::find($idclass);
 
-        $rights = 0;
+        if($class->isOwner(Auth::id())) {
+            $input = Input::all();
 
-        if(isset($input['read']))
-        {
-            $rights += 4;
+            $rights = 0;
+
+            if (isset($input['read'])) {
+                $rights += 4;
+            }
+            if (isset($input['edition'])) {
+                $rights += 2;
+            }
+            if (isset($input['creation'])) {
+                $rights += 1;
+            }
+
+            $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
+            $permission->id_rights = $rights;
+
+            $permission->save();
         }
-        if(isset($input['edition']))
-        {
-            $rights += 2;
-        }
-        if(isset($input['creation']))
-        {
-            $rights += 1;
-        }
-
-        $permission = Permissions::where('id_user','=',$iduser)->where('id_class','=',$idclass)->first();
-        $permission->id_rights = $rights;
-
-        $permission->save();
 
         return Redirect::to('/manager/classowned');
     }
 
     public function chgt_visibility($idclass)
     {
-        $class = Classes::where('id','=',$idclass)->first();
+        $class = Classes::find($idclass);
 
-        if($class->visibility == 'public')
-        {
-            $class->visibility = 'private';
-        }
-        else
-        {
-            $class->visibility = 'public';
-        }
+        if($class->isOwner(Auth::id())) {
+            $class = Classes::where('id', '=', $idclass)->first();
 
-        $class->save();
+            if ($class->visibility == 'public') {
+                $class->visibility = 'private';
+            } else {
+                $class->visibility = 'public';
+            }
+
+            $class->save();
+        }
 
         return Redirect::to('manager/classowned');
     }
 
     public function remove_class($idclass)
     {
-        $class = Classes::where('id','=',$idclass)->first();
+        $class = Classes::find($idclass);
 
-        $class->delete();
+        if($class->isOwner(Auth::id())) {
+            $class = Classes::where('id', '=', $idclass)->first();
+
+            $class->delete();
+        }
 
         return Redirect::to('manager/classowned');
     }
