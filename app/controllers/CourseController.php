@@ -120,19 +120,19 @@ class CourseController extends \BaseController {
 
     public function open($idcourse)
     {
-        $filesManuscrit = [];
-        $files = [];
+        $course = Courses::find($idcourse);
 
-        $course = DB::table('courses')->where('id','=',$idcourse)->first();
-        $id_basenotes = DB::table('basenotes')->where('id_cours','=',$idcourse)->lists('id');
-
-        if(!empty($id_basenotes))
+        if(!is_null($course))
         {
-            $filesManuscrit = DB::table('manuscrits')->whereIn('id', $id_basenotes)->get();
-            $files = DB::table('files')->whereIn('id', $id_basenotes)->get();
-        }
+            $manuscrits = DB::table('basenotes')->where('id_cours',$course->id)->join('manuscrits', 'manuscrits.id_basenotes', '=', 'basenotes.id')->get();
+            $files = DB::table('basenotes')->where('id_cours',$course->id)->join('files', 'files.id_basenotes', '=', 'basenotes.id')->get();
 
-        return View::make('course.selectnote')->with(array('course' => $course, 'filesManuscrit' => $filesManuscrit, 'files' => $files));
+            if(count($manuscrits) == 0) $manuscrits = array();
+            if(count($files) == 0) $files = array();
+
+            return View::make('course.selectnote')->with(array('course' => $course, 'manuscrits' => $manuscrits, 'files' => $files));
+        }
+        return Redirect::to('404');
     }
 
 }

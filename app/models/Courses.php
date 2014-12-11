@@ -12,6 +12,7 @@ class Courses extends Eloquent
      * @var string
      */
     protected $table = 'courses';
+    private $id;
 
 
     public function getClassID()

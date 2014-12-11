@@ -33,7 +33,7 @@
         </tr>
     </table>
     <table>
-        @foreach($filesManuscrit as $file)
+        @foreach($manuscrits as $file)
             <tr>
                 <td>{{ $file->title }}</td>
                 <td>
