@@ -29,9 +29,9 @@ Route::get('/404', function()
     return View::make('error/404');
 });
 
-Route::get('/403', function()
+Route::get('/unauthorized', function()
 {
-    return View::make('error/403');
+    return View::make('error/unauthorized');
 });
 
 
@@ -98,7 +98,7 @@ Route::get("lists_classes", array(
 /*
  * Course
  */
-Route::get('/course/open/{idcourse}',array('before' => 'auth','as'=> '/course/open/{idcourse}', 'uses' => 'CourseController@open'))->where('idcourse','[0-9]+');
+Route::get('/course/open/{idcourse}',array('before' => 'auth','as'=> '/course/open/{course}', 'uses' => 'CourseController@open'))->where('idcourse','[0-9]+');
 
 
 /*
