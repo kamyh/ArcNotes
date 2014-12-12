@@ -293,9 +293,13 @@ class ClassController extends \BaseController {
         return Redirect::to('manager/classowned');
     }
 
-    public function resign_class()
+    public function resign_class($idclass)
     {
-        //TODO
+        $permission = Permissions::where('id_class','=',$idclass)->where('id_user','=', Auth::id());
+
+        $permission->delete();
+
+        return Redirect::to('/');
     }
 
     public function open($idclass)
