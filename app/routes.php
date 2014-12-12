@@ -74,6 +74,7 @@ Route::get('/rights/change/{iduser}/{idclass}', array('before' => 'auth','as' =>
 Route::get('/visibility/change/{idclass}', array('before' => 'auth','as' => '/visibility/change/{idclass}', 'uses' => 'ClassController@chgt_visibility'))->where('idclass','[0-9]+');
 Route::get('/class/open/{idclass}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
 Route::get('/class/public/{page}', array('as' => '/class/public/{page}', 'uses' => 'ClassController@getpublic'))->where('idclass','[0-9]+');
+Route::get('/class/participant/{page}', array('as' => '/class/participant/{page}', 'uses' => 'ClassController@classParticipant'))->where('idclass','[0-9]+');
 Route::post('/class/join', array('as' => '/class/join', 'uses' => 'ClassController@load'));
 Route::get('/class/sign/{idclass}', array('before' => 'auth','as' => '/class/sign/{idclass}', 'uses' => 'ClassController@join'))->where('idclass','[0-9]+');
 Route::resource('classes', 'ClassController');

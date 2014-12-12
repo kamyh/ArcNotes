@@ -356,7 +356,6 @@ class ClassController extends \BaseController {
 
     public function getpublic($page)
     {
-        //TODO 12 by page
         $take = 12;
         $skip = ($page -1) * $take;
 
@@ -376,6 +375,19 @@ class ClassController extends \BaseController {
 
         $numberOfPages = ceil($numberOfPages/$take);
         return View::make('class.public')->with(array('classes_public'=>$classes_public,'numberOfPages'=>$numberOfPages,'pageNo'=>$page));
+    }
+
+    public function classParticipant($page)
+    {
+        $take = 12;
+        $skip = ($page -1) * $take;
+
+        $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
+        $classes_public = Classes::whereIn('id',$listClass)->skip($skip)->take($take)->get();
+        $numberOfPages = Classes::whereIn('id',$listClass)->count();
+
+        $numberOfPages = ceil($numberOfPages/$take);
+        return View::make('class.userdisplay')->with(array('classes_public'=>$classes_public,'numberOfPages'=>$numberOfPages,'pageNo'=>$page));
     }
 }
 
