@@ -15,10 +15,14 @@ class CreateManuscritsTable extends Migration {
 		Schema::create('manuscrits', function(Blueprint $table) {
 			$table->increments('id')->unique();
 			$table->timestamps();
-			$table->integer('id_basenotes')->references('id')->on('basenotes');
+			$table->integer('id_basenotes')->unsigned();
             $table->text('content');
             $table->text('title');
 		});
+
+        Schema::table('manuscrits', function($table) {
+            $table->foreign('id_basenotes')->references('id')->on('basenotes')->onDelete('CASCADE')->onUpdate('CASCADE');
+        });
 	}
 
 	/**

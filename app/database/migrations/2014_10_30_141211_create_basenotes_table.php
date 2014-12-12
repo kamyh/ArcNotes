@@ -19,6 +19,7 @@ class CreateBasenotesTable extends Migration {
             $table->integer('id_cours')->references('id')->on('courses');
 			$table->string('name',255);
 			$table->string('token',255);
+			$table->text('summary')->nullable();
 			$table->boolean('iseditable');
 		});
 	}

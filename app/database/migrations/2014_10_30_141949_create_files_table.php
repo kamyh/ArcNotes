@@ -15,9 +15,13 @@ class CreateFilesTable extends Migration {
 		Schema::create('files', function(Blueprint $table) {
 			$table->increments('id')->unique();
 			$table->timestamps();
-			$table->integer('id_basenotes')->references('id')->on('basenotes');
+			$table->integer('id_basenotes')->unsigned();
 			$table->string('path', 320);
 		});
+
+        Schema::table('files', function($table) {
+            $table->foreign('id_basenotes')->references('id')->on('basenotes')->onDelete('CASCADE')->onUpdate('CASCADE');
+        });
 	}
 
 	/**
