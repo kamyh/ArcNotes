@@ -14,11 +14,17 @@ class CreatePermissionsTable extends Migration {
 	{
 		Schema::create('permissions', function(Blueprint $table) {
 			$table->timestamps();
-			$table->integer('id_user')->references('id')->on('users');
-			$table->integer('id_rights')->references('id')->on('rights');
-			$table->integer('id_class')->references('id')->on('classes');
+			$table->integer('id_user')->unsigned();
+			$table->integer('id_rights');
+			$table->integer('id_class')->unsigned();
             $table->increments('id')->unique();
 		});
+
+        Schema::table('permissions', function($table) {
+            $table->foreign('id_class')->references('id')->on('classes')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('CASCADE')->onUpdate('CASCADE');
+        });
+
 	}
 
 	/**

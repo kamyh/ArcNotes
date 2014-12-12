@@ -15,11 +15,17 @@ class CreateCoursesTable extends Migration {
 		Schema::create('courses', function(Blueprint $table) {
             $table->string('name', 120);
 			$table->increments('id')->unique();
-            $table->integer('id_class');
+            $table->integer('id_class')->unsigned();
 			$table->timestamps();
 			$table->string('matter', 120);
-		});
+        });
+
+        Schema::table('courses', function($table) {
+            $table->foreign('id_class')->references('id')->on('classes')->onDelete('CASCADE')->onUpdate('CASCADE');
+        });
 	}
+
+
 
 	/**
 	 * Reverse the migrations.

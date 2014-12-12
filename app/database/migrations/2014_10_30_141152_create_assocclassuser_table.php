@@ -14,10 +14,12 @@ class CreateAssocclassuserTable extends Migration {
 	{
 		Schema::create('assocclassuser', function(Blueprint $table) {
 			$table->timestamps();
-			$table->integer('id_class')->references('id')->on('classes');
-			$table->integer('id_user')->reference('id')->on('users');
+			$table->integer('id_class')->unsigned();
+			$table->integer('id_user')->unsigned();
 			$table->unique('id_class','id_user');
 		});
+
+
 	}
 
 	/**
