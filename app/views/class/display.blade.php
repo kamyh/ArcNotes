@@ -39,9 +39,8 @@
         </tr>
         <tr>
             <td>
-            <!-- TODO chk id permissions -->
                 {{ Form::open(array('route' => array('/courses/create/{idclass}', 'idclass' => $class[0]->id),'method' => 'get')); }}
-                    {{ Form::submit('New Course',null, array('class' => 'button')); }}
+                    {{ Form::submit('New Course', array('class' => 'button')) }}
                 {{Form::close();}}
             </td>
         </tr>

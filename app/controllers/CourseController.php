@@ -18,7 +18,8 @@ class CourseController extends \BaseController {
      */
     public function createCours($idclass)
     {
-        return View::make('createcours')->with(array('idclass'=>$idclass));
+        $schoolList = DB::table('courses')->lists('name','id');
+        return View::make('createcours')->with(array('idclass'=>$idclass,'schoolList'=>$schoolList));
     }
 
 

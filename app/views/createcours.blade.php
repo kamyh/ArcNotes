@@ -5,9 +5,6 @@
 @section('body')
 <div class="">
         <h2>new course</h2>
-        <?php
-            $schoolList = DB::table('courses')->lists('name','id');
-        ?>
         <table>
             {{ Form::open(array('route' => array('courses.store'), 'method' => 'post')) }}
             @if($errors->any())
