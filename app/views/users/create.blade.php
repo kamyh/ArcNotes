@@ -28,7 +28,7 @@
             {{Form::password('password',array('class' => ''))}}
            <br/>
 
-        {{Form::submit('Register', array('class' => ''))}}
+        {{Form::submit('Register', array('class' => 'button'))}}
         {{ Form::close() }}
 </div>
 @stop

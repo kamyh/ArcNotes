@@ -16,11 +16,11 @@
     {{Form::label('password','Password')}}
     {{Form::password('password',array('class' => ''))}}        <br/>
 
-    {{Form::submit('Login', array('class' => ''))}}
+    {{Form::submit('Login', array('class' => 'button'))}}
 {{ Form::close() }}
 
 {{ Form::open(array('url' => 'logout', 'method' => 'post')) }}
-    {{Form::submit('Logout', array('class' => ''))}}
+    {{Form::submit('Logout', array('class' => 'button'))}}
 {{ Form::close() }}
 
 @stop

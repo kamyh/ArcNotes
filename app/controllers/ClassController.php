@@ -298,41 +298,6 @@ class ClassController extends \BaseController {
         //TODO
     }
 
-    public function lists_classes_courses()
-    {
-
-        $classID = DB::table('permissions')->where('id_user','=',Auth::id())->lists('id_class');
-
-        $listClasses = DB::table('classes')->whereIn('id',$classID)->get();
-
-        $response = [];
-
-        foreach($listClasses as $class)
-        {
-
-            $listCourses = DB::table('courses')->where('id_class', '=', $class->id);
-
-            if(is_array($listCourses->lists('id')))
-            {
-                $courses = DB::table('courses')->whereIn('id', $listCourses->lists('id'))->lists('name', 'id');
-            }
-            else
-            {
-                $t = [0];
-                array_push($t,$listCourses->lists('id'));
-                $courses = DB::table('courses')->whereIn('id',$t )->lists('name', 'id');
-            }
-
-
-
-            array_push($response, $class->name,$class->id, $courses);
-        }
-
-
-        return Response::json($response);
-        return Response::json("caca");
-    }
-
     public function open($idclass)
     {
         $info = DB::table('classes')->where('id','=',$idclass)->get();
@@ -341,6 +306,7 @@ class ClassController extends \BaseController {
 
         $school = DB::table('schools')->where('id','=',$info[0]->id_school)->get();
         $city = DB::table('cities')->find($school[0]->id_location);
+
         $canton = DB::table('cantons')->find($city->id_canton);
 
         return View::make('class.display')->with(array('class' => $info,'courses'=>$courses,'school_name'=>$school[0]->name,'school_city'=>$city->name,'canton'=>$canton->name));
@@ -384,23 +350,28 @@ class ClassController extends \BaseController {
         return Redirect::to('/class/create');
     }
 
-    public function getpublic()
+    public function getpublic($page)
     {
-        //TODO only public classes not already joined
-        //if not auth take all
+        //TODO 12 by page
+        $take = 12;
+        $skip = ($page -1) * $take;
+
 
         if(Auth::check())
         {
             $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
-            $classes_public = Classes::where('visibility', '=', 'public')->whereNotIn('id',$listClass)->get();
+            $classes_public = Classes::where('visibility', '=', 'public')->whereNotIn('id',$listClass)->skip($skip)->take($take)->get();
+            $numberOfPages = Classes::where('visibility', '=', 'public')->whereNotIn('id',$listClass)->count();
 
         }
         else
         {
-            $classes_public = Classes::where('visibility', '=', 'public')->get();
+            $classes_public = Classes::where('visibility', '=', 'public')->skip($skip)->take($take)->get();
+            $numberOfPages = Classes::where('visibility', '=', 'public')->skip($skip)->take($take)->count();
         }
 
-        return View::make('class.public')->with(array('classes_public'=>$classes_public));
+        $numberOfPages = ceil($numberOfPages/$take);
+        return View::make('class.public')->with(array('classes_public'=>$classes_public,'numberOfPages'=>$numberOfPages,'pageNo'=>$page));
     }
 }
 

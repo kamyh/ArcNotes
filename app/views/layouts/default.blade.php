@@ -21,7 +21,7 @@
 			     <a href="/manager/classowned/" class="header-menu-tile color-b hover-color-a">My Class Manager</a>
 			     <a href="/class/create/" class="header-menu-tile color-b hover-color-a">New Class</a>
             @endif
-                 <a href="/class/join/" class="header-menu-tile color-b hover-color-a">Public Classes</a>
+                 <a href="/class/public/1" class="header-menu-tile color-b hover-color-a">Public Classes</a>
                  <a href="/about/" class="header-menu-tile color-b hover-color-a">About</a>
             @if(!Auth::check())
                  <a href="/user/create" class="header-menu-tile color-b hover-color-a">Register</a>

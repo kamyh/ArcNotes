@@ -21,7 +21,7 @@
                 {{ Form::select('class', $listClasses, null, array('class' => '')) }}
                 </td></tr>
                 <tr><td>
-                {{Form::submit('Invite', array('class' => ''))}}
+                {{Form::submit('Invite', array('class' => 'button'))}}
                 </td></tr>
             {{ Form::close() }}
         </table>
@@ -35,14 +35,14 @@
                     {{ Form::open(array('route' => array('/visibility/change/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                     <td>
                         @if($class->visibility == 'public')
-                            {{Form::submit('Make Private', array('class' => ''))}}
+                            {{Form::submit('Make Private', array('class' => 'button'))}}
                         @else
-                            {{Form::submit('Make Public', array('class' => ''))}}
+                            {{Form::submit('Make Public', array('class' => 'button'))}}
                         @endif
 
                     {{ Form::close() }}
                     {{ Form::open(array('route' => array('/class/remove/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
-                        {{Form::submit('Delete', array('class' => ''))}}</td>
+                        {{Form::submit('Delete', array('class' => 'button'))}}</td>
                     {{ Form::close() }}
 
                 </tr>
@@ -59,18 +59,18 @@
                         @if($user->getUserPermForClass($class->id) < 1)
                             <tr><td>
                             {{ Form::open(array('route' => array('/class/accept/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
-                                {{Form::submit('Accept', array('class' => ''))}}
+                                {{Form::submit('Accept', array('class' => 'button'))}}
                             {{ Form::close() }}
                             </td>
                             <td>
                             {{ Form::open(array('route' => array('/class/refuse/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
-                                {{Form::submit('Refuse', array('class' => ''))}}
+                                {{Form::submit('Refuse', array('class' => 'button'))}}
                             {{ Form::close() }}
                             </td></tr>
                         @elseif($user->getUserPermForClass($class->id) != 15)
                             <tr><td>
                             {{ Form::open(array('route' => array('/member/remove/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
-                                {{Form::submit('Remove', array('class' => ''))}}
+                                {{Form::submit('Remove', array('class' => 'button'))}}
                             {{ Form::close() }}
                             </td></tr>
 
@@ -95,7 +95,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                    {{Form::submit('Validate', array('class' => ''))}}
+                                    {{Form::submit('Validate', array('class' => 'button'))}}
                                     </td>
                                 </tr>
                                 {{ Form::close() }}
@@ -116,7 +116,7 @@
                             </tr>
                             <tr>
                                 {{ Form::open(array('route' => array('/course/remove/{idcourse}','idcourse'=>$course->id), 'method' => 'get')) }}
-                                    {{Form::submit('Remove', array('class' => ''))}}
+                                    {{Form::submit('Remove', array('class' => 'button'))}}
                                 {{ Form::close() }}
                             </tr>
                         </table>

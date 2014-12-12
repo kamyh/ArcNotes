@@ -66,7 +66,7 @@
             </tr>
             <tr>
                 <td>
-                {{Form::submit('Create', array('class' => ''))}}
+                {{Form::submit('Create', array('class' => 'button'))}}
                 </td>
             </tr>
             {{ Form::close() }}
