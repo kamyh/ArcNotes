@@ -11,6 +11,9 @@ class Cities extends Eloquent
      */
     protected $table = 'cities';
 
-
+    public function getList()
+    {
+        return DB::table('cities')->distinct()->lists('name','id');
+    }
 
 }

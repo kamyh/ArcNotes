@@ -11,6 +11,9 @@ class Canton extends Eloquent
      */
     protected $table = 'cantons';
 
-
+    public function getList()
+    {
+        return DB::table('cantons')->lists('name','id');
+    }
 
 }

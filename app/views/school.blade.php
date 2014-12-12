@@ -4,35 +4,8 @@
 @endsection
 @section('body')
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#selectCanton").change(function() {
-            $.getJSON("/searchcities/" + $("#selectCanton").val(),
-             { id_canton: $("#selectCanton").val() },
-             function(data) {
-                var $cities = $("#selectCities");
-                $cities.empty();
-
-                $.each(data, function(index, value)
-                {
-                    $cities.append('<option value="' + index +'">' + value + '</option>');
-                });
-            });
-        });
-    });
-</script>
-
-
 <div class="">
         <h2>new school</h2>
-        <?php
-
-        $cantonList = DB::table('cantons')->lists('name','id');
-
-        $cityList = DB::table('cities')->distinct()->lists('name','id');
-
-        //TODO set dropdown cities to canton's cities
-        ?>
         <table>
             {{ Form::open(array('route' => array('school.store'), 'method' => 'post')) }}
             @if($errors->any())
@@ -58,14 +31,14 @@
                 {{Form::label('canton','Canton')}}
                 </td>
                 <td>
-                {{ Form::select('canton', $cantonList, null, array('class' => '' , 'id' => 'selectCanton')) }}
+                {{ Form::select('canton', (new Canton())->getList(), null, array('class' => '' , 'id' => 'selectCanton')) }}
                 </td>
             </tr>
             <tr>
                 <td>
                 {{Form::label('city','City')}}
                 </td><td>
-                {{ Form::select('city', $cityList, null, array('class' => '', 'id' => 'selectCities')) }}
+                {{ Form::select('city', (new Cities())->getList(), null, array('class' => '', 'id' => 'selectCities')) }}
                 </td>
             </tr>
 
