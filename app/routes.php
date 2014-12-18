@@ -72,7 +72,7 @@ Route::get('/class/resign/{idclass}', array('before' => 'auth','as' => '/class/r
 Route::get('/member/remove/{iduser}/{idclass}', array('before' => 'auth','as' => '/member/remove/{iduser}/{idclass}', 'uses' => 'ClassController@remove_member'))->where('idclass','[0-9]+');
 Route::get('/rights/change/{iduser}/{idclass}', array('before' => 'auth','as' => '/rights/change/{iduser}/{idclass}', 'uses' => 'ClassController@chgt_rights'))->where('iduser','[0-9]+');
 Route::get('/visibility/change/{idclass}', array('before' => 'auth','as' => '/visibility/change/{idclass}', 'uses' => 'ClassController@chgt_visibility'))->where('idclass','[0-9]+');
-Route::get('/class/open/{idclass}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
+//Route::get('/class/open/{idclass}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
 Route::get('/class/public/{page}', array('as' => '/class/public/{page}', 'uses' => 'ClassController@getpublic'))->where('idclass','[0-9]+');
 Route::get('/class/participant/{page}', array('as' => '/class/participant/{page}', 'uses' => 'ClassController@classParticipant'))->where('idclass','[0-9]+');
 Route::post('/class/join', array('as' => '/class/join', 'uses' => 'ClassController@load'));
@@ -82,6 +82,7 @@ Route::get('/class/create', array('before' => 'auth','as' => '/class/create', 'u
 
 Route::get('/manager/classowned', array('as' => '/manager/classowned', 'uses' => 'ClassController@class_owned'));
 
+Route::get('/class/display/{idclass}', array('before' => 'auth','as' => '/class/display/{idclass}', 'uses' => 'ClassController@selectedClass'));
 
 
 

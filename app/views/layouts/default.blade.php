@@ -68,7 +68,7 @@
 				 @if(Auth::check())
                     @foreach(Auth::user()->getClasses() as $class)
 
-                            <a href="/class/open/{{$class->id}}" class="context-menu-tile-class color-b">{{$class->name}}</a>
+                            <a href="/class/display/{{$class->id}}" class="context-menu-tile-class color-b">{{$class->name}}</a>
                             @foreach($class->getCourses() as $course)
                                 <a href="/course/open/{{$course->id}}" class="context-menu-tile-course hover-color-b color-a ">{{$course->name}}</a></br>
                             @endforeach

@@ -1,55 +1,62 @@
+<!--
+Inputs:
+   $title           ==> Page title
+   $numberOfPage    ==> Number total of page needed to display all classes
+   $pageNo          ==> N° of the current page
+   $classes         ==> Array of the classes to display in the current page
+
+   See getpublic($page) function in the bottom of ClassController to have an exemple
+-->
 @extends('layouts.default')
 @section('title')
-    Public classes
+    {{$title}}
 @endsection
 @section('body')
 
-       <h2>Public Classes</h2>
+       <h2>{{$title}}</h2>
         <div class="list-classes">
-        @foreach($classes_public as $class)
+        @foreach($classes as $class)
         <div class="class-tile color-a">
             <a href="/class/open/{{$class->id}}" class="class-title-tile color-b hover-color-a">{{$class->name}}</a>
-        <table>
-
-
-            <tr>
-                <td>Created at </td>
-                <td> {{ $class->created_at }} </td>
-            </tr>
-            <tr>
-                <td>Last update </td>
-                <td> {{ $class->updated_at }} </td>
-            </tr>
-            <tr>
-                <td>{{$class->getSchoolName()}}</td>
-                <td>{{$class->getCitie()}} {{$class->getCanton()}}</td>
-            </tr>
-            <tr>
-                <td>Schollar year</td>
-                <td>{{$class->scollaryear}}</td>
-            </tr>
-            <tr>
-                <td>Degree</td>
-                <td>{{$class->degree}}</td>
-            </tr>
-            <tr>
-                <td>Domain</td>
-                <td>{{$class->domain}}</td>
-            </tr>
-            <tr>
-                <td>Visibility</td>
-                <td>{{$class->visibility}}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    {{ Form::open(array('route' => array('/class/sign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
-                        {{Form::submit('Join', array('class' => 'button'))}}
-                    {{ Form::close() }}
-                </td>
-            </tr>
+            <table>
+                <tr>
+                    <td>Created at </td>
+                    <td> {{ $class->created_at }} </td>
+                </tr>
+                <tr>
+                    <td>Last update </td>
+                    <td> {{ $class->updated_at }} </td>
+                </tr>
+                <tr>
+                    <td>{{$class->getSchoolName()}}</td>
+                    <td>{{$class->getCitie()}} {{$class->getCanton()}}</td>
+                </tr>
+                <tr>
+                    <td>Schollar year</td>
+                    <td>{{$class->scollaryear}}</td>
+                </tr>
+                <tr>
+                    <td>Degree</td>
+                    <td>{{$class->degree}}</td>
+                </tr>
+                <tr>
+                    <td>Domain</td>
+                    <td>{{$class->domain}}</td>
+                </tr>
+                <tr>
+                    <td>Visibility</td>
+                    <td>{{$class->visibility}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        {{ Form::open(array('route' => array('/class/sign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
+                            {{Form::submit('Join', array('class' => 'button'))}}
+                        {{ Form::close() }}
+                    </td>
+                </tr>
             </table>
-            </div>
+        </div>
         @endforeach
         </div>
         <div class="page-navigation">
