@@ -84,7 +84,11 @@ Route::get('/manager/classowned', array('as' => '/manager/classowned', 'uses' =>
 
 Route::get('/class/display/{idclass}', array('before' => 'auth','as' => '/class/display/{idclass}', 'uses' => 'ClassController@selectedClass'));
 
-
+/* verify email */
+Route::get('register/verify/{confirmationCode}', [
+    'as' => 'confirmation_path',
+    'uses' => 'UserController@confirm'
+]);
 
 /*
  * TEST Routes

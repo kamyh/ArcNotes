@@ -94,11 +94,19 @@ class UserController extends \BaseController {
 
             $user = new User();
 
+            $confirmation_code = str_random(30);
+
             $user->email = $input['email'];
             $user->password = $password;
             $user->lastname = $input['lastname'];
             $user->firstname = $input['firstname'];
+            $user->confirmation_code = $confirmation_code;
             $user->save();
+
+            Mail::send('emails.verify', array('confirmation_code'=>$confirmation_code), function($message) {
+                $message->to(Input::get('email'), Input::get('firstname') + " " + Input::get('lastname'))
+                    ->subject('Verify your email address')->from('arcnotesnoreply@gmail.com');
+            });
 
             return Redirect::to('/');
 
@@ -168,7 +176,24 @@ class UserController extends \BaseController {
         echo "PLOP";
         $this->show(1);
     }
-	
 
+    public function confirm($confirmation_code)
+    {
+        if( ! $confirmation_code)
+        {
+            throw new InvalidConfirmationCodeException;
+        }
 
+        $user = User::whereConfirmationCode($confirmation_code)->first();
+
+        if ( ! $user)
+        {
+            throw new InvalidConfirmationCodeException;
+        }
+
+        $user->confirmation_code = null;
+        $user->save();
+
+        return Redirect::to('/');
+    }
 }

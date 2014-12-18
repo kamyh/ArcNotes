@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration {
 			$table->string('email', 100)->unique();
 			$table->string('password', 64);
 			$table->boolean('unregistered')->default(false);
+            $table->string('confirmation_code')->nullable();
             $table->string('remember_token',255);
 		});
 	}
