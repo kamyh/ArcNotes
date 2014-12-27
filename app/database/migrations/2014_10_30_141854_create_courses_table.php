@@ -18,6 +18,7 @@ class CreateCoursesTable extends Migration {
             $table->integer('id_class')->unsigned();
 			$table->timestamps();
 			$table->string('matter', 120);
+            //$table->unique('id_class','name','matter');
         });
 
         Schema::table('courses', function($table) {
