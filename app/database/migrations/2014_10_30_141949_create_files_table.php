@@ -16,7 +16,8 @@ class CreateFilesTable extends Migration {
 			$table->increments('id')->unique();
 			$table->timestamps();
 			$table->integer('id_basenotes')->unsigned();
-			$table->string('path', 320);
+			$table->string('path', 255)->unique();
+            $table->string('original_filename',320);
 		});
 
         Schema::table('files', function($table) {
