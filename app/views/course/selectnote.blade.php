@@ -32,6 +32,7 @@
             </td>
         </tr>
     </table>
+    <h2>Written notes</h2>
     <table>
         @foreach($manuscrits as $file)
             <tr>
@@ -49,5 +50,19 @@
             </tr>
         @endforeach
     </table>
+    <h2>Files</h2>
+     <table>
+            @foreach($files as $file)
+                <tr>
+                    <td>{{ $file->original_filename }}</td>
+                    <td>{{ Files::find($file->id)->getSize(); }}</td>
+                    <td>
+                        {{Form::open(array('route' => array('/notes/download/{idfile}', 'idfile' => $file->id), 'method' => 'get')); }}
+                        {{ Form::submit('Download', null, array('class' => 'button')); }}
+                        {{Form::close();}}
+                    </td>
+                </tr>
+            @endforeach
+     </table>
 
 @stop

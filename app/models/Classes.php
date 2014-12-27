@@ -100,5 +100,15 @@ class Classes extends Eloquent
     {
         return DB::table('cantons')->find($this->id_canton)->name;
     }
+
+    public function getName()
+    {
+        return $this->attributes['name'];
+    }
+
+    public function getSchollarName()
+    {
+        return $this->attributes['scollaryear'];
+    }
 }
 

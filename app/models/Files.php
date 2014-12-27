@@ -4,7 +4,7 @@
 
 class Files extends Eloquent
 {
-    protected $fillable = ['path'];
+    protected $fillable = ['id_basenotes','path','original_filename','mime'];
 
     /**
      * The database table used by the model.
@@ -13,13 +13,48 @@ class Files extends Eloquent
      */
     protected $table = 'files';
 
-    private $id_basenote;
+    private $id_basenotes;
+    private $original_filename;
+    private $path;
+    private $mime;
 
 
     public function getParent()
     {
-        return BaseNotes::find($this->$id_basenote);
+        return BaseNotes::find($this->attributes['id_basenotes']);
     }
 
+    public function getPath()
+    {
+        return $this->attributes['path'];
+    }
 
+    public function getOriginalName()
+    {
+        return $this->attributes['original_filename'];
+    }
+
+    public function getSize()
+    {
+        $bytesSize = filesize(public_path().$this->attributes['path']);
+        $kilo = 1024;
+
+        if($bytesSize < $kilo) {
+            return $bytesSize . ' B';
+        }
+        else if($bytesSize < $kilo*$kilo) {
+            return ceil($bytesSize / $kilo) .' kB';
+        }
+        else if($bytesSize < $kilo*$kilo*$kilo) {
+            return ceil($bytesSize / ($kilo * $kilo)) . ' MB';
+        }
+        else {
+            return ceil($bytesSize / ($kilo * $kilo * $kilo)) . ' GB';
+        }
+    }
+
+    public function getMIMEType()
+    {
+        return $this->attributes['mime'];
+    }
 }
