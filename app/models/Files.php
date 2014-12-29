@@ -36,20 +36,27 @@ class Files extends Eloquent
 
     public function getSize()
     {
-        $bytesSize = filesize(public_path().$this->attributes['path']);
-        $kilo = 1024;
+        if(is_file($this->attributes['path']))
+        {
+            $bytesSize = filesize(public_path().$this->attributes['path']);
+            $kilo = 1024;
 
-        if($bytesSize < $kilo) {
-            return $bytesSize . 'B';
+            if($bytesSize < $kilo) {
+                return $bytesSize . 'B';
+            }
+            else if($bytesSize < $kilo*$kilo) {
+                return ceil($bytesSize / $kilo) .'kB';
+            }
+            else if($bytesSize < $kilo*$kilo*$kilo) {
+                return ceil($bytesSize / ($kilo * $kilo)) . 'MB';
+            }
+            else {
+                return ceil($bytesSize / ($kilo * $kilo * $kilo)) . 'GB';
+            }
         }
-        else if($bytesSize < $kilo*$kilo) {
-            return ceil($bytesSize / $kilo) .'kB';
-        }
-        else if($bytesSize < $kilo*$kilo*$kilo) {
-            return ceil($bytesSize / ($kilo * $kilo)) . 'MB';
-        }
-        else {
-            return ceil($bytesSize / ($kilo * $kilo * $kilo)) . 'GB';
+        else
+        {
+            return 'undefined size';
         }
     }
 

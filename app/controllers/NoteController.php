@@ -143,6 +143,7 @@ class NoteController extends \BaseController {
                 $token = bin2hex(BaseNotes::getNewToken());
                 $note = BaseNotes::firstOrCreate(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token));
                 Manuscrits::firstOrCreate(array('id_basenotes' => $note->getID(), 'content' => Input::get('content'), 'title' => Input::get('title')));
+                Session::put('toast',array('success','The note was created'));
                 return Redirect::to('course/open/'.$idcourse);
             }
             else
@@ -178,7 +179,10 @@ class NoteController extends \BaseController {
                     $note->title = Input::get('title');
                     $note->content = Input::get('content');
                     $note->save();
-                    return Redirect::to('notes/edit/'.$idnote);
+                    $basenote = $note->getParent();
+                    $idcourse = $basenote->id_cours;
+                    Session::put('toast',array('success','The note was updated'));
+                    return Redirect::to('course/open/'.$idcourse);
                 }
                 else
                 {
@@ -202,7 +206,31 @@ class NoteController extends \BaseController {
      */
     public function removeNote($idnote)
     {
-
+        //test if note exists
+        $note = Manuscrits::find($idnote);
+        if(!is_null($note))
+        {
+            //get the basenote parent
+            $basenote = $note->getParent();
+            //if user can edit and read
+            if($this->canUserDoActionOnNote($idnote,'edit'))
+            {
+                //deletion
+                $idcourse = $basenote->id_cours;
+                $basenote->delete();
+                $note->delete();
+                Session::put('toast',array('success','The note was deleted'));
+                return Redirect::to('course/open/'.$idcourse);
+            }
+            else
+            {
+                return Redirect::to('/unauthorized');
+            }
+        }
+        else
+        {
+            return Redirect::to('/404');
+        }
     }
 
     /**
@@ -211,7 +239,6 @@ class NoteController extends \BaseController {
      */
     public function uploadFileNote($idcourse)
     {
-
         //before all we have to check if user can uplaod anything in the course
         //writing a note is the same as upoad a file
         if($this->canUserWriteNote($idcourse)) {

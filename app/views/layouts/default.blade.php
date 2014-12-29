@@ -6,8 +6,14 @@
 	{{HTML::style('css/header.css');}}
 	{{HTML::style('css/leftdock.css');}}
 	{{HTML::style('css/contentlayout.css');}}
+	{{HTML::style('css/jquery.toastmessage.css');}}
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    {{ HTML::script("/js/jquery-2.1.3.min.js"); }}
+	{{ HTML::script("/js/jquery.toastmessage.js"); }}
+    <script type="text/javascript">
+
+
+    {{Tools::createToastMessages()}}</script>
 
 
 </head>
