@@ -1,8 +1,0 @@
-Yop le gars j'ai fini le décodage, il resterait en théorie plus qu'à
-rendre le code propre et bien commenter partout
-
-Vous remarquerez qu'on perd de toute façon en précision (quelques millièmes)
-
-Kevin t'as pu faire l'addition ? xD
-
-allé mon skype c'est senvara si jamais je crois à toute !! ou à demain 
