@@ -4,7 +4,7 @@
 
 class BaseNotes extends Eloquent
 {
-    protected $fillable = ['id_author','id_cours','name','token'];
+    protected $fillable = ['id_author','id_cours','token'];
 
     /**
      * The database table used by the model.
@@ -15,8 +15,8 @@ class BaseNotes extends Eloquent
 
     private $id_autor;
     private $id_cours;
-    private $name;
     private $token;
+    private $id;
 
 
     public function getManuscrit()

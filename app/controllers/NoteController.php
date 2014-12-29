@@ -272,16 +272,21 @@ class NoteController extends \BaseController {
                             $token = bin2hex(BaseNotes::getNewToken());
                             $note = BaseNotes::firstOrCreate(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token));
                             $file = Files::firstOrCreate(array('id_basenotes' => $note->getID(), 'path' => $path . '/' . $filename, 'original_filename' => $original_filename, 'mime' => $fileMIME));
+                            Session::put('toast',array('success','The file was uploaded'));
                             return Redirect::to('course/open/' . $idcourse);
                         } else {
-                            return Redirect::to('notes/add/'.$idcourse)->withErrors(array('Upload failed'));
+                            return Redirect::to('notes/add/'.$idcourse)->withErrors(array('the file upload failed'));
                         }
                     } else {
-                        return Redirect::to('notes/add/'.$idcourse)->withErrors(array('Invalid file'));
+                        return Redirect::to('notes/add/'.$idcourse)->withErrors(array('The file was identified as invalid'));
                     }
                 }
-                else return Redirect::to('notes/add/'.$idcourse)->withErrors($validator);
-            } else return Redirect::to('notes/add/'.$idcourse)->withErrors(array('No file was sent'));
+                else {
+                    return Redirect::to('notes/add/'.$idcourse)->withErrors($validator);
+                }
+            } else {
+                return Redirect::to('notes/add/'.$idcourse)->withErrors(array('No file was sent'));
+            }
         }
         else return Redirect::to('/unauthorized');
     }
@@ -289,11 +294,15 @@ class NoteController extends \BaseController {
     public function downloadFile($idfile)
     {
         $file = Files::find($idfile);
-        if(!is_null($file))
-        {
+        if(!is_null($file)) {
             if($this->canUserDoActionOnFile($idfile,'read')) {
                 $pathToFile = public_path() . $file->getPath();
-                return Response::download($pathToFile, $file->getOriginalName(), array($file->getMIMEType()));
+                if(is_file($pathToFile)) {
+                    return Response::download($pathToFile, $file->getOriginalName(), array($file->getMIMEType()));
+                }
+                else {
+                    return Redirect::to('/404');
+                }
             }
         }
     }
@@ -301,33 +310,64 @@ class NoteController extends \BaseController {
     public function readNote($idnote)
     {
         $note = Manuscrits::find($idnote);
-        if(!is_null($note))
-        {
-            if($this->canUserDoActionOnNote($idnote,'read'))
-            {
+        if(!is_null($note)) {
+            if($this->canUserDoActionOnNote($idnote,'read')) {
                 $basenote = $note->getParent();
                 $author = User::find($basenote->id_author);
-                if(!is_null($author))
-                {
+                if(!is_null($author)) {
                     $author_string = $author->getSignature();
                 }
-                else
-                {
+                else {
                     $author_string = 'unknown author';
                 }
                 $last_update = $note->updated_at;
                 return View::make('notes.readnote')->with(array('author' => $author_string, 'update' => $last_update,'title' => $note->title, 'content' => $note->content, 'idcourse' => 1));
             }
-            else
-            {
+            else {
                 return Redirect::to('/unauthorized');
             }
         }
-        else
-        {
+        else {
             return Redirect::to('/404');
         }
 
+    }
+
+    public function readSharedNote($token)
+    {
+        //we get the basenote
+        $basenote = BaseNotes::where('token','=',$token)->first();
+        var_dump($basenote);
+        echo $token;
+        //if basenote exists
+        if(!is_null($basenote))
+        {
+            //we try to get a written note
+            $note = Manuscrits::where('id_basenotes','=',$basenote->getID())->first();
+            if(!is_null($note))
+            {
+                $author = User::find($basenote->id_author);
+                if(!is_null($author)) {
+                    $author_string = $author->getSignature();
+                }
+                else {
+                    $author_string = 'unknown author';
+                }
+                $last_update = $note->updated_at;
+                return View::make('notes.readsharednote')->with(array('author' => $author_string, 'update' => $last_update,'title' => $note->title, 'content' => $note->content));
+            }
+
+            //we try to get a file
+            $file = Files::where('id_basenotes','=',$basenote->getID())->first();
+            if(!is_null($file))
+            {
+                $pathToFile = public_path() . $file->getPath();
+                if(is_file($pathToFile)) {
+                    return Response::download($pathToFile, $file->getOriginalName(), array($file->getMIMEType()));
+                }
+            }
+        }
+        return Redirect::to('/404');
     }
 
     /**
@@ -336,7 +376,30 @@ class NoteController extends \BaseController {
      */
     public function removeFileNote($idfile)
     {
-
+        $file = Files::find($idfile);
+        if(!is_null($file)) {
+            if($this->canUserDoActionOnFile($idfile,'edit')) {
+                //if the file does exist
+                if(is_file($file->path)) {
+                    //delete it
+                    chmod($file->path, 0777);
+                    unlink($file->path);
+                }
+                //delete the bdd entry anyway
+                $basenote = $file->getParent();
+                $idcourse = $basenote->id_cours;
+                $basenote->delete();
+                $file->delete();
+                Session::put('toast',array('success','The file was deleted'));
+                return Redirect::to('course/open/'.$idcourse);
+            }
+            else {
+                return Redirect::to('/unauthorized');
+            }
+        }
+        else {
+            return Redirect::to('/404');
+        }
     }
 
     private function canUserWriteNote($idcourse)
