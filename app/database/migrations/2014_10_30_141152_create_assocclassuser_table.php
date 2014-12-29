@@ -16,7 +16,7 @@ class CreateAssocclassuserTable extends Migration {
 			$table->timestamps();
 			$table->integer('id_class')->unsigned();
 			$table->integer('id_user')->unsigned();
-			$table->unique('id_class','id_user');
+			$table->unique(array('id_class','id_user'));
 		});
 
 
