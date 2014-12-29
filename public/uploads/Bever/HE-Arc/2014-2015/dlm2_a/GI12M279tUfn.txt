@@ -1,0 +1,68 @@
+p15 (35/354) -> virtual machine Debian 7 clone
+
+
+umadbro? (10 pwnz 20) : if(10 > 20) { } else {}
+tellme
+
+	statement§
+
+coolstorybro
+
+notmad
+tellme
+
+coolstorybro
+
+10 pwndby 20 : <
+
+10 likey 30 : ==
+
+10  30 : <=
+: >=
+
+
+
+10 robs 5 : 10 - 5
+
+10 rekts 5 : 10 / 5
+
+10 rabbits 5 : 10 * 5
+
+7 moar 2 : 7 + 2
+
+var is 2 moar 7 : var= 2 + 7
+
+poncedilate(var) : var++
+eroderamazzotti(var) var--
+
+kthxbye : break;
+
+
+gifpos(z is 2§ 10)
+tellme
+
+coolstorybro
+
+gifneg(z is 10§ 0)
+tellme
+
+coolstorybro
+
+gif(z is 0§ z pwndby 10§ poncedilate(z))
+tellme
+
+coolstorybro
+
+rammus(cond) : while
+tellme
+
+coolstorybro
+
+omgbbq(_) : print
+
+
+types
+
+roundedstuff : int
+stuff: double
+binarystuff : boolean

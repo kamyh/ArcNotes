@@ -162,31 +162,37 @@ class NoteController extends \BaseController {
      */
     public function updateNote($idnote)
     {
-        if($this->canUserDoActionOnNote($idnote,'edit'))
+        $note = Manuscrits::find($idnote);
+        if(!is_null($note))
         {
-            $rules = array(
-                'title' => "required|min:3|max:100",
-                'content' => 'required|min:10'
-            );
+            if($this->canUserDoActionOnNote($idnote,'edit'))
+            {
+                $rules = array(
+                    'title' => "required|min:3|max:100",
+                    'content' => 'required|min:10'
+                );
 
-            $validator = Validator::make(Input::all(), $rules);
+                $validator = Validator::make(Input::all(), $rules);
 
-            echo $validator->fails();
-            if (!$validator->fails()) {
-                $note = Manuscrits::find($idnote);
-                $note->title = Input::get('title');
-                $note->content = Input::get('content');
-                $note->save();
-                return Redirect::to('notes/edit/'.$idnote);
+                if (!$validator->fails()) {
+                    $note->title = Input::get('title');
+                    $note->content = Input::get('content');
+                    $note->save();
+                    return Redirect::to('notes/edit/'.$idnote);
+                }
+                else
+                {
+                    return Redirect::to('notes/edit/'.$idnote)->withErrors($validator)->withInput();
+                }
             }
             else
             {
-                return Redirect::to('notes/edit/'.$idnote)->withErrors($validator)->withInput();
+                return Redirect::to('unauthorized');
             }
         }
         else
         {
-            return Redirect::to('unauthorized');
+            return Redirect::to('/404');
         }
     }
 
@@ -219,54 +225,38 @@ class NoteController extends \BaseController {
                 $schollaryear = $class->getSchollarName();
                 $schoolname = $class->getSchoolName();
                 $city = $class->getCitie();
-                $sizeInMegabytes = 30; //max file size in MegaBytes
-                $maxfilesize = $sizeInMegabytes * 1024 * 1024; // calculate how many octets does it make
-                $accepted_extensions = array('pdf', 'docx', 'doc', 'odt', 'ppt','pptx','txt'); //to complete
                 $file = Input::file('file');
-                $path = '/uploads' . '/'. $city . '/' . $schoolname . '/'. $schollaryear. '/' . $classname;
+                $path = '/uploads' . '/' . $city . '/' . $schoolname . '/' . $schollaryear . '/' . $classname;
                 $destinationPath = public_path() . $path;
                 $extension = $file->getClientOriginalExtension();
                 $filename = str_random(12) . '.' . $extension;
                 $original_filename = $file->getClientOriginalName();
-                $filesize = $file->getClientSize();
                 $fileMIME = $file->getMimeType();
 
+                $rules = array('file' => 'required|max:10000|mimes:doc,docx,txt,pdf,xls,xlsx,odt');
+                $validator = Validator::make(Input::all(), $rules);
 
-                if (in_array($extension, $accepted_extensions)) {
-                    if ($filesize <= $maxfilesize) {
-                        if ($file->isValid()) {
-                            //laravel autommatically check if directory exists
-                            $upload_success = Input::file('file')->move($destinationPath, $filename);
-                            if ($upload_success) {
-                                //if the upload is a success then insert into database the file
-                                $token = bin2hex(BaseNotes::getNewToken());
-                                $note = BaseNotes::firstOrCreate(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token));
-                                $file = Files::firstOrCreate(array('id_basenotes' => $note->getID(), 'path' => $path. '/' . $filename, 'original_filename' => $original_filename,'mime' => $fileMIME));
-                                return Redirect::to('course/open/'.$idcourse);
-                            }
-                            else {
-                                echo 'fail';
-                            }
+                if (!$validator->fails()) {
+                    if ($file->isValid()) {
+                        //laravel autommatically check if directory exists
+                        $upload_success = Input::file('file')->move($destinationPath, $filename);
+                        if ($upload_success) {
+                            //if the upload is a success then insert into database the file
+                            $token = bin2hex(BaseNotes::getNewToken());
+                            $note = BaseNotes::firstOrCreate(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token));
+                            $file = Files::firstOrCreate(array('id_basenotes' => $note->getID(), 'path' => $path . '/' . $filename, 'original_filename' => $original_filename, 'mime' => $fileMIME));
+                            return Redirect::to('course/open/' . $idcourse);
+                        } else {
+                            return Redirect::to('notes/add/'.$idcourse)->withErrors(array('Upload failed'));
                         }
-                        else {
-                            echo 'file invalid';
-                        }
-                    }
-                    else {
-                        echo 'file too big';
+                    } else {
+                        return Redirect::to('notes/add/'.$idcourse)->withErrors(array('Invalid file'));
                     }
                 }
-                else {
-                    echo 'unauthorized extension';
-                }
-            }
-            else{
-                echo 'no file received';
-            }
+                else return Redirect::to('notes/add/'.$idcourse)->withErrors($validator);
+            } else return Redirect::to('notes/add/'.$idcourse)->withErrors(array('No file was sent'));
         }
-        else{
-
-        }
+        else return Redirect::to('/unauthorized');
     }
 
     public function downloadFile($idfile)
@@ -279,6 +269,38 @@ class NoteController extends \BaseController {
                 return Response::download($pathToFile, $file->getOriginalName(), array($file->getMIMEType()));
             }
         }
+    }
+
+    public function readNote($idnote)
+    {
+        $note = Manuscrits::find($idnote);
+        if(!is_null($note))
+        {
+            if($this->canUserDoActionOnNote($idnote,'read'))
+            {
+                $basenote = $note->getParent();
+                $author = User::find($basenote->id_author);
+                if(!is_null($author))
+                {
+                    $author_string = $author->getSignature();
+                }
+                else
+                {
+                    $author_string = 'unknown author';
+                }
+                $last_update = $note->updated_at;
+                return View::make('notes.readnote')->with(array('author' => $author_string, 'update' => $last_update,'title' => $note->title, 'content' => $note->content, 'idcourse' => 1));
+            }
+            else
+            {
+                return Redirect::to('/unauthorized');
+            }
+        }
+        else
+        {
+            return Redirect::to('/404');
+        }
+
     }
 
     /**

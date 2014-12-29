@@ -7,6 +7,15 @@
     <h1>Update a note</h1>
     {{ Form::open(array('route' => array('/notes/update/{idnote}', 'idnote' => $idnote))); }}
     <table class="form">
+     @if($errors->has())
+        <tr>
+            <td colspan="2">
+        @foreach ($errors->all() as $error)
+           <div class="error">{{ $error }}</div>
+       @endforeach
+        </td>
+       </tr>
+     @endif
         <tr>
             <td>{{ Form::label('title', 'Title', array('class' => 'form-label')) }}</td>
             <td>{{ Form::text('title', $title, array('size' => 100, 'maxlength' => 100, 'class' => 'text-input')); }}</td>

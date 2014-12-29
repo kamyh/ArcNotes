@@ -24,6 +24,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
+    private $firstname;
+    private $lastname;
+
 
     public static function getUserRights($idclass)
     {
@@ -47,4 +50,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return DB::table('permissions')->where('id_user','=',$this->id)->where('id_class','=',$id_class)->first()->id_rights;
     }
 
+    public function getSignature()
+    {
+        return $this->attributes['firstname'] .' '. $this->attributes['lastname'];
+    }
 }

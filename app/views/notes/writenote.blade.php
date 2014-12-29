@@ -7,6 +7,15 @@
     <h1>Write a new note in {{ $nomcours }}</h1>
     {{ Form::open(array('route' => array('/notes/save/{idcourse}', 'idcourse' => $idcourse))); }}
     <table class="form">
+     @if($errors->has())
+        <tr>
+            <td colspan="2">
+        @foreach ($errors->all() as $error)
+           <div class="error">{{ $error }}</div>
+       @endforeach
+        </td>
+       </tr>
+     @endif
         <tr>
             <td>{{ Form::label('title', 'Title', array('class' => 'form-label')) }}</td>
             <td>{{ Form::text('title', null, array('class' => 'text-input')); }}</td>

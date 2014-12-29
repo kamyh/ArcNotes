@@ -39,6 +39,11 @@ class BaseNotes extends Eloquent
         return $this->attributes['id_cours'];
     }
 
+    public function getAuthorID()
+    {
+        return $this->attributes['id_author'];
+    }
+
     public static function getNewToken()
     {
         return openssl_random_pseudo_bytes(32);

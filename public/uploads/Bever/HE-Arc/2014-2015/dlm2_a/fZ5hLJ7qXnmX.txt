@@ -1,0 +1,2 @@
+Pipeline analyse image -> découpage zones 1 redressement perspective
+Correction Class Diagramm

@@ -40,21 +40,21 @@ class Files extends Eloquent
         $kilo = 1024;
 
         if($bytesSize < $kilo) {
-            return $bytesSize . ' B';
+            return $bytesSize . 'B';
         }
         else if($bytesSize < $kilo*$kilo) {
-            return ceil($bytesSize / $kilo) .' kB';
+            return ceil($bytesSize / $kilo) .'kB';
         }
         else if($bytesSize < $kilo*$kilo*$kilo) {
-            return ceil($bytesSize / ($kilo * $kilo)) . ' MB';
+            return ceil($bytesSize / ($kilo * $kilo)) . 'MB';
         }
         else {
-            return ceil($bytesSize / ($kilo * $kilo * $kilo)) . ' GB';
+            return ceil($bytesSize / ($kilo * $kilo * $kilo)) . 'GB';
         }
     }
 
     public function getMIMEType()
     {
-        return $this->attributes['mime'];
+        return 'Content-Type: '.$this->attributes['mime'];
     }
 }
