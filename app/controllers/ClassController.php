@@ -415,15 +415,17 @@ class ClassController extends \BaseController {
 
     public function classParticipant($page)
     {
-        $take = 12;
-        $skip = ($page -1) * $take;
+            $take = 12;
 
-        $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
-        $classes_public = Classes::whereIn('id',$listClass)->skip($skip)->take($take)->get();
-        $numberOfPages = Classes::whereIn('id',$listClass)->count();
+            $skip = ($page - 1) * $take;
 
-        $numberOfPages = ceil($numberOfPages/$take);
-        return View::make('class.userdisplay')->with(array('classes_public'=>$classes_public,'numberOfPages'=>$numberOfPages,'pageNo'=>$page));
+            $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
+            $classes_public = Classes::whereIn('id', $listClass)->skip($skip)->take($take)->get();
+            $numberOfPages = Classes::whereIn('id', $listClass)->count();
+
+            $numberOfPages = ceil($numberOfPages / $take);
+            return View::make('class.userdisplay')->with(array('classes_public' => $classes_public, 'numberOfPages' => $numberOfPages, 'pageNo' => $page));
+
     }
 }
 
