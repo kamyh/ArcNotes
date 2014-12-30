@@ -39,9 +39,11 @@
         </tr>
         <tr>
             <td>
+            @if(user::userCanAddCourse())
                 {{ Form::open(array('route' => array('/courses/create/{idclass}', 'idclass' => $class[0]->id),'method' => 'get')); }}
                     {{ Form::submit('New Course', array('class' => 'button')) }}
                 {{Form::close();}}
+            @endif
             </td>
         </tr>
     </table>
