@@ -22,12 +22,13 @@
         <tr>
             <td>
                 {{ Form::open(array('route' => array('/notes/write/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
-                    {{ Form::submit('Write Note',null, array('class' => 'button')); }}
+                    {{ Form::submit('Write Note', array('class' => 'button')); }}
                 {{Form::close();}}
             </td>
             <td>
                 {{ Form::open(array('route' => array('/notes/add/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
-                    {{ Form::submit('Add Note',null, array('class' => 'button')); }}
+                    {{ Form::submit('Add File', array('class' => 'button')); }}
+                    <button type="submit"><i class="icon-trash"></i></button>
                 {{Form::close();}}
             </td>
         </tr>
@@ -39,12 +40,12 @@
                 <td>{{ $file->title }}</td>
                 <td>
                     {{ Form::open(array('route' => array('/notes/edit/{idnote}', 'idnote' => $file->id),'method' => 'get')); }}
-                        {{ Form::submit('Edit',null, array('class' => 'button')); }}
+                        {{ Form::submit('Edit', array('class' => 'button')); }}
                     {{Form::close();}}
                 </td>
                 <td>
                     {{ Form::open(array('route' => array('/notes/delete/{idnote}', 'idnote' => $file->id))); }}
-                        {{ Form::submit('Delete',null, array('class' => 'button')); }}
+                        {{ Form::submit('Delete', array('class' => 'button')); }}
                     {{Form::close();}}
                 </td>
             </tr>
@@ -58,12 +59,12 @@
                     <td>{{ Files::find($file->id)->getSize(); }}</td>
                     <td>
                         {{Form::open(array('route' => array('/notes/download/{idfile}', 'idfile' => $file->id), 'method' => 'get')); }}
-                        {{ Form::submit('Download', null, array('class' => 'button')); }}
+                        {{ Form::submit('Download',  array('class' => 'button')); }}
                         {{Form::close();}}
                     </td>
                     <td>
                         {{ Form::open(array('route' => array('/notes/deletefile/{idfile}', 'idfile' => $file->id))); }}
-                            {{ Form::submit('Delete',null, array('class' => 'button')); }}
+                            {{ Form::submit('Delete', array('class' => 'button')); }}
                         {{Form::close();}}
                     </td>
                 </tr>

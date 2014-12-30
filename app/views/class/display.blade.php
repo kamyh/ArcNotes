@@ -22,7 +22,7 @@
             <td>{{$canton}}</td>
         </tr>
         <tr>
-            <td>Scollar year</td>
+            <td>Schollar year</td>
             <td>{{$class[0]->scollaryear}}</td>
         </tr>
         <tr>
