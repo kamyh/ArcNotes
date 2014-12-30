@@ -7,13 +7,15 @@
 <div class="">
         <table>
             {{ Form::open(array('route' => array('school.store'), 'method' => 'post')) }}
+            @if($errors->has())
             <tr>
                 <td colspan="2">
                 @foreach ($errors->all() as $error)
                    <div class="error">{{ $error }}</div>
                 @endforeach
                 </td>
-            </tr>
+           </tr>
+           @endif
             <tr>
                 <td>
                 {{Form::label('name','Name')}}
