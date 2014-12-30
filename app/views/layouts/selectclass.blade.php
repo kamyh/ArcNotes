@@ -5,9 +5,6 @@
 @section('body')
     <table>
             <tr>
-                <td><h2> {{ $class->name }} </h2></td>
-            </tr>
-            <tr>
                 <td>Created at </td>
                 <td> {{ $class->created_at }} </td>
             </tr>

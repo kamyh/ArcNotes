@@ -4,7 +4,6 @@
 @endsection
 @section('body')
 
-    <h1> {{ $course->name }}</h1>
 
     <table style="border: solid 1px #ffffff">
         <tr>

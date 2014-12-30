@@ -1,11 +1,10 @@
 @extends('layouts.default')
 @section('title')
-    School
+    New School
 @endsection
 @section('body')
 
 <div class="">
-        <h2>new school</h2>
         <table>
             {{ Form::open(array('route' => array('school.store'), 'method' => 'post')) }}
             @if($errors->any())

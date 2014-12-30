@@ -5,7 +5,6 @@
 @endsection
 @section('body')
 <div class="">
-        <h2>new class</h2>
         <table>
             {{ Form::open(array('route' => array('classes.store'), 'method' => 'post')) }}
             @if($errors->any())
