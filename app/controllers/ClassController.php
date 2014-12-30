@@ -370,7 +370,7 @@ class ClassController extends \BaseController {
 
         $permission->save();
 
-        return Redirect::to('/class/join');
+        return Redirect::to('/class/public/1');
     }
 
     public function class_owned()

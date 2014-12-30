@@ -86,7 +86,7 @@ class Classes extends Eloquent
                 return true;
             }
             return false;
-        
+
     }
 
     public function getSchoolName()
