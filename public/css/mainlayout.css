@@ -33,15 +33,28 @@ body {
 /* goes with content */
 .left-dock.col
 {
-	left: 0; width: 18%;
-	display: flex;
-	flex-direction: column;
+    left: 0; width: 18%;
+    display: flex;
+    flex-direction: column;
 }
 /* goes with left-dock */
 .content.col
 {
-	left: 18%; right: 0;
-	padding: 20px 20px 20px 20px;
+    left: 18%; right: 0;
+    padding: 20px 20px 20px 20px;
+}
+/* goes with content-body */
+.content-title.row
+{
+    height: 4em; top: 0;
+    font-size: 120%;
+    padding-left: 1em;
+    padding-top: 1em;
+}
+/* goes with content-title */
+.content-body.row
+{
+    top: 4em; bottom: 0;
 }
 
 .color-a

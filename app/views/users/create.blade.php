@@ -4,7 +4,6 @@
 @endsection
 @section('body')
 <div class="">
-        <h2>Register</h2>
         {{ Form::open(array('route' => array('user.store'), 'method' => 'post')) }}
         @if($errors->any())
             <div class="">

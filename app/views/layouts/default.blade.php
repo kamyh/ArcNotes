@@ -80,8 +80,14 @@
                  @endif
 				</div>
 			</div>
-			<div class="content col scroll-y color-b">
-				@yield('body')
+			<div class="content col color-b">
+			    <div class="content-title row">
+                    @yield('title')
+			    </div>
+			    <div class="content-body row scroll-y">
+			    @yield('body')
+			    </div>
+
 			</div>
 		</div>
 		@show

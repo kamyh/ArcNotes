@@ -3,7 +3,6 @@
     Class Participant
 @endsection
 @section('body')
-       <h2>Class Participant</h2>
         <div class="list-classes">
         @foreach($classes_public as $class)
         <div class="class-tile color-a">

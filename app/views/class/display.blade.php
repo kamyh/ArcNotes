@@ -6,9 +6,6 @@
 
     <table>
         <tr>
-            <td><h2> {{ $class[0]->name }} </h2></td>
-        </tr>
-        <tr>
             <td>Created at </td>
             <td> {{ $class[0]->created_at }} </td>
         </tr>

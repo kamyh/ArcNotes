@@ -13,7 +13,6 @@ Inputs:
 @endsection
 @section('body')
 
-       <h2>{{$title}}</h2>
         <div class="list-classes">
         @foreach($classes as $class)
         <div class="class-tile color-a">
