@@ -9,7 +9,7 @@
         $( '#btnsave' ).click(function(e) {
             e.preventDefault();
             $.ajax({type: "POST",
-                    url: "/ArcNotes/notes/ajaxsave/{{$idnote}}",
+                    url: "/notes/ajaxsave/{{$idnote}}",
                     dataType: 'json',
                     data: { title: $("#title-input").val(), content: $("#content-input").val() },
                     success: function(resp){
