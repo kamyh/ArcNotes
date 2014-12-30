@@ -26,7 +26,14 @@ class Classes extends Eloquent
     public function getUsers()
     {
         $ids = DB::table('permissions')->where('id_class','=',$this->id)->where('id_rights','!=',15)->lists('id_user');
-        return User::whereIn('id',$ids)->get();
+        if(count($ids) != 0)
+        {
+            return User::whereIn('id', $ids)->get();
+        }
+        else
+        {
+            return array();
+        }
     }
 
     public function getPermissionsTab($id_user)

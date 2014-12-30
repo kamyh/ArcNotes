@@ -17,7 +17,7 @@ class CreateSchoolsTable extends Migration {
 			$table->timestamps();
 			$table->integer('id_location')->references('id')->on('cities');
 			$table->string('name', 255);
-            $table->unique('id_location','name');
+            $table->unique(array('id_location','name'));
         });
 	}
 

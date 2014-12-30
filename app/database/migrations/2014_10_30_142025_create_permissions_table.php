@@ -23,6 +23,8 @@ class CreatePermissionsTable extends Migration {
         Schema::table('permissions', function($table) {
             $table->foreign('id_class')->references('id')->on('classes')->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('CASCADE')->onUpdate('CASCADE');
+
+            $table->unique(array('id_user','id_rights','id_class'));
         });
 
 	}
