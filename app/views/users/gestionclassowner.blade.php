@@ -26,7 +26,9 @@
             {{ Form::close() }}
         </table>
 
+        <div class="list-classes">
         @foreach($classesOwned as $class)
+            <div class="class-tile color-a">
             @if($class != null)
                 <table>
 
@@ -123,7 +125,9 @@
                     @endif
                 @endforeach
             @endif
+            </div>
         @endforeach
+        </div>
 @stop
 
 
