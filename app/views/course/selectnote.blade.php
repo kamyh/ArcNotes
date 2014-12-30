@@ -61,6 +61,11 @@
                         {{ Form::submit('Download', null, array('class' => 'button')); }}
                         {{Form::close();}}
                     </td>
+                    <td>
+                        {{ Form::open(array('route' => array('/notes/deletefile/{idfile}', 'idfile' => $file->id))); }}
+                            {{ Form::submit('Delete',null, array('class' => 'button')); }}
+                        {{Form::close();}}
+                    </td>
                 </tr>
             @endforeach
      </table>
