@@ -80,13 +80,13 @@ class Classes extends Eloquent
 
     public function isOwner($id_user)
     {
-        $perm = DB::table('permissions')->where('id_user','=',$id_user)->where('id_class','=',$this->id)->first();
+            $perm = DB::table('permissions')->where('id_user', '=', $id_user)->where('id_class', '=', $this->id)->first();
 
-        if($perm->id_rights == 15)
-        {
-            return true;
-        }
-        return false;
+            if ($perm->id_rights == 15) {
+                return true;
+            }
+            return false;
+        
     }
 
     public function getSchoolName()

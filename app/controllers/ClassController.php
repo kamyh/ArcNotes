@@ -327,7 +327,7 @@ class ClassController extends \BaseController {
         {
             //$info = DB::table('classes')->where('id', '=', $idclass)->get();
             $info = Classes::find($idclass);
-            if($info->visibility == 'public')
+            if($info->visibility == 'public' || (Auth::check() && $info->isOwner(Auth::id())))
             {
                 //Only for the classes's courses
                 $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
