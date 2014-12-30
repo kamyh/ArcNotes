@@ -21,7 +21,7 @@ class ClassController extends \BaseController {
         $schoolList = DB::table('schools')->lists('name','id');
         array_unshift($schoolList, "------------");
         array_unshift($schoolList, "New School");
-        $visibilityList =['0000' => 'public','0001' => 'private'];
+        $visibilityList =['public' => 'public','private' => 'private'];
 
         $schollarYears = [];
         $currentYear = Date("Y")-2;
