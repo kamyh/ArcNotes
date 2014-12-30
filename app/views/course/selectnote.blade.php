@@ -22,19 +22,18 @@
         @if(Auth::check() && $course->getParentClass()->canCreate())
         <tr>
             <td>
-                {{ Form::open(array('route' => array('/notes/write/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
-                    {{ Form::submit('Write Note',null, array('class' => 'button')); }}
-                {{Form::close();}}
             </td>
             <td>
-                {{ Form::open(array('route' => array('/notes/add/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
-                    {{ Form::submit('Add Note',null, array('class' => 'button')); }}
-                {{Form::close();}}
             </td>
         </tr>
         @endif
     </table>
-    <h2>Written notes</h2>
+    <h2>
+                {{ Form::open(array('route' => array('/notes/write/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
+                    <!--{{ Form::submit('Write Note', array('class' => 'button')); }}-->
+                                        Written notes<button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Write note', array('class' => 'test-image')); }}</button>
+
+                {{Form::close();}}</h2>
     <table>
         @foreach($manuscrits as $file)
             <tr>
@@ -46,21 +45,29 @@
                  @if(Auth::check() && $course->getParentClass()->canEdit())
                 <td>
                     {{ Form::open(array('route' => array('/notes/edit/{idnote}', 'idnote' => $file->id),'method' => 'get')); }}
-                        {{ Form::submit('Edit',null, array('class' => 'button')); }}
+                        <!--{{ Form::submit('Edit', array('class' => 'button')); }}-->
+                        <button type="submit" class="button-image">{{ HTML::image('img/icons/edit.png', 'Edit', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
                 </td>
                 @endif
                 <td>
                  @if(Auth::check() && $course->getParentClass()->canCreate())
                     {{ Form::open(array('route' => array('/notes/delete/{idnote}', 'idnote' => $file->id))); }}
-                        {{ Form::submit('Delete',null, array('class' => 'button')); }}
+                        <!--{{ Form::submit('Delete', array('class' => 'button')); }}-->
+                        <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
                  @endif
                 </td>
             </tr>
         @endforeach
     </table>
-    <h2>Files</h2>
+    <h2>
+                {{ Form::open(array('route' => array('/notes/add/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
+                    <!--{{ Form::submit('Add File', array('class' => 'button')); }}-->
+                    Files<button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Add a new file', array('class' => 'test-image')); }}</button>
+
+                {{Form::close();}}
+     </h2>
      <table>
             @foreach($files as $file)
                 <tr>
@@ -72,12 +79,12 @@
                     <td>{{ Files::find($file->id)->getSize(); }}</td>
                     <td>
                         {{Form::open(array('route' => array('/notes/download/{idfile}', 'idfile' => $file->id), 'method' => 'get')); }}
-                        {{ Form::submit('Download', null, array('class' => 'button')); }}
+                        {{ Form::submit('Download',  array('class' => 'button')); }}
                         {{Form::close();}}
                     </td>
                     <td>
                         {{ Form::open(array('route' => array('/notes/deletefile/{idfile}', 'idfile' => $file->id))); }}
-                            {{ Form::submit('Delete',null, array('class' => 'button')); }}
+                            {{ Form::submit('Delete', array('class' => 'button')); }}
                         {{Form::close();}}
                     </td>
                 </tr>

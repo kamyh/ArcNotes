@@ -105,3 +105,22 @@ a:hover, a:link, a:visited, a:active
     position:relative;
     top:1px;
 }
+
+
+/*
+<button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Add', array('class' => 'test-image')); }}</button>
+*/
+.button-image
+{
+    display: inline-block;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    padding-top: 0.3em;
+}
+.test-image
+{
+    height: 1.5em;
+}
