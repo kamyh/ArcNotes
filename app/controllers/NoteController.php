@@ -2,6 +2,12 @@
 
 class NoteController extends \BaseController {
 
+
+    private $rules = array(
+        'title' => "required|min:3|max:100",
+        'content' => 'required|min:10'
+    );
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -132,12 +138,9 @@ class NoteController extends \BaseController {
     {
         //assuming the user is connected
         if($this->canUserWriteNote($idcourse)) {
-            $rules = array(
-                'title' => "required|min:3|max:100",
-                'content' => 'required|min:10'
-            );
 
-            $validator = Validator::make(Input::all(), $rules);
+
+            $validator = Validator::make(Input::all(), $this->rules);
 
             if (!$validator->fails()) {
                 $token = bin2hex(BaseNotes::getNewToken());
@@ -164,16 +167,9 @@ class NoteController extends \BaseController {
     public function updateNote($idnote)
     {
         $note = Manuscrits::find($idnote);
-        if(!is_null($note))
-        {
-            if($this->canUserDoActionOnNote($idnote,'edit'))
-            {
-                $rules = array(
-                    'title' => "required|min:3|max:100",
-                    'content' => 'required|min:10'
-                );
-
-                $validator = Validator::make(Input::all(), $rules);
+        if(!is_null($note)) {
+            if($this->canUserDoActionOnNote($idnote,'edit')) {
+                $validator = Validator::make(Input::all(), $this->rules);
 
                 if (!$validator->fails()) {
                     $note->title = Input::get('title');
@@ -184,19 +180,46 @@ class NoteController extends \BaseController {
                     Session::put('toast',array('success','The note was updated'));
                     return Redirect::to('course/open/'.$idcourse);
                 }
-                else
-                {
+                else {
                     return Redirect::to('notes/edit/'.$idnote)->withErrors($validator)->withInput();
                 }
             }
-            else
-            {
+            else {
                 return Redirect::to('unauthorized');
             }
         }
-        else
-        {
+        else {
             return Redirect::to('/404');
+        }
+    }
+
+    public function ajaxSaveNote($idnote)
+    {
+        Session::put('tarpette','qweqwqq');
+        $note = Manuscrits::find($idnote);
+        if(!is_null($note)) {
+            if($this->canUserDoActionOnNote($idnote,'edit')) {
+                $rules = array(
+                    'title' => "required|min:3|max:100",
+                    'content' => 'required|min:10'
+                );
+                $validator = Validator::make(Input::all(), $rules);
+                if (!$validator->fails()) {
+                    $note->title = Input::get('title');
+                    $note->content = Input::get('content');
+                    $note->save();
+                    return Response::json( array('success' => true, 'msg' => 'Note sucessfully saved'));
+                }
+                else {
+                    return Response::json(array('success' => false, 'errors' => $validator->messages()->all()), 400); // 400 being the HTTP code for an invalid request.
+                }
+            }
+            else {
+                return Response::json( array('success' => false, 'errors' => 'Insuffisant rights'), 400);
+            }
+        }
+        else{
+            return Response::json( array('success' => false, 'errors' => 'Note does not exist, unable to save'), 400);
         }
     }
 
@@ -208,13 +231,11 @@ class NoteController extends \BaseController {
     {
         //test if note exists
         $note = Manuscrits::find($idnote);
-        if(!is_null($note))
-        {
+        if(!is_null($note)) {
             //get the basenote parent
             $basenote = $note->getParent();
             //if user can edit and read
-            if($this->canUserDoActionOnNote($idnote,'edit'))
-            {
+            if($this->canUserDoActionOnNote($idnote,'edit')) {
                 //deletion
                 $idcourse = $basenote->id_cours;
                 $basenote->delete();
@@ -222,13 +243,11 @@ class NoteController extends \BaseController {
                 Session::put('toast',array('success','The note was deleted'));
                 return Redirect::to('course/open/'.$idcourse);
             }
-            else
-            {
+            else {
                 return Redirect::to('/unauthorized');
             }
         }
-        else
-        {
+        else {
             return Redirect::to('/404');
         }
     }
@@ -243,7 +262,6 @@ class NoteController extends \BaseController {
         //writing a note is the same as upoad a file
         if($this->canUserWriteNote($idcourse)) {
             if (input::hasFile('file')) {
-
                 //we get all information that concern the course to get the directory hierarchy path
                 $course = Courses::find($idcourse);
                 $idclass = $course->getClassID();
@@ -260,6 +278,7 @@ class NoteController extends \BaseController {
                 $original_filename = $file->getClientOriginalName();
                 $fileMIME = $file->getMimeType();
 
+                //files validator : max filesize and extensions
                 $rules = array('file' => 'required|max:10000|mimes:doc,docx,txt,pdf,xls,xlsx,odt');
                 $validator = Validator::make(Input::all(), $rules);
 
@@ -291,6 +310,10 @@ class NoteController extends \BaseController {
         else return Redirect::to('/unauthorized');
     }
 
+    /**
+     * @param $idfile the file id that will be downloaded
+     * @return
+     */
     public function downloadFile($idfile)
     {
         $file = Files::find($idfile);
@@ -304,9 +327,17 @@ class NoteController extends \BaseController {
                     return Redirect::to('/404');
                 }
             }
+            else {
+                return Redirect::to('/unauthorized');
+            }
         }
+        return Redirect::to('/404');
     }
 
+    /**
+     * Return the view that display a note for reading it
+     * @param $idnote the note to display
+     */
     public function readNote($idnote)
     {
         $note = Manuscrits::find($idnote);
@@ -333,6 +364,10 @@ class NoteController extends \BaseController {
 
     }
 
+    /**
+     * Return the view or the download response to read/download a shared note
+     * @param $token the note's token that is shared
+     */
     public function readSharedNote($token)
     {
         //we get the basenote
@@ -354,19 +389,22 @@ class NoteController extends \BaseController {
                     $author_string = 'unknown author';
                 }
                 $last_update = $note->updated_at;
+                //if a written note exists then we display it to user
                 return View::make('notes.readsharednote')->with(array('author' => $author_string, 'update' => $last_update,'title' => $note->title, 'content' => $note->content));
             }
 
-            //we try to get a file
+            //we try to get a file if we didnt get a written not
             $file = Files::where('id_basenotes','=',$basenote->getID())->first();
             if(!is_null($file))
             {
                 $pathToFile = public_path() . $file->getPath();
                 if(is_file($pathToFile)) {
+                    //if we get a file then we propose user to download it
                     return Response::download($pathToFile, $file->getOriginalName(), array($file->getMIMEType()));
                 }
             }
         }
+        //if nothing found then redirect to 404 page
         return Redirect::to('/404');
     }
 
@@ -402,6 +440,11 @@ class NoteController extends \BaseController {
         }
     }
 
+    /**
+     * Check if user can write a note on a course (check the user's rights on the class given by the course)
+     * @param $idcourse the course to test if user has rights
+     * @return bool
+     */
     private function canUserWriteNote($idcourse)
     {
         //check if user can write into course
@@ -412,15 +455,18 @@ class NoteController extends \BaseController {
             $class = Classes::find($idclass);
             $perms = $class->getPermissionsTab(Auth::id());
 
-            //if user can write something
-            if($perms['create'])
-            {
-                return true;
-            }
+            //if user can write something this returns true else false
+            return $perms['create'];
         }
         return false;
     }
 
+    /**
+     * Check if a user can proceed a given action on a written note
+     * @param $idnote
+     * @param $action
+     * @return bool
+     */
     private function canUserDoActionOnNote($idnote, $action)
     {
         $note = Manuscrits::find($idnote);
@@ -430,16 +476,17 @@ class NoteController extends \BaseController {
             $course = Courses::find($basenote->getParentCourseID());
             $class = Classes::find($course->getClassID());
 
-
+            //does the class exists
             if (!is_null($class)) {
+                //get the perms
                 $perms = $class->getPermissionsTab(Auth::Id());
-                if ($perms[$action]) {
-                    return true;
-                }
+                return $perms[$action];
             }
         }
         return false;
     }
+
+
 
     private function canUserDoActionOnFile($idfile, $action)
     {
@@ -450,12 +497,9 @@ class NoteController extends \BaseController {
             $course = Courses::find($basenote->getParentCourseID());
             $class = Classes::find($course->getClassID());
 
-
             if (!is_null($class)) {
                 $perms = $class->getPermissionsTab(Auth::Id());
-                if ($perms[$action]) {
-                    return true;
-                }
+                return $perms[$action];
             }
         }
         return false;
