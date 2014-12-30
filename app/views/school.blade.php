@@ -7,16 +7,13 @@
 <div class="">
         <table>
             {{ Form::open(array('route' => array('school.store'), 'method' => 'post')) }}
-            @if($errors->any())
             <tr>
-                <td>
-                <div class="">
-                    <a class="" data-dismiss="alert">&times;</a>
-                    {{ implode('', $errors->all('<li class="error">:message</li>')) }}
-                </div>
+                <td colspan="2">
+                @foreach ($errors->all() as $error)
+                   <div class="error">{{ $error }}</div>
+                @endforeach
                 </td>
             </tr>
-            @endif
             <tr>
                 <td>
                 {{Form::label('name','Name')}}
