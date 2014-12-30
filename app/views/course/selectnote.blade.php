@@ -31,8 +31,10 @@
     <h2>
                 {{ Form::open(array('route' => array('/notes/write/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
                     <!--{{ Form::submit('Write Note', array('class' => 'button')); }}-->
-                                        Written notes<button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Write note', array('class' => 'test-image')); }}</button>
-
+                                        Written notes
+                                        @if(Auth::check() && $course->getParentClass()->canCreate())
+                                            <button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Write note', array('class' => 'test-image')); }}</button>
+                                        @endif
                 {{Form::close();}}</h2>
     <table>
         @foreach($manuscrits as $file)
@@ -62,10 +64,13 @@
         @endforeach
     </table>
     <h2>
+
                 {{ Form::open(array('route' => array('/notes/add/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
                     <!--{{ Form::submit('Add File', array('class' => 'button')); }}-->
-                    Files<button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Add a new file', array('class' => 'test-image')); }}</button>
-
+                    Files
+                    @if(Auth::check() && $course->getParentClass()->canCreate())
+                        <button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Add a new file', array('class' => 'test-image')); }}</button>
+                    @endif
                 {{Form::close();}}
      </h2>
      <table>
