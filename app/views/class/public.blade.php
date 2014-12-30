@@ -50,9 +50,11 @@ Inputs:
                 <tr>
                     <td></td>
                     <td>
+                    @if(Auth::check())
                         {{ Form::open(array('route' => array('/class/sign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                             {{Form::submit('Join', array('class' => 'button'))}}
                         {{ Form::close() }}
+                    @endif
                     </td>
                 </tr>
             </table>

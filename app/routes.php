@@ -82,7 +82,7 @@ Route::get('/class/create', array('before' => 'auth','as' => '/class/create', 'u
 
 Route::get('/manager/classowned', array('as' => '/manager/classowned', 'uses' => 'ClassController@class_owned'));
 
-Route::get('/class/display/{idclass}', array('before' => 'auth','as' => '/class/display/{idclass}', 'uses' => 'ClassController@selectedClass'));
+Route::get('/class/display/{idclass}', array('as' => '/class/display/{idclass}', 'uses' => 'ClassController@selectedClass'));
 
 /* verify email */
 Route::get('register/verify/{confirmationCode}', [
@@ -107,7 +107,7 @@ Route::get("lists_classes", array(
 /*
  * Course
  */
-Route::get('/course/open/{idcourse}',array('before' => 'auth','as'=> '/course/open/{course}', 'uses' => 'CourseController@open'))->where('idcourse','[0-9]+');
+Route::get('/course/open/{idcourse}',array('as'=> '/course/open/{course}', 'uses' => 'CourseController@open'))->where('idcourse','[0-9]+');
 
 
 /*

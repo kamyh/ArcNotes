@@ -13,6 +13,8 @@ class BaseNotesTableSeeder extends Seeder {
             array('id'=>'3','id_author'=>'1','id_cours'=>'1'),
             array('id'=>'4','id_author'=>'1','id_cours'=>'1'),
             array('id'=>'5','id_author'=>'1','id_cours'=>'1'),
+            array('id'=>'6','id_author'=>'1','id_cours'=>'7'),
+            array('id'=>'7','id_author'=>'1','id_cours'=>'7'),
         ));
     }
 

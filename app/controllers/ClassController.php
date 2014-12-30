@@ -208,8 +208,7 @@ class ClassController extends \BaseController {
         }
         else
         {
-            echo "403";
-            //return Redirect::to('unauthorized');
+            return Redirect::to('unauthorized');
         }
     }
 
@@ -324,17 +323,33 @@ class ClassController extends \BaseController {
 
     public function selectedClass($idclass)
     {
-        //Only for the classes's course
-        $courses = DB::table('courses')->where('id_class',$idclass)->join('classes', 'classes.id', '=', 'courses.id_class')->orderBy('courses.name')->get();
+        if(Auth::check())
+        {
+            //$info = DB::table('classes')->where('id', '=', $idclass)->get();
+            $info = Classes::find($idclass);
+            if($info->visibility == 'public')
+            {
+                //Only for the classes's courses
+                $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
 
-        //Class informations
-        $info = DB::table('classes')->where('id','=',$idclass)->get();
-        $school = DB::table('schools')->where('id','=',$info[0]->id_school)->get();
-        $city = DB::table('cities')->find($school[0]->id_location);
-        $canton = DB::table('cantons')->find($city->id_canton);
+                //Class informations
+
+                $school = DB::table('schools')->where('id', '=', $info->id_school)->get();
+                $city = DB::table('cities')->find($school[0]->id_location);
+                $canton = DB::table('cantons')->find($city->id_canton);
 
 
-        return View::make('course.display')->with(array('class' => $info,'courses'=>$courses,'school_name'=>$school[0]->name,'school_city'=>$city->name,'canton'=>$canton->name,'title'=>$info[0]->name));
+                return View::make('course.display')->with(array('class' => $info, 'courses' => $courses, 'school_name' => $school[0]->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $info->name));
+            }
+            else
+            {
+                return Redirect::to('unauthorized');
+            }
+        }
+        else
+        {
+            return Redirect::to('unauthorized');
+        }
     }
 
     public function join($idclass)
