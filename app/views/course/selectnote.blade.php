@@ -21,37 +21,43 @@
         </tr>
         <tr>
             <td>
-                {{ Form::open(array('route' => array('/notes/write/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
-                    {{ Form::submit('Write Note', array('class' => 'button')); }}
-                {{Form::close();}}
             </td>
             <td>
-                {{ Form::open(array('route' => array('/notes/add/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
-                    {{ Form::submit('Add File', array('class' => 'button')); }}
-                    <button type="submit"><i class="icon-trash"></i></button>
-                {{Form::close();}}
             </td>
         </tr>
     </table>
-    <h2>Written notes</h2>
+    <h2>
+                {{ Form::open(array('route' => array('/notes/write/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
+                    <!--{{ Form::submit('Write Note', array('class' => 'button')); }}-->
+                                        Written notes<button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Write note', array('class' => 'test-image')); }}</button>
+
+                {{Form::close();}}</h2>
     <table>
         @foreach($manuscrits as $file)
             <tr>
                 <td>{{ $file->title }}</td>
                 <td>
                     {{ Form::open(array('route' => array('/notes/edit/{idnote}', 'idnote' => $file->id),'method' => 'get')); }}
-                        {{ Form::submit('Edit', array('class' => 'button')); }}
+                        <!--{{ Form::submit('Edit', array('class' => 'button')); }}-->
+                        <button type="submit" class="button-image">{{ HTML::image('img/icons/edit.png', 'Edit', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
                 </td>
                 <td>
                     {{ Form::open(array('route' => array('/notes/delete/{idnote}', 'idnote' => $file->id))); }}
-                        {{ Form::submit('Delete', array('class' => 'button')); }}
+                        <!--{{ Form::submit('Delete', array('class' => 'button')); }}-->
+                        <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
                 </td>
             </tr>
         @endforeach
     </table>
-    <h2>Files</h2>
+    <h2>
+                {{ Form::open(array('route' => array('/notes/add/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
+                    <!--{{ Form::submit('Add File', array('class' => 'button')); }}-->
+                    Files<button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Add a new file', array('class' => 'test-image')); }}</button>
+
+                {{Form::close();}}
+     </h2>
      <table>
             @foreach($files as $file)
                 <tr>
