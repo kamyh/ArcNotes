@@ -83,8 +83,14 @@ class ClassController extends \BaseController {
                 $class->degree = $input['degree'];
                 $class->domain = $input['domain'];
                 $class->visibility = $input['visibility'];
-
                 $class->save();
+
+                $permission = new Permissions();
+
+                $permission->id_user = Auth::id();
+                $permission->id_rights = 15;
+                $permission->id_class = $class->id;
+                $permission->save();
 
                 return Redirect::to('/');
 
