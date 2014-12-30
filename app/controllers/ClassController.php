@@ -21,7 +21,7 @@ class ClassController extends \BaseController {
         $schoolList = DB::table('schools')->lists('name','id');
         array_unshift($schoolList, "------------");
         array_unshift($schoolList, "New School");
-        $visibilityList =['0000' => 'public','0001' => 'private'];
+        $visibilityList =['public' => 'public','private' => 'private'];
 
         $schollarYears = [];
         $currentYear = Date("Y")-2;
@@ -83,8 +83,14 @@ class ClassController extends \BaseController {
                 $class->degree = $input['degree'];
                 $class->domain = $input['domain'];
                 $class->visibility = $input['visibility'];
-
                 $class->save();
+
+                $permission = new Permissions();
+
+                $permission->id_user = Auth::id();
+                $permission->id_rights = 15;
+                $permission->id_class = $class->id;
+                $permission->save();
 
                 return Redirect::to('/');
 
