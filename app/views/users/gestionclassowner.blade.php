@@ -30,9 +30,9 @@
         @foreach($classesOwned as $class)
             <div class="class-tile color-a">
             @if($class != null)
+                    <a href="/class/display/{{$class->id}}" class="class-title-tile color-b" >Class Name: {{ $class->name  }} </a>
                 <table>
 
-                    <tr><td><h1> Class Name: {{ $class->name  }} </h1></td>
 
                     {{ Form::open(array('route' => array('/visibility/change/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                     <td>
