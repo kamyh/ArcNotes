@@ -14,6 +14,7 @@ class CoursesTableSeeder extends Seeder {
             array('id'=>'4','name'=>'DevMobile','matter'=>'developpement systeme','id_class'=>'2'),
             array('id'=>'5','name'=>'Traitement d\'image','matter'=>'Infographie','id_class'=>'3'),
             array('id'=>'6','name'=>'Traitement d\'images','matter'=>'Info','id_class'=>'4'),
+            array('id'=>'7','name'=>'Traitement d\'images','matter'=>'Info','id_class'=>'16'),
         ));
     }
 

@@ -59,23 +59,23 @@ class Classes extends Eloquent
 
     private function isAuthorized($permToTest)
     {
-        $perms = getPermissionsTab(Auth::id());
+        $perms = $this->getPermissionsTab(Auth::id());
         return $perms[$permToTest];
     }
 
     public function canRead()
     {
-        return isAuthorized('read');
+        return $this->isAuthorized('read');
     }
 
     public function canEdit()
     {
-        return isAuthorized('edit');
+        return $this->isAuthorized('edit');
     }
 
     public function canCreate()
     {
-        return isAuthorized('create');
+        return $this->isAuthorized('create');
     }
 
     public function isOwner($id_user)

@@ -5,15 +5,15 @@
 @section('body')
     <table>
             <tr>
-                <td><h2> {{ $class[0]->name }} </h2></td>
+                <td><h2> {{ $class->name }} </h2></td>
             </tr>
             <tr>
                 <td>Created at </td>
-                <td> {{ $class[0]->created_at }} </td>
+                <td> {{ $class->created_at }} </td>
             </tr>
             <tr>
                 <td>Last update </td>
-                <td> {{ $class[0]->updated_at }} </td>
+                <td> {{ $class->updated_at }} </td>
             </tr>
             <tr>
                 <td>{{$school_name}}</td>
@@ -22,25 +22,27 @@
             </tr>
             <tr>
                 <td>Scollar year</td>
-                <td>{{$class[0]->scollaryear}}</td>
+                <td>{{$class->scollaryear}}</td>
             </tr>
             <tr>
                 <td>Degree</td>
-                <td>{{$class[0]->degree}}</td>
+                <td>{{$class->degree}}</td>
             </tr>
             <tr>
                 <td>Domain</td>
-                <td>{{$class[0]->domain}}</td>
+                <td>{{$class->domain}}</td>
             </tr>
             <tr>
                 <td>Visibility</td>
-                <td>{{$class[0]->visibility}}</td>
+                <td>{{$class->visibility}}</td>
             </tr>
             <tr>
                 <td>
-                    {{ Form::open(array('route' => array('/courses/create/{idclass}', 'idclass' => $class[0]->id),'method' => 'get')); }}
+                @if(Auth::check() && Auth::user()->userCanAddCourse())
+                    {{ Form::open(array('route' => array('/courses/create/{idclass}', 'idclass' => $class->id),'method' => 'get')); }}
                         {{ Form::submit('New Course', array('class' => 'button')) }}
                     {{Form::close();}}
+                @endif
                 </td>
             </tr>
         </table>

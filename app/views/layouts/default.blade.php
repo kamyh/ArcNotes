@@ -11,10 +11,8 @@
     {{ HTML::script("/js/jquery-2.1.3.min.js"); }}
 	{{ HTML::script("/js/jquery.toastmessage.js"); }}
     <script type="text/javascript">
-
-
     {{Tools::createToastMessages()}}</script>
-
+    @yield('page-scripts', '')
 
 </head>
 <body>

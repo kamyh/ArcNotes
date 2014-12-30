@@ -25,6 +25,9 @@ class Courses extends Eloquent
         return $this->attributes['name'];
     }
 
-
+    public function getParentClass()
+    {
+        return Classes::find($this->getClassID());
+    }
 
 }
