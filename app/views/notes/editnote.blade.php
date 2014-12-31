@@ -31,7 +31,6 @@
 @endsection
 @section('body')
 
-    {{Session::get('tarpette')}}
     <h1>Update a note</h1>
     {{ Form::open(array('route' => array('/notes/update/{idnote}', 'idnote' => $idnote))); }}
     <table class="form">

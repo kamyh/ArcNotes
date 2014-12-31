@@ -6,6 +6,7 @@
 <div class="">
         <table>
             {{ Form::open(array('route' => array('courses.store'), 'method' => 'post')) }}
+            @if($errors->has())
             <tr>
                 <td colspan="2">
                 @foreach ($errors->all() as $error)
@@ -13,6 +14,7 @@
                 @endforeach
                 </td>
            </tr>
+           @endif
             <tr>
                 <td>
                     {{Form::label('name','Name')}}

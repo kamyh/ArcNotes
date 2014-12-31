@@ -51,9 +51,9 @@
         <div class="page-navigation">
             @for($i = 1;$i < $numberOfPages+1;$i++)
                 @if($i == $pageNo)
-                    <a href="/class/public/{{$i}}" class="page-navigation-current">{{$i}}</a>
+                    <a href="/class/participant/{{$i}}" class="page-navigation-current">{{$i}}</a>
                 @else
-                    <a href="/class/public/{{$i}}" class="page-navigation-not-current">{{$i}}</a>
+                    <a href="/class/participant/{{$i}}" class="page-navigation-not-current">{{$i}}</a>
                 @endif
             @endfor
         </div>

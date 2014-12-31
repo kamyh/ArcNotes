@@ -327,7 +327,7 @@ class ClassController extends \BaseController {
         {
             //$info = DB::table('classes')->where('id', '=', $idclass)->get();
             $info = Classes::find($idclass);
-            if($info->visibility == 'public')
+            if($info->visibility == 'public' || (Auth::check() && $info->isOwner(Auth::id())))
             {
                 //Only for the classes's courses
                 $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
@@ -370,7 +370,7 @@ class ClassController extends \BaseController {
 
         $permission->save();
 
-        return Redirect::to('/class/join');
+        return Redirect::to('/class/public/1');
     }
 
     public function class_owned()
@@ -415,15 +415,17 @@ class ClassController extends \BaseController {
 
     public function classParticipant($page)
     {
-        $take = 12;
-        $skip = ($page -1) * $take;
+            $take = 12;
 
-        $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
-        $classes_public = Classes::whereIn('id',$listClass)->skip($skip)->take($take)->get();
-        $numberOfPages = Classes::whereIn('id',$listClass)->count();
+            $skip = ($page - 1) * $take;
 
-        $numberOfPages = ceil($numberOfPages/$take);
-        return View::make('class.userdisplay')->with(array('classes_public'=>$classes_public,'numberOfPages'=>$numberOfPages,'pageNo'=>$page));
+            $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
+            $classes_public = Classes::whereIn('id', $listClass)->skip($skip)->take($take)->get();
+            $numberOfPages = Classes::whereIn('id', $listClass)->count();
+
+            $numberOfPages = ceil($numberOfPages / $take);
+            return View::make('class.userdisplay')->with(array('classes_public' => $classes_public, 'numberOfPages' => $numberOfPages, 'pageNo' => $page));
+
     }
 }
 
