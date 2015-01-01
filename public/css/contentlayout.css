@@ -26,10 +26,29 @@
   width:30%;
 }
 
-.class-tile-course,
-.class-tile-user
+.class-tile-courses,
+.class-tile-users,
+.class-tile-buttons
 {
+    padding: 0.4em;
+    margin: 0.4em;
     display:flex;
     flex-basis: row;
     flex-wrap: wrap;
+}
+
+.class-tile-invite
+{
+    padding: 0.4em;
+    margin: 0.4em;
+
+}
+.class-tile-buttons
+{
+    justify-content: center;
+}
+
+.form-table
+{
+    border: 1px solid #ffffff;
 }
