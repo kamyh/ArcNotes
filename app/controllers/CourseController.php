@@ -119,6 +119,11 @@ class CourseController extends \BaseController {
         //
     }
 
+    public function search($keyword)
+    {
+        
+    }
+
     public function open($idcourse)
     {
         $course = Courses::find($idcourse);

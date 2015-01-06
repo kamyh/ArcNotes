@@ -4,7 +4,8 @@
     Create a new class
 @endsection
 @section('body')
-<div class="">
+<div class="class-creation-form color-a">
+        <div>
         <table>
             {{ Form::open(array('route' => array('classes.store'), 'method' => 'post')) }}
             @if($errors->has())
@@ -71,6 +72,6 @@
             </tr>
             {{ Form::close() }}
         </table>
-</div>
+</div></div>
 @stop
 

@@ -3,8 +3,8 @@
     {{ $class[0]->name }}
 @endsection
 @section('body')
-
-    <table>
+    <div class="class-creation-form color a">
+    <div><table>
         <tr>
             <td>Created at </td>
             <td> {{ $class[0]->created_at }} </td>
@@ -44,7 +44,7 @@
             </td>
         </tr>
     </table>
-
+</div></div>
     <div class="all-course" style="margin-left: 25px">
     @foreach($courses as $course)
         <table style="border: solid 1px #ffffff">
