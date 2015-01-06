@@ -3,90 +3,12 @@
 class NoteController extends \BaseController {
 
 
+    /* rules for the form validator */
     private $rules = array(
         'title' => "required|min:3|max:100",
         'content' => 'required|min:10'
     );
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-	}
-
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-
-	}
-
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
-
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
 
 
     /**
@@ -136,26 +58,24 @@ class NoteController extends \BaseController {
      */
     public function saveNote($idcourse)
     {
-        //assuming the user is connected
+        //assuming the user is connected cause of filter auth
         if($this->canUserWriteNote($idcourse)) {
 
 
             $validator = Validator::make(Input::all(), $this->rules);
 
             if (!$validator->fails()) {
-                $token = bin2hex(BaseNotes::getNewToken());
-                $note = BaseNotes::firstOrCreate(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token));
-                Manuscrits::firstOrCreate(array('id_basenotes' => $note->getID(), 'content' => Input::get('content'), 'title' => Input::get('title')));
-                Session::put('toast',array('success','The note was created'));
+                $token = bin2hex(BaseNotes::getNewToken()); //generate a new token
+                $note = BaseNotes::firstOrCreate(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token)); //write in basenote
+                Manuscrits::firstOrCreate(array('id_basenotes' => $note->getID(), 'content' => Input::get('content'), 'title' => Input::get('title'))); //store in manuscrits
+                Session::put('toast',array('success','The note was created')); //insert message in session for toast message
                 return Redirect::to('course/open/'.$idcourse);
             }
-            else
-            {
+            else {
                 return Redirect::to('notes/write/'.$idcourse)->withErrors($validator)->withInput();
             }
         }
-        else
-        {
+        else {
             return Redirect::to('/unauthorized');
         }
     }
@@ -166,18 +86,20 @@ class NoteController extends \BaseController {
      */
     public function updateNote($idnote)
     {
-        $note = Manuscrits::find($idnote);
+        $note = Manuscrits::find($idnote); //trying to get the manuscrit
+        //if any note is found
         if(!is_null($note)) {
             if($this->canUserDoActionOnNote($idnote,'edit')) {
                 $validator = Validator::make(Input::all(), $this->rules);
 
+                //validate and store updates
                 if (!$validator->fails()) {
                     $note->title = Input::get('title');
                     $note->content = Input::get('content');
                     $note->save();
                     $basenote = $note->getParent();
                     $idcourse = $basenote->id_cours;
-                    Session::put('toast',array('success','The note was updated'));
+                    Session::put('toast',array('success','The note was updated')); //toast message
                     return Redirect::to('course/open/'.$idcourse);
                 }
                 else {
@@ -193,22 +115,23 @@ class NoteController extends \BaseController {
         }
     }
 
+    /**
+     * Save an existing note assuming POST request was sent by AJAX and errors/success messages will be send back in a JSON object
+     * @param $idnote The note's id to save (Manuscrit)
+     */
     public function ajaxSaveNote($idnote)
     {
-        Session::put('tarpette','qweqwqq');
-        $note = Manuscrits::find($idnote);
+        $note = Manuscrits::find($idnote); //trying to get the note
+        //check existence
         if(!is_null($note)) {
             if($this->canUserDoActionOnNote($idnote,'edit')) {
-                $rules = array(
-                    'title' => "required|min:3|max:100",
-                    'content' => 'required|min:10'
-                );
-                $validator = Validator::make(Input::all(), $rules);
+                $validator = Validator::make(Input::all(), $this->rules);
+                //if everything ok update and save changes
                 if (!$validator->fails()) {
                     $note->title = Input::get('title');
                     $note->content = Input::get('content');
                     $note->save();
-                    return Response::json( array('success' => true, 'msg' => 'Note sucessfully saved'));
+                    return Response::json( array('success' => true, 'msg' => 'Note sucessfully saved')); //send success into a json response
                 }
                 else {
                     return Response::json(array('success' => false, 'errors' => $validator->messages()->all()), 400); // 400 being the HTTP code for an invalid request.
@@ -311,6 +234,7 @@ class NoteController extends \BaseController {
     }
 
     /**
+     * return the direct download file response
      * @param $idfile the file id that will be downloaded
      * @return
      */
@@ -365,22 +289,18 @@ class NoteController extends \BaseController {
     }
 
     /**
-     * Return the view or the download response to read/download a shared note
+     * Return the view or the download response to read/download a shared note (shared with token)
      * @param $token the note's token that is shared
      */
     public function readSharedNote($token)
     {
         //we get the basenote
         $basenote = BaseNotes::where('token','=',$token)->first();
-        var_dump($basenote);
-        echo $token;
         //if basenote exists
-        if(!is_null($basenote))
-        {
+        if(!is_null($basenote)) {
             //we try to get a written note
             $note = Manuscrits::where('id_basenotes','=',$basenote->getID())->first();
-            if(!is_null($note))
-            {
+            if(!is_null($note)) {
                 $author = User::find($basenote->id_author);
                 if(!is_null($author)) {
                     $author_string = $author->getSignature();
@@ -409,7 +329,7 @@ class NoteController extends \BaseController {
     }
 
     /**
-     * Remove the file given (file and database entry) assuming user having rights
+     * Remove the file given (physic file and database entry) assuming user having rights
      * @param $idfile
      */
     public function removeFileNote($idfile)
@@ -463,8 +383,8 @@ class NoteController extends \BaseController {
 
     /**
      * Check if a user can proceed a given action on a written note
-     * @param $idnote
-     * @param $action
+     * @param $idnote the note onto rights should be checked
+     * @param $action given action read, create or edit
      * @return bool
      */
     private function canUserDoActionOnNote($idnote, $action)
@@ -487,7 +407,12 @@ class NoteController extends \BaseController {
     }
 
 
-
+    /**
+     * Check if a user can proceed a given action on an uploaded file
+     * @param $idfile the file onto rights should be checked
+     * @param $action given action read, create or edit
+     * @return bool
+     */
     private function canUserDoActionOnFile($idfile, $action)
     {
         $file = Files::find($idfile);

@@ -12,7 +12,4 @@ class School extends Eloquent
      * @var string
      */
     protected $table = 'schools';
-
-
-
 }

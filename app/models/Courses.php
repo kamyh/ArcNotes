@@ -29,5 +29,4 @@ class Courses extends Eloquent
     {
         return Classes::find($this->getClassID());
     }
-
 }

@@ -19,27 +19,47 @@ class BaseNotes extends Eloquent
     private $id;
 
 
+    /**
+     * Return the children manuscrit without check its existence
+     * @return Manuscrit : children or null
+     */
     public function getManuscrit()
     {
-        return DB::table('manuscrits')->where('id_basenote','=',$this->id);
+        return Manuscrit::find($this->id);
     }
 
+    /**
+     * return the children file without check its existence
+     * @return Manuscrit : children or null
+     */
     public function getFile()
     {
-        return DB::table('files')->where('id_basenote','=',$this->id);
+        return Files::find($this->id);
     }
 
+    /**
+     * Return the primary key unique ID
+     * @return Integer : unique ID
+     */
     public function getID()
     {
         return $this->attributes['id'];
     }
 
+    /**
+     * Gives the parent course unique ID
+     * @return Integer : course unique ID
+     */
     public function getParentCourseID()
     {
         return $this->attributes['id_cours'];
     }
 
 
+    /**
+     * Static function that generate a random token of 32 chars using open SSL
+     * @return string : token
+     */
     public static function getNewToken()
     {
         return openssl_random_pseudo_bytes(32);
