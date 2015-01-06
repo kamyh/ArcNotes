@@ -109,6 +109,8 @@ Route::get("lists_classes", array(
  */
 Route::get('/course/open/{idcourse}',array('as'=> '/course/open/{course}', 'uses' => 'CourseController@open'))->where('idcourse','[0-9]+');
 
+Route::get('/course/search/{keyword}','CourseController@search');
+Route::get('/class/search/{keyword}','ClassController@search');
 
 /*
  * notes management routes
