@@ -19,8 +19,11 @@ class CourseController extends \BaseController
      */
     public function createCours($idclass)
     {
-        $schoolList = DB::table('courses')->lists('name', 'id');
-        return View::make('courses.createcours')->with(array('idclass' => $idclass, 'schoolList' => $schoolList));
+        if(Classes::find($idclass)->canCreate()) {
+            $schoolList = DB::table('courses')->lists('name', 'id');
+            return View::make('courses.createcours')->with(array('idclass' => $idclass, 'schoolList' => $schoolList));
+        }
+        return Redirect::to('/unauthorized');
     }
 
 

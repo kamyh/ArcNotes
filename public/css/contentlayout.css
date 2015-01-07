@@ -42,11 +42,6 @@
 {
     padding: 0.4em;
     margin: 0.4em;
-
-}
-.class-tile-buttons
-{
-    justify-content: center;
 }
 
 .form-table
@@ -85,4 +80,26 @@
     margin-left: 1em;
     margin-top: 10em;
     clear:both;
+}
+
+.note-content
+{
+    padding: 1em;
+    clear: both;
+    font-size: 110%;
+}
+.note-footer
+{
+    padding: 1em;
+    clear: both;
+}
+
+.note-footer-link
+{
+    padding: 0.5em;
+    float:right;
+}
+.max-60
+{
+    max-width: 60%;
 }
