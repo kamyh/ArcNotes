@@ -57,4 +57,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     {
 
     }
+
+    public function isActivated()
+    {
+        if($this->attributes['confirmation_code'] != -1)
+        {
+            return false;
+        }
+        return true;
+    }
+
+
 }

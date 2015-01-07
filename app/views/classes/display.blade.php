@@ -1,9 +1,10 @@
+<!--
 @extends('layouts.default')
 @section('title')
     {{ $class[0]->name }}
 @endsection
 @section('body')
-    <div class="class-creation-form color a">
+    <div class="class-creation-form color-a">
     <div><table>
         <tr>
             <td>Created at </td>
@@ -41,20 +42,23 @@
                     {{ Form::submit('New Course', array('class' => 'button')) }}
                 {{Form::close();}}
             @endif
-            </td>
-        </tr>
-    </table>
+        </td>
+    </tr>
+</table>
 </div></div>
-    <div class="all-course" style="margin-left: 25px">
-    @foreach($courses as $course)
+<div class="all-course">
+@foreach($courses as $course)
         <table style="border: solid 1px #ffffff">
             <tr>
-
-                <td><div onClick='location.href="/courses/open/{{$course->id}}"' class="context-menu-tile hover-color-a"> {{$course->name}} </div></td>
-            </tr>
-            <tr>
-                <td>Created at </td>
-                <td>{{$course->created_at}}</td>
+                @if (Auth::check())
+                <td><div onClick='location.href="/courses/open/{{$course->id}}"'class="context-menu-tile hover-color-a"> {{$course->name}} </div></td>
+                @else
+        <td><div class="context-menu-tile"> {{$course->name}} </div></td>
+                @endif
+        </tr>
+        <tr>
+            <td>Created at </td>
+            <td>{{$course->created_at}}</td>
             </tr>
             <tr>
                 <td>Last update </td>
@@ -66,5 +70,7 @@
             </tr>
         </table>
     @endforeach
-    </div>
-@stop
+        </div>
+    @stop
+
+-->

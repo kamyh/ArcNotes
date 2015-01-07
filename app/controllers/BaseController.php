@@ -17,18 +17,13 @@ class BaseController extends Controller
 
     public function getSearch()
     {
-        ///http://stackoverflow.com/questions/17034616/laravel-load-method-in-another-controller-without-changing-the-url
         $type = Input::get('type');
         $keyword = Input::get('keyword');
-        //return "yolo".$type.$keyword;
-        //$request = Request::create("/".$type."/search/", 'GET', array('keyword'=> $keyword ));
-        //Route::dispatch($request);
-        return Redirect::to("/".$type."/search/".$keyword);
-        /*
-        if ($type == 'course')
-            return CourseController::search($keyword);
-        else
-            return ClassController::search($keyword);*/
+        if ($keyword != null && $keyword != "") {
+            return Redirect::to("/" . $type . "/search/" . $keyword);
+        } else {
+            return View::make('/error/404');
+        }
     }
 
 }
