@@ -3,8 +3,8 @@
 Index of ArcNotes
 @endsection
 @section('body')
-	<div class="welcome">
-		<p>Welcome on Arcnotes my friends !</p>
+	<div class="class-creation-form color-a">
+		<p>Welcome to ArcNotes City my friends !</p>
 	</div>
 </body>
 </html>

@@ -22,7 +22,8 @@ class BaseController extends Controller
         if ($keyword != null && $keyword != "") {
             return Redirect::to("/" . $type . "/search/" . $keyword);
         } else {
-            return View::make('/error/404');
+            Session::put("toast",array('error', 'Empty search.'));
+            return Redirect::to('/');
         }
     }
 
