@@ -197,6 +197,11 @@ class ClassController extends \BaseController
             $user = User::find($iduser);
             if (!is_null($user)) {
                 Session::put('toast', array('success', 'User ' . $user->getSignature() . ' accepted in class ' . $class->getName() . '.'));
+
+                Mail::send('emails.accept', array('class' => $class), function ($message) use ($user) {
+                    $message->to($user->email, $user->firstname + " " + $user->lastname)
+                        ->subject('New member')->from('arcnotesnoreply@gmail.com');
+                });
             }
 
             return Redirect::to('/classes/owned');
@@ -370,14 +375,14 @@ class ClassController extends \BaseController
                 $city = DB::table('cities')->find($school->id_location);
                 $canton = Canton::find($city->id_canton);
                 return View::make('courses.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $class->name));
-            } else {
 
+            } else {
+                return Redirect::to('/unauthorized');
             }
         } else {
             Session::put('toast', array('error', "This class doesn't exist"));
             return Redirect::to('/classes/public');
         }
-        return Redirect::to('/unauthorized');
     }
 
     public function join($idclass)
@@ -391,6 +396,13 @@ class ClassController extends \BaseController
             $permission->id_rights = 0;
             $permission->save();
             Session::put('toast', array('success', 'Class successfully joinged. Now wait that the owner accepts you !'));
+
+            $classOwner = $class->getOwner();
+
+            Mail::send('emails.join', array('class' => $class, 'user' => Auth::user()), function ($message) use ($classOwner) {
+                $message->to($classOwner->email, $classOwner->firstname + " " + $classOwner->lastname)
+                    ->subject('New member')->from('arcnotesnoreply@gmail.com');
+            });
         }
         return Redirect::to('/classes/participant');
     }

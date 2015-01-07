@@ -110,6 +110,7 @@ Route::get("lists_classes", array(
  */
 Route::get('/courses/open/{idcourse}', array('as' => '/courses/open/{course}', 'uses' => 'CourseController@open', 'before' => 'auth'))->where('idcourse', '[0-9]+');
 
+Route::get('/search', 'BaseController@getSearch');
 Route::get('/courses/search/{keyword}', 'CourseController@search');
 Route::get('/classes/search/{keyword}', 'ClassController@search');
 

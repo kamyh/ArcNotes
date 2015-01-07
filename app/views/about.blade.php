@@ -3,12 +3,12 @@
 About
 @endsection
 @section('body')
-	<div class="welcome">
-		<div class="creator_title">Creator</div>
+	<div class="class-creation-form color-a">
+		<div class="creator_title">Creators</div>
 		<div class="creator_content">
 		    Kilian le greudin
 		    Nicolas huge nains
-		    Deruaz Vincent
+		    Vincent Des Rouages
 		</div>
 	</div>
 </body>
