@@ -55,6 +55,14 @@ class BaseNotes extends Eloquent
         return $this->attributes['id_cours'];
     }
 
+    /**
+     * Gives the parent course unique ID
+     * @return Integer : course unique ID
+     */
+    public function getParentCourse()
+    {
+        return Course::find($this->attributes['id_cours']);
+    }
 
     /**
      * Static function that generate a random token of 32 chars using open SSL

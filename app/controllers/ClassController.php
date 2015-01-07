@@ -364,26 +364,25 @@ class ClassController extends \BaseController
 
     public function selectedClass($idclass)
     {
-            $class = Classes::find($idclass);
-            if (!is_null($class)) {
-                if ($class->visibility == 1 || (Auth::check() && $class->isOwner(Auth::id()))) { //1 => public
-                    //Only for the classes's courses
-                    $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
+        $class = Classes::find($idclass);
+        if (!is_null($class)) {
+            if ($class->visibility == 1 || (Auth::check() && $class->canRead())) { //1 => public
+                //Only for the classes's courses
+                $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
 
-                    //Class informations
-                    $school = School::find($class->id_school);
-                    $city = DB::table('cities')->find($school->id_location);
-                    $canton = Canton::find($city->id_canton);
-                    return View::make('courses.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $class->name));
-                } else {
+                //Class informations
+                $school = School::find($class->id_school);
+                $city = DB::table('cities')->find($school->id_location);
+                $canton = Canton::find($city->id_canton);
+                return View::make('courses.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $class->name));
 
-                }
             } else {
-                Session::put('toast', array('error', "This class doesn't exist"));
-                return Redirect::to('/classes/public');
+                return Redirect::to('/unauthorized');
             }
-
-        return Redirect::to('/unauthorized');
+        } else {
+            Session::put('toast', array('error', "This class doesn't exist"));
+            return Redirect::to('/classes/public');
+        }
     }
 
     public function join($idclass)
@@ -400,7 +399,7 @@ class ClassController extends \BaseController
 
             $classOwner = $class->getOwner();
 
-            Mail::send('emails.join', array('class' => $class,'user' => Auth::user()), function ($message) use ($classOwner) {
+            Mail::send('emails.join', array('class' => $class, 'user' => Auth::user()), function ($message) use ($classOwner) {
                 $message->to($classOwner->email, $classOwner->firstname + " " + $classOwner->lastname)
                     ->subject('New member')->from('arcnotesnoreply@gmail.com');
             });

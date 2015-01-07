@@ -3,12 +3,7 @@
     {{$title}}
 @endsection
 @section('body')
-    <table>
-        {{ Form::open(array('route' => array('/courses/create/{idclass}','idclass'=> $class->id), 'method' => 'post')) }}
-            <tr>
-             </tr>
-        {{ Form::close() }}
-    </table>
+    <div class ="class-creation-form color-b">
     <table>
             <tr>
                 <td>Created at </td>
@@ -24,7 +19,7 @@
                 <td>{{$canton}}</td>
             </tr>
             <tr>
-                <td>Scollar year</td>
+                <td>Schollar year</td>
                 <td>{{$class->scollaryear}}</td>
             </tr>
             <tr>
@@ -49,5 +44,6 @@
                 </td>
             </tr>
         </table>
+    </div>
     @yield('display')
 @stop
