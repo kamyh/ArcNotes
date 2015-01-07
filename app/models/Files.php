@@ -1,10 +1,9 @@
 <?php
 
 
-
 class Files extends Eloquent
 {
-    protected $fillable = ['id_basenotes','path','original_filename','mime'];
+    protected $fillable = ['id_basenotes', 'path', 'original_filename', 'mime'];
 
     /**
      * The database table used by the model.
@@ -52,26 +51,21 @@ class Files extends Eloquent
      */
     public function getSize()
     {
-        if(is_file($this->attributes['path']))
-        {
-            $bytesSize = filesize(public_path().$this->attributes['path']);
+        $fullpath = public_path() . $this->attributes['path'];
+        if (is_file($fullpath)) {
+            $bytesSize = filesize(public_path() . $this->attributes['path']);
             $kilo = 1024;
 
-            if($bytesSize < $kilo) {
+            if ($bytesSize < $kilo) {
                 return $bytesSize . 'B';
-            }
-            else if($bytesSize < $kilo*$kilo) {
-                return ceil($bytesSize / $kilo) .'kB';
-            }
-            else if($bytesSize < $kilo*$kilo*$kilo) {
+            } else if ($bytesSize < $kilo * $kilo) {
+                return ceil($bytesSize / $kilo) . 'kB';
+            } else if ($bytesSize < $kilo * $kilo * $kilo) {
                 return ceil($bytesSize / ($kilo * $kilo)) . 'MB';
-            }
-            else {
+            } else {
                 return ceil($bytesSize / ($kilo * $kilo * $kilo)) . 'GB';
             }
-        }
-        else
-        {
+        } else {
             return 'undefined size';
         }
     }
@@ -82,6 +76,6 @@ class Files extends Eloquent
      */
     public function getMIMEType()
     {
-        return 'Content-Type: '.$this->attributes['mime'];
+        return 'Content-Type: ' . $this->attributes['mime'];
     }
 }

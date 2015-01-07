@@ -3,7 +3,7 @@
     {{$title}}
 @endsection
 @section('body')
-    <div class ="class-creation-form color-b">
+    <div class ="class-creation-form color-a">
     <table>
             <tr>
                 <td>Created at </td>
@@ -34,15 +34,20 @@
                 <td>Visibility</td>
                 <td>{{$class->getVisibilityStr()}}</td>
             </tr>
-            <tr>
-                <td>
-                @if(Auth::check() && $class->canCreate())
-                    {{ Form::open(array('route' => array('/courses/create/{idclass}', 'idclass' => $class->id),'method' => 'get')); }}
-                        <button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Invite', array('class' => 'test-image')); }}</button>
-                    {{Form::close();}}
-                @endif
+        </table>
+    </div>
+    <div class="course-title">
+        <table>
+            <tr><td>
+                    <h2>Courses in {{$class->name}}</h2>
                 </td>
-            </tr>
+                    @if(Auth::check() && $class->canCreate())
+                <td>
+                        {{ Form::open(array('route' => array('/courses/create/{idclass}', 'idclass' => $class->id),'method' => 'get')); }}
+                        <button type="submit" class="button-image" title="Create a course">{{ HTML::image('img/icons/plus.png', 'Invite', array('class' => 'test-image')); }}</button>
+                        {{Form::close();}}
+                </td></tr>
+                    @endif
         </table>
     </div>
     @yield('display')

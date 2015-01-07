@@ -1,6 +1,7 @@
 
 .list-classes
 {
+    clear:both;
   display: -webkit-flex;
   display: flex;
   flex-direction: row;
@@ -58,4 +59,30 @@
     float:left;
     padding: 2em;
     margin-left:2em;
+    clear: both;
+}
+.search-results
+{
+    float:left;
+    padding: 2em;
+    margin-left:2em;
+    display: flex;
+    flex-direction: column;
+}
+.search-result
+{
+    padding: 1em;
+    margin-bottom: 1em;
+}
+.course-title
+{
+    margin-left: 1em;
+    clear: both;
+}
+
+.notes
+{
+    margin-left: 1em;
+    margin-top: 10em;
+    clear:both;
 }

@@ -11,8 +11,8 @@
 @endsection
 @section('body')
 
-
-    <table style="border: solid 1px #ffffff">
+<div class="class-creation-form color-a">
+    <table>
         <tr>
             <td>Created at</td>
             <td>{{$course->created_at}}</td>
@@ -25,15 +25,10 @@
             <td>Matter</td>
             <td>{{$course->matter}}</td>
         </tr>
-        @if(Auth::check() && $course->getParentClass()->canCreate())
-        <tr>
-            <td>
-            </td>
-            <td>
-            </td>
-        </tr>
-        @endif
     </table>
+
+</div>
+<div class="notes">
     <h2>
         {{ Form::open(array('route' => array('/notes/write/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
                 Written notes
@@ -45,7 +40,7 @@
     <table>
         @foreach($manuscrits as $manuscrit)
 
-            <tr>
+            <tr class="color-a">
                 @if((Auth::check() && $course->getParentClass()->canRead()) || $course->getParentClass()->isPublic())
                     <td><a href="/notes/read/{{$manuscrit->id}}" class="context-menu-tile-class color-a">{{$manuscrit->title}}</a></td>
                 @else
@@ -83,7 +78,7 @@
      </h2>
      <table>
             @foreach($files as $file)
-                <tr>
+                <tr class="color-a">
                     @if((Auth::check() && $course->getParentClass()->canRead()) || $course->getParentClass()->isPublic())
                         <td><a href="/notes/download/{{$file->id}}" class="context-menu-tile-class color-a">{{$file->original_filename}}</a></td>
                     @else
@@ -107,5 +102,5 @@
                 </tr>
             @endforeach
      </table>
-
+</div>
 @stop
