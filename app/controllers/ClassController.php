@@ -66,7 +66,7 @@ class ClassController extends \BaseController
         } else if ($input['school'] == 1) {
             return View::make('schools.school')->with(array('input' => $input));
         } else {
-            $rulesValidatorUser = array('name' => 'required|min:3', 'scollaryear' => 'required', 'school' => 'required', 'degree' => 'required', 'domain' => 'required');
+            $rulesValidatorUser = array('name' => array('required','min:3','regex:[a-zA-Z-àéèöïîêôâ]'), 'scollaryear' => array('required','numeric'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
             $validator = Validator::make($input, $rulesValidatorUser);
 
             if (!$validator->fails()) {

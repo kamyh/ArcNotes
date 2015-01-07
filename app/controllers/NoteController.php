@@ -66,7 +66,7 @@ class NoteController extends \BaseController
             if (!$validator->fails()) {
                 $token = bin2hex(BaseNotes::getNewToken()); //generate a new token
                 $note = BaseNotes::firstOrCreate(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token)); //write in basenote
-                Manuscrits::firstOrCreate(array('id_basenotes' => $note->getID(), 'content' => Input::get('content'), 'title' => Input::get('title'))); //store in manuscrits
+                Manuscrits::firstOrCreate(array('id_basenotes' => $note->getID(), 'content' => e(Input::get('content')), 'title' => e(Input::get('title')))); //store in manuscrits
                 Session::put('toast', array('success', 'The note was created')); //insert message in session for toast message
                 return Redirect::to('/courses/open/' . $idcourse);
             } else {
@@ -91,8 +91,8 @@ class NoteController extends \BaseController
 
                 //validate and store updates
                 if (!$validator->fails()) {
-                    $note->title = Input::get('title');
-                    $note->content = Input::get('content');
+                    $note->title = e(Input::get('title'));
+                    $note->content = e(Input::get('content'));
                     $note->save();
                     $basenote = $note->getParent();
                     $idcourse = $basenote->id_cours;
@@ -122,8 +122,8 @@ class NoteController extends \BaseController
                 $validator = Validator::make(Input::all(), $this->rules);
                 //if everything ok update and save changes
                 if (!$validator->fails()) {
-                    $note->title = Input::get('title');
-                    $note->content = Input::get('content');
+                    $note->title = e(Input::get('title'));
+                    $note->content = e(Input::get('content'));
                     $note->save();
                     return Response::json(array('success' => true, 'msg' => 'Note sucessfully saved')); //send success into a json response
                 } else {

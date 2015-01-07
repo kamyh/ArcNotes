@@ -44,7 +44,7 @@ class CourseController extends \BaseController
     public function store()
     {
         $input = Input::all();
-        $rulesValidatorCourse = array('name' => 'required|min:5', 'matter' => 'required|min:3');
+        $rulesValidatorCourse = array('name' => array('required', 'min:5', 'regex:/^[a-zA-Z0-9-àéèöïêôâî]+$/'), 'matter' => array('required', 'min:3','regex:/^[a-zA-Z0-9-àéèöïêôâî]+$/'));
         $validator = Validator::make($input, $rulesValidatorCourse);
 
         if (!$validator->fails()) {
