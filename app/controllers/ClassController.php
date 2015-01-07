@@ -87,7 +87,7 @@ class ClassController extends \BaseController
                 return Redirect::to('/classes/owned');
 
             } else {
-                return Redirect::to('/classes/create')->withErrors($validator)->withInput();
+                return Redirect::to('/classes/create/')->withErrors($validator)->withInput();
             }
         }
     }
