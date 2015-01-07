@@ -78,7 +78,6 @@ class ClassController extends \BaseController
                 $class->domain = $input['domain'];
                 $class->visibility = $input['visibility'];
                 $class->save();
-
                 $permission = new Permissions();
                 $permission->id_user = Auth::id();
                 $permission->id_rights = 15;
@@ -156,16 +155,25 @@ class ClassController extends \BaseController
         $input = Input::all();
         $user_invited = User::where('email', '=', $input['email'])->first();
         if ($user_invited == null) {
-            $error = "No such user registered !";
-            return Redirect::to('/classes/owned')->withErrors($error)->withInput();
+            $errors = "No such user registered !";
+            Session::put('toast', array('error', $errors));
+            return Redirect::to('/classes/owned')->withErrors($errors);
         } else {
-            $permission = new Permissions();
-            $permission->id_user = $user_invited->id;
-            $permission->id_class = $input['class'];
-            $permission->id_rights = 1;
-            $permission->save();
-
+            $class = Classes::find($input['class']);
+            if (!is_null($class)) {
+                $permission = new Permissions();
+                $permission->id_user = $user_invited->id;
+                $permission->id_class = $input['class'];
+                $permission->id_rights = 1;
+                $permission->save();
+                Session::put('toast', array('success', 'User ' . $user_invited->getSignature() . ' has been invited into ' . $class->getName() . '.'));
             return Redirect::to('/classes/owned');
+            }
+            else{
+                $errors = "Cannot invite a user in an inexistant class !";
+                Session::put('toast', array('error', $errors));
+                return Redirect::to('/classes/owned')->withErrors($errors);
+            }
         }
     }
 
@@ -176,8 +184,11 @@ class ClassController extends \BaseController
         if ($class->isOwner(Auth::id())) {
             $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
             $permission->id_rights = 4;
-
             $permission->save();
+            $user = User::find($iduser);
+            if (!is_null($user)) {
+                Session::put('toast', array('success', 'User ' . $user->getSignature() . ' accepted in class ' . $class->getName() . '.'));
+            }
 
             return Redirect::to('/classes/owned');
         } else {
@@ -188,11 +199,13 @@ class ClassController extends \BaseController
     public function refuseMember($iduser, $idclass)
     {
         $class = Classes::find($idclass);
-
         if ($class->isOwner(Auth::id())) {
             $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
             $permission->delete();
-
+            $user = User::find($iduser);
+            if (!is_null($user)) {
+                Session::put('toast', array('success', 'User ' . $user->getSignature() . ' refused to join class ' . $class->getName() . '.'));
+            }
             return Redirect::to('/classes/owned');
         } else {
             return Redirect::to('/unauthorized');
@@ -223,7 +236,7 @@ class ClassController extends \BaseController
         return Redirect::to('/classes/owned');
     }
 
-    public function chgt_rights($iduser, $idclass)
+    public function chgtRights($iduser, $idclass)
     {
         $class = Classes::find($idclass);
 
@@ -261,6 +274,7 @@ class ClassController extends \BaseController
                 $class->visibility = 'public';
             }
             $class->save();
+            Session::put('toast', array('success', 'Visibility of class ' . $class->getName() . ' changed !'));
         }
 
         return Redirect::to('/classes/owned');
@@ -348,7 +362,7 @@ class ClassController extends \BaseController
             }
         }
 
-        Session::put('toast',array('error','You own no class, try to create one.'));
+        Session::put('toast', array('error', 'You own no class, try to create one.'));
         return Redirect::to('/classes/create');
     }
 
