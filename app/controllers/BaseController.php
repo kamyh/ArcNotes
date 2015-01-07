@@ -18,7 +18,7 @@ class BaseController extends Controller
     public function getSearch()
     {
         $type = Input::get('type');
-        $keyword = Input::get('keyword');
+        $keyword = e(Input::get('keyword'));
         if ($keyword != null && $keyword != "") {
             return Redirect::to("/" . $type . "/search/" . $keyword);
         } else {
