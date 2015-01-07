@@ -14,8 +14,8 @@ class CourseController extends \BaseController
     }
 
     /**
-     *
-     *
+     * @param $idclass
+     * @return mixed
      */
     public function createCours($idclass)
     {
