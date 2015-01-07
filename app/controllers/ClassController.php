@@ -133,8 +133,9 @@ class ClassController extends \BaseController
     public function search($keyword)
     {
         //todo: get get only classes which are public/accessible?
+        //$keyword = Input::get('keyword');
         $classes = Classes::where('name', 'LIKE', "%".$keyword."%")->get();
-        return View::make('class.searchdisplay')->with(array('classes' => $classes, 'keyword' => $keyword));
+        return View::make('classes.searchdisplay')->with(array('classes' => $classes, 'keyword' => $keyword));
     }
 
     /**

@@ -18,7 +18,7 @@
 <body>
 <div class="header row color-a">
 			<div id="header-title">
-				{{ HTML::image('img/logo.png', 'logo', array('class' => 'logo')) }}
+				<a href="/">{{ HTML::image('img/logo.png', 'logo', array('class' => 'logo')) }}</a>
 			</div>
 			<div id="header-menus" class="scroll-x">
 			@if(Auth::check())
@@ -34,10 +34,10 @@
 			</div>
 			<div id="header-search">
 				<div class="header-search-tile" >
-                    {{ Form::open(array('url' => 'foo/bar', 'method' => 'get')) }}
+                    {{ Form::open(array('url' => '/search', 'method' => 'get')) }}
                     <table>
                         <tr><td>{{ Form::text('keyword', null, array('placeholder' => 'Search')) }}</td>
-                            <td>{{ Form::select('type', array('course' => 'Course', 'class' => 'Class')) }}</td>
+                            <td>{{ Form::select('type', array('courses' => 'Course', 'classes' => 'Class')) }}</td>
                             <td><button type="submit" class="button-image">{{ HTML::image('img/icons/search.png', 'Search', array('class' => 'test-image')); }}</button>
                             </td>
                         </tr> </table>
@@ -99,7 +99,7 @@
 				 @if(Auth::check())
                     @foreach(Auth::user()->getClasses() as $class)
 
-                            <a href="/classes/display/{{$class->id}}" class="context-menu-tile-class color-b">{{$class->name}}</a>
+                            <a href="/classes/display/{{$class->id}}" class="context-menu-tile-class color-b hover-color-a">{{$class->name}}</a>
                             @foreach($class->getCourses() as $course)
                                 <a href="/courses/open/{{$course->id}}" class="context-menu-tile-course hover-color-b color-a ">{{$course->name}}</a></br>
                             @endforeach
@@ -114,7 +114,6 @@
 			    <div class="content-body row scroll-y">
 			    @yield('body')
 			    </div>
-
 			</div>
 		</div>
 		@show
