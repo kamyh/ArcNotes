@@ -33,7 +33,15 @@
             @endif
 			</div>
 			<div id="header-search">
-				<div class="header-search-tile" > search bar </div>
+				<div class="header-search-tile" >
+                    {{ Form::open(array('url' => 'foo/bar', 'method' => 'get')) }}
+                    <table>
+                        <tr><td>{{ Form::text('keyword', null, array('placeholder' => 'Search')) }}</td>
+                            <td>{{ Form::select('type', array('course' => 'Course', 'class' => 'Class')) }}</td>
+                            <td><button type="submit" class="button-image">{{ HTML::image('img/icons/search.png', 'Search', array('class' => 'test-image')); }}</button>
+                            </td>
+                        </tr> </table>
+                    {{ Form::close() }}</div>
 			</div>
 		</div>
 		<div class="body row">
