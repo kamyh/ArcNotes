@@ -158,17 +158,22 @@ class ClassController extends \BaseController
         if ($user_invited == null) {
             $error = "No such user registered !";
             return Redirect::to('/classes/owned')->withErrors($error);
-        } else if($user_invited->id != Auth::id()){
-            $permission = new Permissions();
-            $permission->id_user = $user_invited->id;
-            $permission->id_class = $input['class'];
-            $permission->id_rights = 2;
-            $permission->save();
+        } else if ($user_invited->id != Auth::id()) {
+            if (Permissions::where('id_user', '=', $user_invited->id)->where('id_class', '=', $input['class'])->count() == 0) {
+                $permission = new Permissions();
+                $permission->id_user = $user_invited->id;
+                $permission->id_class = $input['class'];
+                $permission->id_rights = 2;
+                $permission->save();
 
-            return Redirect::to('/classes/owned');
-        }
-        else{
+                return Redirect::to('/classes/owned');
+            } else {
+                Session::put('toast', array("error", "User already in the class."));
+                return Redirect::to('/classes/owned');
+            }
+        } else {
             Session::put('toast', array("error", "Your are the owner ! Silly !"));
+            return Redirect::to('/classes/owned');
         }
     }
 
@@ -351,7 +356,7 @@ class ClassController extends \BaseController
             }
         }
 
-        Session::put('toast',array('error','You own no class, try to create one.'));
+        Session::put('toast', array('error', 'You own no class, try to create one.'));
         return Redirect::to('/classes/create');
     }
 
