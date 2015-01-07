@@ -21,7 +21,7 @@ class CreateClassesTable extends Migration {
 			$table->string('degree',120);
 			$table->string('domain',120);
 			$table->integer('previous')->references('id')->on('classes');
-			$table->string('visibility',120);
+			$table->integer('visibility');
             $table->unique(array('name','id_school','scollaryear'));
 		});
 	}

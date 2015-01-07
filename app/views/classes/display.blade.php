@@ -32,7 +32,7 @@
         </tr>
         <tr>
             <td>Visibility</td>
-            <td>{{$class[0]->visibility}}</td>
+            <td>{{$class[0]->getVisibilityStr()}}</td>
         </tr>
         <tr>
             <td>
