@@ -63,8 +63,8 @@
                 <td>
                  @if(Auth::check() && $course->getParentClass()->canCreate())
                     {{ Form::open(array('route' => array('/notes/shared/{token}', 'token' => $manuscrit->token),'method' => 'get')); }}
-                        <!--{{ Form::submit('Delete', array('class' => 'button')); }}-->
-                        <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
+                        <!--{{ Form::submit('Share', array('class' => 'button')); }}-->
+                        <button type="submit" class="button-image">{{ HTML::image('img/icons/share.png', 'Share', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
                  @endif
                 </td>
@@ -91,19 +91,18 @@
                     <td>{{ Files::find($file->id)->getSize(); }}</td>
                     <td>
                         {{Form::open(array('route' => array('/notes/download/{idfile}', 'idfile' => $file->id), 'method' => 'get')); }}
-                        {{ Form::submit('Download',  array('class' => 'button')); }}
-                        {{Form::close();}}
+                        <button type="submit" class="button-image">{{ HTML::image('img/icons/download.png', 'Share', array('class' => 'test-image')); }}</button>                        {{Form::close();}}
                     </td>
                     <td>
                         {{ Form::open(array('route' => array('/notes/deletefile/{idfile}', 'idfile' => $file->id))); }}
-                            {{ Form::submit('Delete', array('class' => 'button')); }}
+                            <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Share', array('class' => 'test-image')); }}</button>
                         {{Form::close();}}
                     </td>
                     <td>
                      @if(Auth::check() && $course->getParentClass()->canCreate())
                         {{ Form::open(array('route' => array('/notes/shared/{token}', 'token' => $file->token),'method' => 'get')); }}
                             <!--{{ Form::submit('Delete', array('class' => 'button')); }}-->
-                            <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
+                            <button type="submit" class="button-image">{{ HTML::image('img/icons/share.png', 'Share', array('class' => 'test-image')); }}</button>
                         {{Form::close();}}
                      @endif
                     </td>
