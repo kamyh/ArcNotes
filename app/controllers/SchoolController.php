@@ -58,12 +58,12 @@ class SchoolController extends \BaseController
     public function store()
     {
         $inputs = Input::all();
-        $rulesValidatorSchool = array('name' => 'required|min:4');
+        $rulesValidatorSchool = array('name_school' => 'required|min:4');
         $validator = Validator::make($inputs, $rulesValidatorSchool);
 
         if (!$validator->fails()) {
             $school = new School();
-            $school->name = $inputs['name'];
+            $school->name = $inputs['name_school'];
             $school->save();
 
             return Redirect::to('/classes/create')->with('name', $inputs['name']);

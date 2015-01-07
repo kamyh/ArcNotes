@@ -331,11 +331,8 @@ class ClassController extends \BaseController
         $permission->id_class = $idclass;
         $permission->id_user = Auth::id();
 
-        if ($class->visibility == 'public') {
-            $permission->id_rights = 4;
-        } else {
             $permission->id_rights = 0;
-        }
+
 
         $permission->save();
 
