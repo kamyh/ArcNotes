@@ -34,18 +34,19 @@ class UserController extends \BaseController
         if (!$validator->fails()) {
             $email = Input::get('email');
             $password = Input::get('password');
-            if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
-                $error = "This user doesn't exist";
+            if (User::where('email', '=', Input::get('email'))->first()->isActivated()) {
+                if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
+                    $error = "This user doesn't exist";
 
-                if(Auth::User()->isActivated()) {
                     Session::put('toast', array('success', 'You are logged in !'));
                     return Redirect::to('/')->withErrors($error);
+                } else {
+                    return Redirect::to('/')->withErrors($validator)->withInput();
                 }
-                else{
-                    Session::put('toast', array('error', 'Please check your email to verify your account !'));
-                    return Redirect::to('/')->withErrors($error);
+            } else {
+                Session::put('toast', array('error', 'Please check your email to verify your account !'));
+                return Redirect::to('/');
 
-                }
             }
         }
         return Redirect::to('/')->withErrors($validator)->withInput();
@@ -54,7 +55,8 @@ class UserController extends \BaseController
     /**
      * User disconnection
      */
-    public function logout()
+    public
+    function logout()
     {
         Auth::logout();
         return Redirect::to('/');
@@ -66,7 +68,8 @@ class UserController extends \BaseController
      *
      * @return Response
      */
-    public function create()
+    public
+    function create()
     {
         return View::make('users.create');
     }
@@ -78,7 +81,8 @@ class UserController extends \BaseController
      * @return Response
      *
      */
-    public function store()
+    public
+    function store()
     {
         $input = Input::all();
         $rulesValidatorUser = array('firstname' => 'required|min:4', 'lastname' => 'required', 'password' => 'required|min:8', 'email' => 'required|email');
@@ -118,7 +122,8 @@ class UserController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function show($id)
+    public
+    function show($id)
     {
         $user = User::find($id);
         echo $user->lastname;
@@ -131,7 +136,8 @@ class UserController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($id)
+    public
+    function edit($id)
     {
         //
     }
@@ -143,7 +149,8 @@ class UserController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function update($id)
+    public
+    function update($id)
     {
         //
     }
@@ -155,18 +162,19 @@ class UserController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
+    public
+    function destroy($id)
     {
         //
     }
 
 
-    public function confirm($confirmationCode)
+    public
+    function confirm($confirmationCode)
     {
-        $user = User::where('confirmation_code','=',$confirmationCode)->first();
+        $user = User::where('confirmation_code', '=', $confirmationCode)->first();
 
-        if($user)
-        {
+        if ($user) {
             $user->confirmation_code = -1;
             $user->save();
             Session::put('toast', array('success', 'Your account have been succesfully verify !'));

@@ -3,7 +3,7 @@
     <div class="list-classes">
         @foreach($courses as $course)
         <div class="class-tile color-a">
-            @if($course->getParentClass()->canRead())
+            @if(/*$course->getParentClass()->canRead()*/false)
                 <a href="/courses/open/{{$course->id}}" class="class-title-tile color-b hover-color-a">{{$course->name}}</a>
             @else
                 <div class="class-title-tile color-b">{{$course->name}}</div>
