@@ -40,7 +40,7 @@ Route::post('/courses/create/{idclass}', array('before' => 'auth', 'as' => '/cou
 
 
 Route::resource('schools', 'SchoolController');
-Route::get('/schools', array('as' => '/schools', 'uses' => 'SchoolController@school'));
+Route::post('/schools', array('as' => '/schools', 'uses' => 'SchoolController@school'));
 
 
 /**

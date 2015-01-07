@@ -37,6 +37,7 @@
                 {{Form::close();}}</h2>
     <table>
         @foreach($manuscrits as $manuscrit)
+
             <tr>
                 @if(Auth::check() && $course->getParentClass()->canRead())
                     <td><a href="/notes/read/{{$manuscrit->id}}" class="context-menu-tile-class color-a">{{$manuscrit->title}}</a></td>
@@ -59,11 +60,18 @@
                     {{Form::close();}}
                  @endif
                 </td>
+                <td>
+                 @if(Auth::check() && $course->getParentClass()->canCreate())
+                    {{ Form::open(array('route' => array('/notes/shared/{token}', 'token' => $manuscrit->token),'method' => 'get')); }}
+                        <!--{{ Form::submit('Delete', array('class' => 'button')); }}-->
+                        <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
+                    {{Form::close();}}
+                 @endif
+                </td>
             </tr>
         @endforeach
     </table>
     <h2>
-
                 {{ Form::open(array('route' => array('/notes/add/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
                     <!--{{ Form::submit('Add File', array('class' => 'button')); }}-->
                     Files
@@ -90,6 +98,14 @@
                         {{ Form::open(array('route' => array('/notes/deletefile/{idfile}', 'idfile' => $file->id))); }}
                             {{ Form::submit('Delete', array('class' => 'button')); }}
                         {{Form::close();}}
+                    </td>
+                    <td>
+                     @if(Auth::check() && $course->getParentClass()->canCreate())
+                        {{ Form::open(array('route' => array('/notes/shared/{token}', 'token' => $file->token),'method' => 'get')); }}
+                            <!--{{ Form::submit('Delete', array('class' => 'button')); }}-->
+                            <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
+                        {{Form::close();}}
+                     @endif
                     </td>
                 </tr>
             @endforeach
