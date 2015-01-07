@@ -12,9 +12,4 @@ class Permissions extends Eloquent
      * @var string
      */
     protected $table = 'permissions';
-
-
-
-
-
 }

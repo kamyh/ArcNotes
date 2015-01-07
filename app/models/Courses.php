@@ -12,6 +12,7 @@ class Courses extends Eloquent
      * @var string
      */
     protected $table = 'courses';
+
     private $id;
 
 
@@ -30,4 +31,8 @@ class Courses extends Eloquent
         return Classes::find($this->getClassID());
     }
 
+    public function getID()
+    {
+        return $this->attributes['id'];
+    }
 }

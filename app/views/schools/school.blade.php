@@ -1,4 +1,4 @@
-@extends('layouts.default')
+@extends('...layouts.default')
 @section('title')
     New School
 @endsection
@@ -6,7 +6,7 @@
 
 <div class="">
         <table>
-            {{ Form::open(array('route' => array('school.store'), 'method' => 'post')) }}
+            {{ Form::open(array('route' => array('schools.store'), 'method' => 'post')) }}
             @if($errors->has())
             <tr>
                 <td colspan="2">
@@ -18,10 +18,10 @@
            @endif
             <tr>
                 <td>
-                {{Form::label('name','Name')}}
+                {{Form::label('name_school','Name')}}
                 </td>
                 <td>
-                {{Form::text('name', null,array('class' => ''))}}
+                {{Form::text('name_school', null,array('class' => ''))}}
                 </td>
             </tr>
             <tr>

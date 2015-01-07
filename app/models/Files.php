@@ -19,21 +19,37 @@ class Files extends Eloquent
     private $mime;
 
 
+    /**
+     * return the parent basenote id
+     * @return Integer : the parent's basenote ID
+     */
     public function getParent()
     {
         return BaseNotes::find($this->attributes['id_basenotes']);
     }
 
+    /**
+     * Give the path to the file
+     * @return String : the path to the physic file
+     */
     public function getPath()
     {
         return $this->attributes['path'];
     }
 
+    /**
+     * Give the original filename of file
+     * @return String : filename
+     */
     public function getOriginalName()
     {
         return $this->attributes['original_filename'];
     }
 
+    /**
+     * Give the filesize with unity (B,KB,MB, etc)
+     * @return string : filesize and unity
+     */
     public function getSize()
     {
         if(is_file($this->attributes['path']))
@@ -60,6 +76,10 @@ class Files extends Eloquent
         }
     }
 
+    /**
+     * Return the Mime type string for http request header
+     * @return string : MIME type string
+     */
     public function getMIMEType()
     {
         return 'Content-Type: '.$this->attributes['mime'];

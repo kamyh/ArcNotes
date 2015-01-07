@@ -6,7 +6,7 @@
         <div class="list-classes">
         @foreach($classes_public as $class)
         <div class="class-tile color-a">
-            <a href="/class/display/{{$class->id}}" class="class-title-tile color-b hover-color-a">{{$class->name}}</a>
+            <a href="/classes/display/{{$class->id}}" class="class-title-tile color-b hover-color-a">{{$class->name}}</a>
         <table>
             <tr>
                 <td>Created at </td>
@@ -34,12 +34,12 @@
             </tr>
             <tr>
                 <td>Visibility</td>
-                <td>{{$class->visibility}}</td>
+                <td>{{$class->getVisibilityStr()}}</td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    {{ Form::open(array('route' => array('/class/resign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
+                    {{ Form::open(array('route' => array('/classes/resign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                         {{Form::submit('Resign', array('class' => 'button'))}}
                     {{ Form::close() }}
                 </td>
@@ -51,9 +51,9 @@
         <div class="page-navigation">
             @for($i = 1;$i < $numberOfPages+1;$i++)
                 @if($i == $pageNo)
-                    <a href="/class/participant/{{$i}}" class="page-navigation-current">{{$i}}</a>
+                    <a href="/classes/participant/{{$i}}" class="page-navigation-current">{{$i}}</a>
                 @else
-                    <a href="/class/participant/{{$i}}" class="page-navigation-not-current">{{$i}}</a>
+                    <a href="/classes/participant/{{$i}}" class="page-navigation-not-current">{{$i}}</a>
                 @endif
             @endfor
         </div>

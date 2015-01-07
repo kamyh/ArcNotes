@@ -4,6 +4,14 @@
 @endsection
 @section('body')
     <table>
+        {{ Form::open(array('route' => array('/courses/create/{idclass}','idclass'=> $class->id), 'method' => 'post')) }}
+            <tr>
+            <td>
+                <button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Invite', array('class' => 'test-image')); }}</button>
+           </td> </tr>
+        {{ Form::close() }}
+    </table>
+    <table>
             <tr>
                 <td>Created at </td>
                 <td> {{ $class->created_at }} </td>
@@ -31,7 +39,7 @@
             </tr>
             <tr>
                 <td>Visibility</td>
-                <td>{{$class->visibility}}</td>
+                <td>{{$class->getVisibilityStr()}}</td>
             </tr>
             <tr>
                 <td>

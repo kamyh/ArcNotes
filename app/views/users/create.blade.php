@@ -3,31 +3,38 @@
     Register
 @endsection
 @section('body')
-<div class="">
-        {{ Form::open(array('route' => array('user.store'), 'method' => 'post')) }}
-        @if($errors->any())
-            <div class="">
-                <a class="" data-dismiss="alert">&times;</a>
-                {{ implode('', $errors->all('<li class="error">:message</li>')) }}
-            </div>
+<div class="class-creation-form color-a">
+    <table>
+        {{ Form::open(array('route' => array('users.store'), 'method' => 'post')) }}
+        @if($errors->has())
+            <tr>
+                <td colspan="2">
+                @foreach ($errors->all() as $error)
+                   <div class="error">{{ $error }}</div>
+                @endforeach
+                </td>
+            </tr>
         @endif
-            {{Form::label('firstname','First Name')}}
-            {{Form::text('firstname', null,array('class' => ''))}}
-                <br/>
-
-            {{Form::label('lastname','Last Name')}}
-            {{Form::text('lastname', null,array('class' => ''))}}
-           <br/>
-
-            {{Form::label('email','Email')}}
-            {{Form::text('email', null,array('class' => ''))}}
-               <br/>
-
-            {{Form::label('password','Password')}}
-            {{Form::password('password',array('class' => ''))}}
-           <br/>
-
-        {{Form::submit('Register', array('class' => 'button'))}}
+        <tr>
+            <td>{{Form::label('firstname','First Name')}}</td>
+            <td>{{Form::text('firstname', null,array('class' => ''))}}</td>
+        </tr>
+        <tr>
+            <td>{{Form::label('lastname','Last Name')}}</td>
+            <td>{{Form::text('lastname', null,array('class' => ''))}}</td>
+        </tr>
+        <tr>
+            <td>{{Form::label('email','Email')}}</td>
+            <td>{{Form::text('email', null,array('class' => ''))}}</td>
+        </tr>
+        <tr>
+            <td>{{Form::label('password','Password')}}</td>
+            <td>{{Form::password('password',array('class' => ''))}}</td>
+        </tr>
+        <tr>
+        <td>&nbsp</td><td>{{Form::submit('Register', array('class' => 'button'))}}</td>
+        </tr>
         {{ Form::close() }}
+    </table>
 </div>
 @stop
