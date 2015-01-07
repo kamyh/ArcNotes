@@ -433,7 +433,6 @@ class ClassController extends \BaseController
 
     public function classParticipant($page)
     {
-
         $take = 12;
         $skip = ($page - 1) * $take;
         $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
