@@ -36,7 +36,16 @@ class UserController extends \BaseController
             $password = Input::get('password');
             if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
                 $error = "This user doesn't exist";
-                return Redirect::to('/')->withErrors($error);
+
+                if(Auth::User()->isActivated()) {
+                    Session::put('toast', array('success', 'You are logged in !'));
+                    return Redirect::to('/')->withErrors($error);
+                }
+                else{
+                    Session::put('toast', array('error', 'Please check your email to verify your account !'));
+                    return Redirect::to('/')->withErrors($error);
+
+                }
             }
         }
         return Redirect::to('/')->withErrors($validator)->withInput();
@@ -152,19 +161,17 @@ class UserController extends \BaseController
     }
 
 
-    public function confirm($confirmation_code)
+    public function confirm($confirmationCode)
     {
-        if (!$confirmation_code) {
-            throw new InvalidConfirmationCodeException;
+        $user = User::where('confirmation_code','=',$confirmationCode)->first();
+
+        if($user)
+        {
+            $user->confirmation_code = -1;
+            $user->save();
+            Session::put('toast', array('success', 'Your account have been succesfully verify !'));
         }
 
-        $user = User::whereConfirmationCode($confirmation_code)->first();
-        if (!$user) {
-            throw new InvalidConfirmationCodeException;
-        }
-
-        $user->confirmation_code = null;
-        $user->save();
 
         return Redirect::to('/');
     }

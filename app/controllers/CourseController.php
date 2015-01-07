@@ -111,7 +111,7 @@ class CourseController extends \BaseController
     public function search($keyword)
     {
         //todo: get get only courses which are public/accessible?
-        $courses = Courses::where('name', 'LIKE', "%".$keyword."%")->get();
+        $courses = Courses::where('name', 'LIKE', "%" . $keyword . "%")->get();
         return View::make('courses.searchdisplay')->with(array('courses' => $courses, 'keyword' => $keyword));
     }
 
@@ -119,14 +119,17 @@ class CourseController extends \BaseController
     {
         $course = Courses::find($idcourse);
         if (!is_null($course)) {
-            $manuscrits = DB::table('basenotes')->where('id_cours', $course->id)->join('manuscrits', 'manuscrits.id_basenotes', '=', 'basenotes.id')->orderBy('title')->get();
-            $files = DB::table('basenotes')->where('id_cours', $course->id)->join('files', 'files.id_basenotes', '=', 'basenotes.id')->get();
+            if ($course->getParentClass()->canRead()) {
+                $manuscrits = DB::table('basenotes')->where('id_cours', $course->id)->join('manuscrits', 'manuscrits.id_basenotes', '=', 'basenotes.id')->orderBy('title')->get();
+                $files = DB::table('basenotes')->where('id_cours', $course->id)->join('files', 'files.id_basenotes', '=', 'basenotes.id')->get();
 
-            if (count($manuscrits) == 0) $manuscrits = array();
-            if (count($files) == 0) $files = array();
-            return View::make('courses.selectnote')->with(array('course' => $course, 'manuscrits' => $manuscrits, 'files' => $files));
+                if (count($manuscrits) == 0) $manuscrits = array();
+                if (count($files) == 0) $files = array();
+                return View::make('courses.selectnote')->with(array('course' => $course, 'manuscrits' => $manuscrits, 'files' => $files));
+            }
+            return Redirect::to('/404');
+        } else {
+            return Redirect::to('unauthorized');
         }
-        return Redirect::to('/404');
     }
-
 }
