@@ -54,7 +54,7 @@ class CourseController extends \BaseController
             $course->id_class = $input['idclass'];
             $course->save();
 
-            return Redirect::to('/courses/open' . $course->getID());
+            return Redirect::to('/courses/open/' . $course->getID());
         } else {
             return Redirect::to('courses/create')->withErrors($validator)->with(array('idclass' => $input['idclass']));
         }
