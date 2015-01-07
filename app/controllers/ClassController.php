@@ -248,7 +248,7 @@ class ClassController extends \BaseController
                 if ($class->isOwner(Auth::id())) {
                     $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
                     $permission->delete();
-                    Session::put('toast', array('success', "User  " . $user->getSignature() . "has been removed from class " . $class->getName() . "."));
+                    Session::put('toast', array('success', "User  " . $user->getSignature() . " has been removed from class " . $class->getName() . "."));
                 } else {
                     Session::put('toast', array('error', "You don't have rights to remove users from the class " . $class->getName() . "."));
                 }

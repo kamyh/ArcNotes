@@ -36,16 +36,16 @@
                                         @endif
                 {{Form::close();}}</h2>
     <table>
-        @foreach($manuscrits as $file)
+        @foreach($manuscrits as $manuscrit)
             <tr>
                 @if(Auth::check() && $course->getParentClass()->canRead())
-                    <td><a href="/notes/read/{{$file->id}}" class="context-menu-tile-class color-a">{{$file->title}}</a></td>
+                    <td><a href="/notes/read/{{$manuscrit->id}}" class="context-menu-tile-class color-a">{{$manuscrit->title}}</a></td>
                 @else
-                    <td><a href="#" class="context-menu-tile-class color-a">{{$file->title}}</a></td>
+                    <td><a href="#" class="context-menu-tile-class color-a">{{$manuscrit->title}}</a></td>
                 @endif
                  @if(Auth::check() && $course->getParentClass()->canEdit())
                 <td>
-                    {{ Form::open(array('route' => array('/notes/edit/{idnote}', 'idnote' => $file->id),'method' => 'get')); }}
+                    {{ Form::open(array('route' => array('/notes/edit/{idnote}', 'idnote' => $manuscrit->id),'method' => 'get')); }}
                         <!--{{ Form::submit('Edit', array('class' => 'button')); }}-->
                         <button type="submit" class="button-image">{{ HTML::image('img/icons/edit.png', 'Edit', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
@@ -53,7 +53,7 @@
                 @endif
                 <td>
                  @if(Auth::check() && $course->getParentClass()->canCreate())
-                    {{ Form::open(array('route' => array('/notes/delete/{idnote}', 'idnote' => $file->id))); }}
+                    {{ Form::open(array('route' => array('/notes/delete/{idnote}', 'idnote' => $manuscrit->id))); }}
                         <!--{{ Form::submit('Delete', array('class' => 'button')); }}-->
                         <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
@@ -76,7 +76,7 @@
             @foreach($files as $file)
                 <tr>
                     @if(Auth::check() && $course->getParentClass()->canRead())
-                        <td><a href="/notes/read/{{$file->id}}" class="context-menu-tile-class color-a">{{$file->original_filename}}</a></td>
+                        <td><a href="/notes/download/{{$file->id}}" class="context-menu-tile-class color-a">{{$file->original_filename}}</a></td>
                     @else
                         <td><a href="#" class="context-menu-tile-class color-a">{{$file->original_filename}}</a></td>
                     @endif
