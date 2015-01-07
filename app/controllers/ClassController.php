@@ -14,7 +14,7 @@ class ClassController extends \BaseController
     }
 
     /**
-     *
+     * Display the creation class form
      *
      */
     public function createClass()
@@ -36,8 +36,6 @@ class ClassController extends \BaseController
 
     public function load()
     {
-        //$input = Input::All();
-        //Session::put('orderOption', $input['orderOption']);
         return View::make('classes/public');
     }
 
@@ -130,6 +128,10 @@ class ClassController extends \BaseController
         //
     }
 
+    /**
+     * @param $keyword
+     * @return mixed
+     */
     public function search($keyword)
     {
         //todo: get get only classes which are public/accessible?
@@ -152,6 +154,10 @@ class ClassController extends \BaseController
      * Fct Modif Datas
      */
 
+    /**
+     * Handle the invitation of a a new member in a class
+     * @return mixed
+     */
     public function inviteMember()
     {
         $input = Input::all();
@@ -186,6 +192,13 @@ class ClassController extends \BaseController
         }
     }
 
+    /**
+     * Handle the admitence of a class member
+     *
+     * @param $iduser
+     * @param $idclass
+     * @return mixed
+     */
     public function acceptMember($iduser, $idclass)
     {
         $class = Classes::find($idclass);
@@ -210,6 +223,13 @@ class ClassController extends \BaseController
         }
     }
 
+    /**
+     * Handle the refue of a member
+     *
+     * @param $iduser
+     * @param $idclass
+     * @return mixed
+     */
     public function refuseMember($iduser, $idclass)
     {
         $class = Classes::find($idclass);
@@ -226,6 +246,12 @@ class ClassController extends \BaseController
         }
     }
 
+    /**
+     * Delete a course from a class
+     *
+     * @param $idcourse
+     * @return mixed
+     */
     public function removeCourse($idcourse)
     {
         $course = Courses::find($idcourse);
@@ -244,6 +270,13 @@ class ClassController extends \BaseController
         return Redirect::to('/classes/owned');
     }
 
+    /**
+     * Remove a member
+     *
+     * @param $iduser
+     * @param $idclass
+     * @return mixed
+     */
     public function removeMember($iduser, $idclass)
     {
         $class = Classes::find($idclass);
@@ -267,6 +300,13 @@ class ClassController extends \BaseController
         return Redirect::to('/classes/owned');
     }
 
+    /**
+     * Handle the modification of rights
+     *
+     * @param $iduser
+     * @param $idclass
+     * @return mixed
+     */
     public function chgtRights($iduser, $idclass)
     {
         $class = Classes::find($idclass);
@@ -302,6 +342,12 @@ class ClassController extends \BaseController
         return Redirect::to('/classes/owned');
     }
 
+    /**
+     * Make the visibility change
+     *
+     * @param $idclass
+     * @return mixed
+     */
     public function chgtVisibility($idclass)
     {
         $class = Classes::find($idclass);
@@ -325,6 +371,12 @@ class ClassController extends \BaseController
         return Redirect::to('/classes/owned');
     }
 
+    /**
+     *
+     *
+     * @param $idclass
+     * @return mixed
+     */
     public function removeClass($idclass)
     {
         $class = Classes::find($idclass);
