@@ -1,12 +1,13 @@
 @extends('layouts.default')
 @section('title')
-    Search: {{$keyword}}
+    Search in Courses: {{$keyword}}
 @endsection
 
 @section('body')
-    @foreach ($courses as $course)
-    @if($course != null)
-        {{$course->name}}
-        @endif
-    @endforeach
+    <div class="search-results">
+        @foreach ($courses as $course)
+            @if($course != null)
+                <a href="#" class="search-result color-a hover-color-b">{{$course->name}} in class {{$course->getParentClass()->getName()}}</a>
+            @endif
+        @endforeach</div>
 @endsection
