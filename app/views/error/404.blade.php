@@ -4,6 +4,8 @@
     Page not found!
 @endsection
 @section("body")
+    <div class="class-creation-form color-a">
+        404, motorless tractor
+    </div>
 
-    404, motorless tractor
 @endsection

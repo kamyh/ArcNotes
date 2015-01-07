@@ -7,7 +7,8 @@
     <div class="search-results">
     @foreach ($classes as $class)
     @if($class != null)
-        <a href="#" class="search-result color-a hover-color-b">{{$class->name}}</a>
+        <a href="/classes/display/{{$class->id}}" class="search-result color-a hover-color-b">{{$class->name}}
+        </a>
         @endif
     @endforeach</div>
 @endsection

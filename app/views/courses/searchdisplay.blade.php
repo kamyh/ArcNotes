@@ -7,7 +7,7 @@
     <div class="search-results">
         @foreach ($courses as $course)
             @if($course != null)
-                <a href="#" class="search-result color-a hover-color-b">{{$course->name}} in class {{$course->getParentClass()->getName()}}</a>
+                <a href="/courses/open/{{$course->id}}" class="search-result color-a hover-color-b">{{$course->name}} <br/>in class {{$course->getParentClass()->getName()}} at {{$course->getParentClass()->getSchoolName()}}</a>
             @endif
         @endforeach</div>
 @endsection
