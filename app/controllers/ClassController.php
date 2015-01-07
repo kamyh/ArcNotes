@@ -364,8 +364,6 @@ class ClassController extends \BaseController
 
     public function selectedClass($idclass)
     {
-        if (Auth::check()) {
-
             $class = Classes::find($idclass);
             if (!is_null($class)) {
                 if ($class->visibility == 1 || (Auth::check() && $class->isOwner(Auth::id()))) { //1 => public
@@ -384,7 +382,7 @@ class ClassController extends \BaseController
                 Session::put('toast', array('error', "This class doesn't exist"));
                 return Redirect::to('/classes/public');
             }
-        }
+
         return Redirect::to('/unauthorized');
     }
 

@@ -6,9 +6,7 @@
     <table>
         {{ Form::open(array('route' => array('/courses/create/{idclass}','idclass'=> $class->id), 'method' => 'post')) }}
             <tr>
-            <td>
-                <button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Invite', array('class' => 'test-image')); }}</button>
-           </td> </tr>
+             </tr>
         {{ Form::close() }}
     </table>
     <table>
@@ -43,9 +41,9 @@
             </tr>
             <tr>
                 <td>
-                @if(Auth::check() && Auth::user()->userCanAddCourse())
+                @if(Auth::check() && $class->canCreate())
                     {{ Form::open(array('route' => array('/courses/create/{idclass}', 'idclass' => $class->id),'method' => 'get')); }}
-                        {{ Form::submit('New Course', array('class' => 'button')) }}
+                        <button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Invite', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
                 @endif
                 </td>
