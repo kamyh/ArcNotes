@@ -86,10 +86,9 @@ Route::get('/classes/create', array('before' => 'auth', 'as' => '/classes/create
 Route::get('/classes/display/{idclass}', array('as' => '/class/display/{idclass}', 'uses' => 'ClassController@selectedClass'));
 
 /* verify email */
-Route::get('register/verify/{confirmationCode}', [
-    'as' => 'confirmation_path',
-    'uses' => 'UserController@confirm'
-]);
+Route::get('/register/verify/{confirmationCode}', array('as' => '/register/verify/{confirmationCode}','uses' => 'UserController@confirm'))->where('confirmationCode', '[a-bA-B0-9]+');
+
+Route::get('/verify/{token}', array('as' => '/verify/{token}', 'uses' => 'UserController@confirm'));
 
 /*
  * TEST Routes
