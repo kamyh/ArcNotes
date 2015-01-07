@@ -12,6 +12,7 @@ class Cities extends Eloquent
     protected $table = 'cities';
 
     private $name;
+    private $zipcode;
 
     public function getList()
     {

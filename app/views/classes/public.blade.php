@@ -28,7 +28,7 @@ Inputs:
                 </tr>
                 <tr>
                     <td>{{$class->getSchoolName()}}</td>
-                    <td>{{$class->getCitie()}} {{$class->getCanton()}}</td>
+                    <td>{{$class->getCity()}} {{$class->getCanton()}}</td>
                 </tr>
                 <tr>
                     <td>Schollar year</td>

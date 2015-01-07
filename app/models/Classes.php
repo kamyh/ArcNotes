@@ -4,10 +4,8 @@
 class Classes extends Eloquent
 {
     protected $fillable = ['name', 'id_school', 'scollaryear', 'degree', 'domain', 'previous', 'visibility'];
-    private $school;
-    private $id_location;
+    private $id_school;
     private $city;
-    private $id_canton;
 
     /**
      * The database table used by the model.
@@ -82,14 +80,18 @@ class Classes extends Eloquent
 
     }
 
-    public function getSchoolName()
+    public function getSchool()
     {
-        $this->school = School::find($this->id_school);
-        $this->id_location = $this->school->id_location;
-        return $this->school->name;
+        return Schools::find($this->id_class);
     }
 
-    public function getCitie()
+    public function getSchoolName()
+    {
+        $school = Schools::find($this->id_school);
+        return $school->name;
+    }
+
+    public function getCity()
     {
         $this->city = Cities::find($this->id_location);
         $this->id_canton = $this->city->id_canton;
@@ -106,7 +108,7 @@ class Classes extends Eloquent
         return $this->attributes['name'];
     }
 
-    public function getSchollarName()
+    public function getSchollarYear()
     {
         return $this->attributes['scollaryear'];
     }
