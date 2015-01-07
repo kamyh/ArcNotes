@@ -66,7 +66,7 @@ class SchoolController extends \BaseController
             $school->name = $inputs['name_school'];
             $school->save();
 
-            return Redirect::to('/classes/create')->with('name', $inputs['name']);
+            return Redirect::to('/classes/create')->withInput();
         } else {
             return Redirect::to('/schools')->withErrors($validator)->withInput();
         }
