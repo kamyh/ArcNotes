@@ -18,10 +18,10 @@
            @endif
             <tr>
                 <td>
-                {{Form::label('name','Name')}}
+                {{Form::label('name_school','Name')}}
                 </td>
                 <td>
-                {{Form::text('name', null,array('class' => ''))}}
+                {{Form::text('name_school', null,array('class' => ''))}}
                 </td>
             </tr>
             <tr>

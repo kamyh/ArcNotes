@@ -35,16 +35,18 @@
 
 
                 </div>
-                <div class="class-tile-user-title color-b">Users</div>
+                <div class="class-tile-user-title color-b">Pending Users</div>
                 <div class="class-tile-users">
 
                 @foreach($class->getUsers() as $user)
                     <div>
                     <table>
                         <tr>
-                            <td>{{ $user->firstname }} {{ $user->lastname }} </td>
+
 
                         @if($user->getUserPermForClass($class->id) < 1)
+                            <td>{{ $user->firstname }} {{ $user->lastname }} </td>
+
                             <td>
                             {{ Form::open(array('route' => array('/classes/member/accept/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
                                 <!--{{Form::submit('Accept', array('class' => 'button'))}}-->
@@ -57,7 +59,22 @@
                                <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Refuse', array('class' => 'test-image')); }}</button>
                             {{ Form::close() }}
                             </td></tr>
-                        @elseif($user->getUserPermForClass($class->id) != 15)
+                        @endif
+                    </table>
+                    </div>
+                @endforeach
+                </div>
+
+                 <div class="class-tile-user-title color-b">Users</div>
+                 <div class="class-tile-users">
+
+                @foreach($class->getUsers() as $user)
+                     <div>
+                     <table>
+                         <tr>
+                        @if($user->getUserPermForClass($class->id) != 15 && $user->getUserPermForClass($class->id) > 1)
+                        <td>{{ $user->firstname }} {{ $user->lastname }} </td>
+
                             <td>
                             {{ Form::open(array('route' => array('/classes/member/remove/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
                                 <!--{{Form::submit('Remove', array('class' => 'button'))}}-->

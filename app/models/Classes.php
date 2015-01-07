@@ -117,5 +117,14 @@ class Classes extends Eloquent
     {
         return $this->attributes['scollaryear'];
     }
+
+    public function getVisibilityStr()
+    {
+        if($this->attributes['visibility'] == 1)
+        {
+            return 'Public';
+        }
+        return 'Private';
+    }
 }
 

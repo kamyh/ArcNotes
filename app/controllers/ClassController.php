@@ -22,7 +22,7 @@ class ClassController extends \BaseController
         $schoolList = DB::table('schools')->lists('name', 'id');
         array_unshift($schoolList, "------------");
         array_unshift($schoolList, "New School");
-        $visibilityList = ['public' => 'public', 'private' => 'private'];
+        $visibilityList = ['public' => 1, 'private' => 0];
 
         $schollarYears = [];
         $currentYear = Date("Y") - 2;
@@ -64,6 +64,8 @@ class ClassController extends \BaseController
         $input = Input::all();
 
         if ($input['school'] == 0) {
+            return View::make('schools.school')->with(array('input' => $input));
+        } else if ($input['school'] == 1) {
             return View::make('schools.school')->with(array('input' => $input));
         } else {
             $rulesValidatorUser = array('name' => 'required|min:3', 'scollaryear' => 'required', 'school' => 'required', 'degree' => 'required', 'domain' => 'required');
@@ -298,6 +300,7 @@ class ClassController extends \BaseController
     public function chgtVisibility($idclass)
     {
         $class = Classes::find($idclass);
+
         if (!is_null($class)) {
             if ($class->isOwner(Auth::id())) {
                 if ($class->visibility == 1) {
@@ -358,7 +361,7 @@ class ClassController extends \BaseController
     {
         if (Auth::check()) {
             $class = Classes::find($idclass);
-            if(!is_null($class)) {
+            if (!is_null($class)) {
                 if ($class->visibility == 1 || (Auth::check() && $class->isOwner(Auth::id()))) { //1 => public
                     //Only for the classes's courses
                     $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
@@ -368,14 +371,10 @@ class ClassController extends \BaseController
                     $city = DB::table('cities')->find($school->id_location);
                     $canton = Canton::find($city->id_canton);
                     return View::make('courses.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school[0]->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $class->name));
-                }
-                else
-                {
+                } else {
 
                 }
-            }
-            else
-            {
+            } else {
                 Session::put('toast', array('error', "This class doesn't exist"));
                 return Redirect::to('/classes/public');
             }
@@ -390,16 +389,10 @@ class ClassController extends \BaseController
         $permission->id_class = $idclass;
         $permission->id_user = Auth::id();
 
-        if(!is_null($class)) {
-            if ($class->visibility == 1) {
-                $permission->id_rights = 4;
-            } else {
-                $permission->id_rights = 0;
-            }
-
+        if (!is_null($class)) {
+            $permission->id_rights = 0;
             $permission->save();
-
-            Session::put('toast', array('success', 'Class successfully joinged !'));
+            Session::put('toast', array('success', 'Class successfully joinged. Now wait that the owner accepts you !'));
         }
         return Redirect::to('/classes/participant');
     }
@@ -427,11 +420,11 @@ class ClassController extends \BaseController
 
         if (Auth::check()) {
             $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
-            $classes_public = Classes::where('visibility', '=', 'public')->whereNotIn('id', $listClass)->skip($skip)->take($take)->get();
-            $numberOfPages = Classes::where('visibility', '=', 'public')->whereNotIn('id', $listClass)->count();
+            $classes_public = Classes::where('visibility', '=', 1)->whereNotIn('id', $listClass)->skip($skip)->take($take)->get();
+            $numberOfPages = Classes::where('visibility', '=', 1)->whereNotIn('id', $listClass)->count();
         } else {
-            $classes_public = Classes::where('visibility', '=', 'public')->skip($skip)->take($take)->get();
-            $numberOfPages = Classes::where('visibility', '=', 'public')->skip($skip)->take($take)->count();
+            $classes_public = Classes::where('visibility', '=', 1)->skip($skip)->take($take)->get();
+            $numberOfPages = Classes::where('visibility', '=', 1)->skip($skip)->take($take)->count();
         }
         $numberOfPages = ceil($numberOfPages / $take);
         return View::make('classes.public')->with(array('classes' => $classes_public, 'numberOfPages' => $numberOfPages, 'pageNo' => $page, 'title' => 'Public Classes'));
