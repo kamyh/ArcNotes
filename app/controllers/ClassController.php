@@ -66,7 +66,7 @@ class ClassController extends \BaseController
         } else if ($input['school'] == 1) {
             return View::make('schools.school')->with(array('input' => $input));
         } else {
-            $rulesValidatorUser = array('name' => array('required','min:3','regex:[a-zA-Z-àéèöïîêôâ]'), 'scollaryear' => array('required','numeric'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
+            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:[a-zA-Z-àéèöïîêôâ]'), 'scollaryear' => array('required', 'numeric'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
             $validator = Validator::make($input, $rulesValidatorUser);
 
             if (!$validator->fails()) {
@@ -256,17 +256,20 @@ class ClassController extends \BaseController
     public function removeCourse($idcourse)
     {
         $course = Courses::find($idcourse);
-        $class = Classes::find(id_class);
-
-        if (!is_null($class)) {
-            if ($class->isOwner(Auth::id()) || $class->canCreate()) {
-                $course->delete();
-                Session::put('toast', array('success', "Course " . $course->getName() . "has been removed from class " . $class->getName() . "."));
+        if (!is_null($course)) {
+            $class = Classes::find($course->id_class);
+            if (!is_null($class)) {
+                if ($class->isOwner(Auth::id()) || $class->canCreate()) {
+                    $course->delete();
+                    Session::put('toast', array('success', "Course " . $course->getName() . "has been removed from class " . $class->getName() . "."));
+                } else {
+                    Session::put('toast', array('error', "Course " . $course->getName() . "You actually can't remove this course from the class " . $class->getName() . "."));
+                }
             } else {
-                Session::put('toast', array('error', "Course " . $course->getName() . "You actually can't remove this course from the class " . $class->getName() . "."));
+                Session::put('toast', array('error', "Class " . $class->getName() . " does not exist."));
             }
         } else {
-            Session::put('toast', array('error', "Course " . $course->getName() . "Class " . $class->getName() . " does not exist."));
+            Session::put('toast', array('error', "No such course found."));
         }
         return Redirect::to('/classes/owned');
     }
