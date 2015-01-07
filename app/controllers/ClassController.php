@@ -419,7 +419,7 @@ class ClassController extends \BaseController
     {
         $class = Classes::find($idclass);
         $courses = DB::table('courses')->where('id_class', $idclass)->join('classes', 'classes.id', '=', 'courses.id_class')->orderBy('courses.name')->get();
-        $school = School::find($class->id_school);
+        $school = Schools::find($class->id_school);
         $city = Cities::find($school->id_location);
         $canton = Canton::find($city->id_canton);
 
@@ -441,7 +441,7 @@ class ClassController extends \BaseController
                 $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
 
                 //Class informations
-                $school = School::find($class->id_school);
+                $school = Schools::find($class->id_school);
                 $city = DB::table('cities')->find($school->id_location);
                 $canton = Canton::find($city->id_canton);
                 return View::make('courses.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $class->name));

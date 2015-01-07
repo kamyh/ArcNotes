@@ -62,7 +62,7 @@ class SchoolController extends \BaseController
         $validator = Validator::make($inputs, $rulesValidatorSchool);
 
         if (!$validator->fails()) {
-            $school = new School();
+            $school = new Schools();
             $school->name = $inputs['name_school'];
             $school->save();
 

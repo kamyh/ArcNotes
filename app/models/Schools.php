@@ -1,11 +1,11 @@
 <?php
 
 
-class School extends Eloquent
+class Schools extends Eloquent
 {
     protected $fillable = ['name'];
-
-    private $id_location;
+    
+    private $name;
 
     /**
      * The database table used by the model.

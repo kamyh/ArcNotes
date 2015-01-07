@@ -4,7 +4,6 @@
 class Classes extends Eloquent
 {
     protected $fillable = ['name', 'id_school', 'scollaryear', 'degree', 'domain', 'previous', 'visibility'];
-    private $id_school;
     private $city;
 
     /**
@@ -82,7 +81,7 @@ class Classes extends Eloquent
 
     public function getSchool()
     {
-        return Schools::find($this->id_class);
+        return Schools::find($this->id_school);
     }
 
     public function getSchoolName()
