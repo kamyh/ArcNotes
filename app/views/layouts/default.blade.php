@@ -112,6 +112,9 @@
 			    <div class="content-body row scroll-y">
 			    @yield('body')
 			    </div>
+                <div class="content-footer row">
+                    @yield('footer', '')
+                </div>
 			</div>
 		</div>
 		@show

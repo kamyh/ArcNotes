@@ -48,18 +48,18 @@
             </div>
         @endforeach
         </div>
-        <div class="page-navigation">
-            @for($i = 1;$i < $numberOfPages+1;$i++)
-                @if($i == $pageNo)
-                    <a href="/classes/participant/{{$i}}" title="page {{$i}}" class="page-navigation-current">{{$i}}</a>
-                @else
-                    <a href="/classes/participant/{{$i}}" title="page {{$i}}" class="page-navigation-not-current">{{$i}}</a>
-                @endif
-            @endfor
-        </div>
 @stop
 
+@section('footer')
 
+    @for($i = 1;$i < $numberOfPages+1;$i++)
+        @if($i == $pageNo)
+            <a href="/classes/participant/{{$i}}" title="page {{$i}}" class="content-page-number color-a">{{$i}}</a>
+        @else
+            <a href="/classes/participant/{{$i}}" title="page {{$i}}" class="content-page-number color-b">{{$i}}</a>
+        @endif
+    @endfor
+@endsection
 
 
 
