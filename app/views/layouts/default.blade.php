@@ -78,21 +78,19 @@
                                     </td>
                                 </tr>
                                 @endif
-                                    <td>{{Form::label('email','Email')}}</td>
-                                    <td>{{Form::text('email', null,array('class' => ''))}}</td>
+                                    <td>{{Form::text('email', null,array('class' => '', 'placeholder' => 'Email'))}}</td>
                                 </tr>
                                 <tr>
-                                    <td>{{Form::label('password','Password')}}</td>
-                                    <td>{{Form::password('password',array('class' => ''))}}</td>
+                                    <td>{{Form::password('password',array('class' => '', 'placeholder' => 'Password'))}}</td>
                                 </tr>
                                 <tr>
-                                    <td>&nbsp;</td><td>{{Form::submit('Login', array('class' => 'button'))}}</td>
+                                    <td>{{Form::submit('Login', array('class' => 'button'))}}</td>
                                 </tr>
-                            {{ Form::close() }}
                             <tr>
-                                 <td>&nbsp;</td><td><a href="/user/create" class="color-a">Sign up.</a></td>
+                                 <td><a href="/user/create" class="color-a">Sign up.</a></td>
                             </tr>
                             </table>
+                        {{ Form::close() }}
                         @endif
 				</div>
 				<div class="context-menus-dock scroll-y">
