@@ -3,7 +3,7 @@
     <div class="list-classes">
         @foreach($courses as $course)
         <div class="class-tile color-a">
-            <a href="/course/open/{{$course->id}}" class="class-title-tile color-b hover-color-a">{{$course->name}}</a>
+            <a href="/courses/open/{{$course->id}}" class="class-title-tile color-b hover-color-a">{{$course->name}}</a>
             <table>
                 <tr>
                     <td>Created at </td>

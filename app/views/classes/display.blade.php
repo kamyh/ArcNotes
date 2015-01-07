@@ -50,7 +50,7 @@
         <table style="border: solid 1px #ffffff">
             <tr>
 
-                <td><div onClick='location.href="/cours/open/{{$course->id}}"' class="context-menu-tile hover-color-a"> {{$course->name}} </div></td>
+                <td><div onClick='location.href="/courses/open/{{$course->id}}"' class="context-menu-tile hover-color-a"> {{$course->name}} </div></td>
             </tr>
             <tr>
                 <td>Created at </td>

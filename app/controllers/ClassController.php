@@ -1,6 +1,7 @@
 <?php
 
-class ClassController extends \BaseController {
+class ClassController extends \BaseController
+{
 
     /**
      * Display a listing of the resource.
@@ -18,27 +19,26 @@ class ClassController extends \BaseController {
      */
     public function createClass()
     {
-        $schoolList = DB::table('schools')->lists('name','id');
+        $schoolList = DB::table('schools')->lists('name', 'id');
         array_unshift($schoolList, "------------");
         array_unshift($schoolList, "New School");
-        $visibilityList =['public' => 'public','private' => 'private'];
+        $visibilityList = ['public' => 'public', 'private' => 'private'];
 
         $schollarYears = [];
-        $currentYear = Date("Y")-2;
+        $currentYear = Date("Y") - 2;
 
-        for($i = 6;$i>0;$i--)
-        {
-            array_unshift($schollarYears, ($currentYear + $i)."-".($currentYear +$i+1));
+        for ($i = 6; $i > 0; $i--) {
+            array_unshift($schollarYears, ($currentYear + $i) . "-" . ($currentYear + $i + 1));
         }
 
-        return View::make('createclass')->with(array('schoolList'=>$schoolList,'visibilityList'=>$visibilityList,'schollarYears'=>$schollarYears));
+        return View::make('classes.createclass')->with(array('schoolList' => $schoolList, 'visibilityList' => $visibilityList, 'schollarYears' => $schollarYears));
     }
 
     public function load()
     {
         //$input = Input::All();
         //Session::put('orderOption', $input['orderOption']);
-        return View::make('class/public');
+        return View::make('classes/public');
     }
 
 
@@ -63,20 +63,14 @@ class ClassController extends \BaseController {
     {
         $input = Input::all();
 
-        if($input['school'] == 0)
-        {
-            return View::make('/school')->with(array('input'=>$input));
-        }
-        else {
-
-            $rulesValidatorUser = array('name' => 'required|min:5', 'scollaryear' => 'required', 'school' => 'required', 'degree' => 'required', 'domain' => 'required');
-
+        if ($input['school'] == 0) {
+            return View::make('schools.school')->with(array('input' => $input));
+        } else {
+            $rulesValidatorUser = array('name' => 'required|min:3', 'scollaryear' => 'required', 'school' => 'required', 'degree' => 'required', 'domain' => 'required');
             $validator = Validator::make($input, $rulesValidatorUser);
 
             if (!$validator->fails()) {
-
                 $class = new Classes();
-
                 $class->name = $input['name'];
                 $class->scollaryear = $input['scollaryear'];
                 $class->id_school = $input['school'];
@@ -86,7 +80,6 @@ class ClassController extends \BaseController {
                 $class->save();
 
                 $permission = new Permissions();
-
                 $permission->id_user = Auth::id();
                 $permission->id_rights = 15;
                 $permission->id_class = $class->id;
@@ -95,7 +88,7 @@ class ClassController extends \BaseController {
                 return Redirect::to('/');
 
             } else {
-                return Redirect::to('/class/create')->withErrors($validator)->withInput();
+                return Redirect::to('/classes/create')->withErrors($validator)->withInput();
             }
         }
     }
@@ -104,7 +97,7 @@ class ClassController extends \BaseController {
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
@@ -116,7 +109,7 @@ class ClassController extends \BaseController {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
@@ -128,7 +121,7 @@ class ClassController extends \BaseController {
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id)
@@ -140,13 +133,13 @@ class ClassController extends \BaseController {
     {
         //todo: get get only courses which are public/accessible?
         $classes = Classes::where('name', 'LIKE', $keyword)->get();
-        return View::make('class.searchdisplay')->with(array('classes' => $classes, 'keyword' => $keyword));
+        return View::make('classes.searchdisplay')->with(array('classes' => $classes, 'keyword' => $keyword));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
@@ -158,101 +151,85 @@ class ClassController extends \BaseController {
      * Fct Modif Datas
      */
 
-    public function invite_member()
+    public function inviteMember()
     {
         $input = Input::all();
-
-        $user_invited = User::where('email','=',$input['email'])->first();
-
-        if($user_invited == null)
-        {
+        $user_invited = User::where('email', '=', $input['email'])->first();
+        if ($user_invited == null) {
             $error = "No such user registered !";
-            return Redirect::to('manager/classowned')->withErrors($error)->withInput();
-        }
-        else
-        {
+            return Redirect::to('/classes/owned')->withErrors($error)->withInput();
+        } else {
             $permission = new Permissions();
             $permission->id_user = $user_invited->id;
             $permission->id_class = $input['class'];
             $permission->id_rights = 1;
-
             $permission->save();
 
-            return Redirect::to('manager/classowned');
+            return Redirect::to('/classes/owned');
         }
     }
 
-    public function accept_member($iduser,$idclass)
+    public function acceptMember($iduser, $idclass)
     {
         $class = Classes::find($idclass);
 
-        if($class->isOwner(Auth::id()))
-        {
+        if ($class->isOwner(Auth::id())) {
             $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
             $permission->id_rights = 4;
 
             $permission->save();
 
-            return Redirect::to('manager/classowned');
-        }
-        else
-        {
-            return Redirect::to('unauthorized');
+            return Redirect::to('/classes/owned');
+        } else {
+            return Redirect::to('/unauthorized');
         }
     }
 
-    public function refuse_member($iduser,$idclass)
+    public function refuseMember($iduser, $idclass)
     {
         $class = Classes::find($idclass);
 
-        if($class->isOwner(Auth::id()))
-        {
-            $permission = Permissions::where('id_user','=',$iduser)->where('id_class','=',$idclass)->first();
+        if ($class->isOwner(Auth::id())) {
+            $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
             $permission->delete();
 
-            return Redirect::to('manager/classowned');
-        }
-        else
-        {
-            return Redirect::to('unauthorized');
+            return Redirect::to('/classes/owned');
+        } else {
+            return Redirect::to('/unauthorized');
         }
     }
 
-    public function remove_course($idcourse)
+    public function removeCourse($idcourse)
     {
         $course = Courses::find($idcourse);
         $class = Classes::where('id', '=', $course->id_class)->first();
 
-        if($class->isOwner(Auth::id()) || $class->canCreate())
-        {
+        if ($class->isOwner(Auth::id()) || $class->canCreate()) {
             $course->delete();
         }
 
-        return Redirect::to('manager/classowned');
+        return Redirect::to('/classes/owned');
     }
 
-    public function remove_member($iduser,$idclass)
+    public function removeMember($iduser, $idclass)
     {
         $class = Classes::find($idclass);
 
-        if($class->isOwner(Auth::id())) {
+        if ($class->isOwner(Auth::id())) {
             $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
-
             $permission->delete();
         }
 
-        return Redirect::to('manager/classowned');
+        return Redirect::to('/classes/owned');
     }
 
-    public function chgt_rights($iduser,$idclass)
+    public function chgt_rights($iduser, $idclass)
     {
         $class = Classes::find($idclass);
 
-        if($class->isOwner(Auth::id())) {
+        if ($class->isOwner(Auth::id())) {
             $input = Input::all();
-
             $rights = 0;
-
             if (isset($input['read'])) {
                 $rights += 4;
             }
@@ -269,14 +246,13 @@ class ClassController extends \BaseController {
             $permission->save();
         }
 
-        return Redirect::to('/manager/classowned');
+        return Redirect::to('/classes/owned');
     }
 
-    public function chgt_visibility($idclass)
+    public function chgtVisibility($idclass)
     {
         $class = Classes::find($idclass);
-
-        if($class->isOwner(Auth::id())) {
+        if ($class->isOwner(Auth::id())) {
             $class = Classes::where('id', '=', $idclass)->first();
 
             if ($class->visibility == 'public') {
@@ -284,154 +260,124 @@ class ClassController extends \BaseController {
             } else {
                 $class->visibility = 'public';
             }
-
             $class->save();
         }
 
-        return Redirect::to('manager/classowned');
+        return Redirect::to('/classes/owned');
     }
 
-    public function remove_class($idclass)
+    public function removeClass($idclass)
     {
         $class = Classes::find($idclass);
 
-        if($class->isOwner(Auth::id())) {
-            $class = Classes::where('id', '=', $idclass)->first();
-
+        if ($class->isOwner(Auth::id())) {
+            $class = Classes::find($idclass);
             $class->delete();
         }
 
-        return Redirect::to('manager/classowned');
+        return Redirect::to('/classes/owned');
     }
 
-    public function resign_class($idclass)
+    public function resignClass($idclass)
     {
-        $permission = Permissions::where('id_class','=',$idclass)->where('id_user','=', Auth::id());
-
+        $permission = Permissions::where('id_class', '=', $idclass)->where('id_user', '=', Auth::id());
         $permission->delete();
-
-        return Redirect::to('/');
+        Session::put('toast', array("success", "Class resign success !"));
+        return Redirect::to('/classes/participant');
     }
 
     public function open($idclass)
     {
-        $info = DB::table('classes')->where('id','=',$idclass)->get();
-
-        $courses = DB::table('courses')->where('id_class',$idclass)->join('classes', 'classes.id', '=', 'courses.id_class')->orderBy('courses.name')->get();
-
-        $school = DB::table('schools')->where('id','=',$info[0]->id_school)->get();
+        $info = DB::table('classes')->where('id', '=', $idclass)->get();
+        $courses = DB::table('courses')->where('id_class', $idclass)->join('classes', 'classes.id', '=', 'courses.id_class')->orderBy('courses.name')->get();
+        $school = DB::table('schools')->where('id', '=', $info[0]->id_school)->get();
         $city = DB::table('cities')->find($school[0]->id_location);
-
         $canton = DB::table('cantons')->find($city->id_canton);
 
-        return View::make('class.display')->with(array('class' => $info,'courses'=>$courses,'school_name'=>$school[0]->name,'school_city'=>$city->name,'canton'=>$canton->name));
+        return View::make('classes.display')->with(array('class' => $info, 'courses' => $courses, 'school_name' => $school[0]->name, 'school_city' => $city->name, 'canton' => $canton->name));
     }
 
     public function selectedClass($idclass)
     {
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             //$info = DB::table('classes')->where('id', '=', $idclass)->get();
             $info = Classes::find($idclass);
-            if($info->visibility == 'public' || (Auth::check() && $info->isOwner(Auth::id())))
-            {
+            if ($info->visibility == 'public' || (Auth::check() && $info->isOwner(Auth::id()))) {
                 //Only for the classes's courses
                 $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
 
                 //Class informations
-
                 $school = DB::table('schools')->where('id', '=', $info->id_school)->get();
                 $city = DB::table('cities')->find($school[0]->id_location);
                 $canton = DB::table('cantons')->find($city->id_canton);
-
-
-                return View::make('course.display')->with(array('class' => $info, 'courses' => $courses, 'school_name' => $school[0]->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $info->name));
-            }
-            else
-            {
-                return Redirect::to('unauthorized');
+                return View::make('courses.display')->with(array('class' => $info, 'courses' => $courses, 'school_name' => $school[0]->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $info->name));
             }
         }
-        else
-        {
-            return Redirect::to('unauthorized');
-        }
+        return Redirect::to('/unauthorized');
     }
 
     public function join($idclass)
     {
         $class = Classes::find($idclass);
-
         $permission = new Permissions();
         $permission->id_class = $idclass;
         $permission->id_user = Auth::id();
 
-        if($class->visibility == 'public')
-        {
+        if ($class->visibility == 'public') {
             $permission->id_rights = 4;
-        }
-        else {
+        } else {
             $permission->id_rights = 0;
         }
 
         $permission->save();
 
-        return Redirect::to('/class/public/1');
+        Session::put('toast', array('success', 'Class successfully joinged !'));
+        return Redirect::to('/classes/participant');
     }
 
-    public function class_owned()
+    public function classOwned()
     {
-        $classID = DB::table('permissions')->where('id_user','=',Auth::id())->where('id_rights','=',15)->lists('id_class');
+        $classID = DB::table('permissions')->where('id_user', '=', Auth::id())->where('id_rights', '=', 15)->lists('id_class');
 
-        if(!is_null($classID)) {
+        if (!is_null($classID)) {
             if (count($classID) > 0) {
                 $listClasses = DB::table('classes')->whereIn('id', $classID)->lists('name', 'id');
 
                 $classesOwned = Classes::whereIn('id', $classID)->get();
-                return View::make('users/gestionclassowner')->with(array('listClasses' => $listClasses, 'classesOwned' => $classesOwned));
-
+                return View::make('users.gestionclassowner')->with(array('listClasses' => $listClasses, 'classesOwned' => $classesOwned));
             }
         }
 
-        return Redirect::to('/class/create');
+        Session::put('toast',array('error','You own no class, try to create one.'));
+        return Redirect::to('/classes/create');
     }
 
-    public function getpublic($page)
+    public function getPublic($page)
     {
         $take = 12;
-        $skip = ($page -1) * $take;
+        $skip = ($page - 1) * $take;
 
-
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
-            $classes_public = Classes::where('visibility', '=', 'public')->whereNotIn('id',$listClass)->skip($skip)->take($take)->get();
-            $numberOfPages = Classes::where('visibility', '=', 'public')->whereNotIn('id',$listClass)->count();
-
-        }
-        else
-        {
+            $classes_public = Classes::where('visibility', '=', 'public')->whereNotIn('id', $listClass)->skip($skip)->take($take)->get();
+            $numberOfPages = Classes::where('visibility', '=', 'public')->whereNotIn('id', $listClass)->count();
+        } else {
             $classes_public = Classes::where('visibility', '=', 'public')->skip($skip)->take($take)->get();
             $numberOfPages = Classes::where('visibility', '=', 'public')->skip($skip)->take($take)->count();
         }
-
-        $numberOfPages = ceil($numberOfPages/$take);
-        return View::make('class.public')->with(array('classes'=>$classes_public,'numberOfPages'=>$numberOfPages,'pageNo'=>$page,'title'=>'Public Classes'));
+        $numberOfPages = ceil($numberOfPages / $take);
+        return View::make('classes.public')->with(array('classes' => $classes_public, 'numberOfPages' => $numberOfPages, 'pageNo' => $page, 'title' => 'Public Classes'));
     }
 
     public function classParticipant($page)
     {
-            $take = 12;
-
-            $skip = ($page - 1) * $take;
-
-            $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
-            $classes_public = Classes::whereIn('id', $listClass)->skip($skip)->take($take)->get();
-            $numberOfPages = Classes::whereIn('id', $listClass)->count();
-
-            $numberOfPages = ceil($numberOfPages / $take);
-            return View::make('class.userdisplay')->with(array('classes_public' => $classes_public, 'numberOfPages' => $numberOfPages, 'pageNo' => $page));
-
+        $take = 12;
+        $skip = ($page - 1) * $take;
+        $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
+        $classes_public = Classes::whereIn('id', $listClass)->skip($skip)->take($take)->get();
+        $numberOfPages = Classes::whereIn('id', $listClass)->count();
+        $numberOfPages = ceil($numberOfPages / $take);
+        return View::make('classes.userdisplay')->with(array('classes_public' => $classes_public, 'numberOfPages' => $numberOfPages, 'pageNo' => $page));
     }
 }
 

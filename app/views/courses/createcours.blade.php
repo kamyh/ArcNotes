@@ -1,11 +1,11 @@
-@extends('layouts.default')
+@extends('...layouts.default')
 @section('title')
     Create a new course
 @endsection
 @section('body')
 <div class="">
         <table>
-            {{ Form::open(array('route' => array('courses.store'), 'method' => 'post')) }}
+            {{ Form::open(array('route' => array('courses/store'), 'method' => 'post')) }}
             @if($errors->has())
             <tr>
                 <td colspan="2">

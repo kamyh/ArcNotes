@@ -1,6 +1,7 @@
 <?php
 
-class CourseController extends \BaseController {
+class CourseController extends \BaseController
+{
 
     /**
      * Display a listing of the resource.
@@ -18,11 +19,9 @@ class CourseController extends \BaseController {
      */
     public function createCours($idclass)
     {
-        $schoolList = DB::table('courses')->lists('name','id');
-        return View::make('createcours')->with(array('idclass'=>$idclass,'schoolList'=>$schoolList));
+        $schoolList = DB::table('courses')->lists('name', 'id');
+        return View::make('courses.createcours')->with(array('idclass' => $idclass, 'schoolList' => $schoolList));
     }
-
-
 
 
     /**
@@ -45,37 +44,27 @@ class CourseController extends \BaseController {
     public function store()
     {
         $input = Input::all();
+        $rulesValidatorCourse = array('name' => 'required|min:5', 'matter' => 'required|min:3');
+        $validator = Validator::make($input, $rulesValidatorCourse);
 
-        $rulesValidatorCours = array( 'name' => 'required|min:5','matter' => 'required|min:3');
+        if (!$validator->fails()) {
+            $course = new Courses();
+            $course->name = $input['name'];
+            $course->matter = $input['matter'];
+            $course->id_class = $input['idclass'];
+            $course->save();
 
-        $validator = Validator::make($input, $rulesValidatorCours);
-
-        if(!$validator->fails()) {
-
-            $cours = new Courses();
-
-            $cours->name = $input['name'];
-            $cours->matter = $input['matter'];
-            $cours->id_class = $input['idclass'];
-
-            $cours->save();
-
-            return Redirect::to('/');
-
+            return Redirect::to('/courses/open' . $course->getID());
+        } else {
+            return Redirect::to('courses/create')->withErrors($validator)->with(array('idclass' => $input['idclass']));
         }
-        else
-        {
-            return Redirect::to('courses/create/')->withErrors($validator)->with(array('idclass'=>$input['idclass']));
-        }
-
-
     }
 
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
@@ -87,7 +76,7 @@ class CourseController extends \BaseController {
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
@@ -99,7 +88,7 @@ class CourseController extends \BaseController {
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id)
@@ -111,7 +100,7 @@ class CourseController extends \BaseController {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
@@ -123,24 +112,22 @@ class CourseController extends \BaseController {
     {
         //todo: get get only courses which are public/accessible?
         $courses = Courses::where('name', 'LIKE', $keyword)->get();
-        return View::make('course.searchdisplay')->with(array('courses' => $courses, 'keyword' => $keyword));
+        return View::make('courses.searchdisplay')->with(array('courses' => $courses, 'keyword' => $keyword));
     }
 
     public function open($idcourse)
     {
         $course = Courses::find($idcourse);
+        if (!is_null($course)) {
+            $manuscrits = DB::table('basenotes')->where('id_cours', $course->id)->join('manuscrits', 'manuscrits.id_basenotes', '=', 'basenotes.id')->orderBy('title')->get();
+            $files = DB::table('basenotes')->where('id_cours', $course->id)->join('files', 'files.id_basenotes', '=', 'basenotes.id')->get();
 
-        if(!is_null($course))
-        {
-            $manuscrits = DB::table('basenotes')->where('id_cours',$course->id)->join('manuscrits', 'manuscrits.id_basenotes', '=', 'basenotes.id')->orderBy('title')->get();
-            $files = DB::table('basenotes')->where('id_cours',$course->id)->join('files', 'files.id_basenotes', '=', 'basenotes.id')->get();
+            if (count($manuscrits) == 0) $manuscrits = array();
+            if (count($files) == 0) $files = array();
 
-            if(count($manuscrits) == 0) $manuscrits = array();
-            if(count($files) == 0) $files = array();
-
-            return View::make('course.selectnote')->with(array('course' => $course, 'manuscrits' => $manuscrits, 'files' => $files));
+            return View::make('courses.selectnote')->with(array('course' => $course, 'manuscrits' => $manuscrits, 'files' => $files));
         }
-        return Redirect::to('404');
+        return Redirect::to('/404');
     }
 
 }

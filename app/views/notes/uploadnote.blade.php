@@ -5,6 +5,7 @@
 @section('body')
 
     <h1>Add a file in {{$course}} </h1>
+    <div class="class-creation-form color-a">
     {{ Form::open(array('route' => array('/notes/upload/{idcourse}', 'idcourse' => $idcourse), 'files' => true)); }}
     <table class="form">
     @if($errors->has())
@@ -22,5 +23,6 @@
             <td>{{ Form::submit('Upload !',array('class' => 'button')); }}</td>
         </tr>
     </table>
+    </div>
     {{Form::close();}}
 @stop

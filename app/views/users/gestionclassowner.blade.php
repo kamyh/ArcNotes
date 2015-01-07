@@ -16,10 +16,10 @@
         @foreach($classesOwned as $class)
             <div class="class-tile color-a">
             @if($class != null)
-                    <a href="/class/display/{{$class->id}}" class="class-title-tile color-b" >{{ $class->name  }} </a>
+                    <a href="/classes/display/{{$class->id}}" class="class-title-tile color-b" >{{ $class->name  }} </a>
                 <div class="class-tile-buttons">
 
-                    {{ Form::open(array('route' => array('/visibility/change/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
+                    {{ Form::open(array('route' => array('/classes/visibility/change/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
 
                         @if($class->visibility == 'public')
                             {{Form::submit('Make Private', array('class' => 'button'))}}
@@ -28,7 +28,7 @@
                         @endif
                     {{ Form::close() }}
 
-                    {{ Form::open(array('route' => array('/class/remove/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
+                    {{ Form::open(array('route' => array('/classes/remove/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                         {{Form::submit('Delete', array('class' => 'button'))}}
                     {{ Form::close() }}
 
@@ -46,20 +46,20 @@
 
                         @if($user->getUserPermForClass($class->id) < 1)
                             <td>
-                            {{ Form::open(array('route' => array('/class/accept/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
+                            {{ Form::open(array('route' => array('/classes/member/accept/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
                                 <!--{{Form::submit('Accept', array('class' => 'button'))}}-->
                                <button type="submit" class="button-image">{{ HTML::image('img/icons/accept.png', 'Accept', array('class' => 'test-image')); }}</button>
                             {{ Form::close() }}
                             </td>
                             <td>
-                            {{ Form::open(array('route' => array('/class/refuse/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
+                            {{ Form::open(array('route' => array('/classes/member/refuse/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
                                <!-- {{Form::submit('Refuse', array('class' => 'button'))}}-->
                                <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Refuse', array('class' => 'test-image')); }}</button>
                             {{ Form::close() }}
                             </td></tr>
                         @elseif($user->getUserPermForClass($class->id) != 15)
                             <td>
-                            {{ Form::open(array('route' => array('/member/remove/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
+                            {{ Form::open(array('route' => array('/classes/member/remove/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
                                 <!--{{Form::submit('Remove', array('class' => 'button'))}}-->
                                     <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Remove', array('class' => 'test-image')); }}</button>
                             {{ Form::close() }}
@@ -110,7 +110,7 @@
                             <td>
                                 {{ $course->name }}
                                 </td><td>
-                                {{ Form::open(array('route' => array('/course/remove/{idcourse}','idcourse'=>$course->id), 'method' => 'get')) }}
+                                {{ Form::open(array('route' => array('/courses/remove/{idcourse}','idcourse'=>$course->id), 'method' => 'get')) }}
                                     {{--{{Form::submit('Remove', array('class' => 'button'))}}--}}
                                     <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Remove', array('class' => 'test-image')); }}</button>
                                 {{ Form::close() }}
@@ -125,7 +125,7 @@
                 <div class="class-tile-invite">
 
             <table>
-            {{ Form::open(array('route' => array('/class/invite'), 'method' => 'post')) }}
+            {{ Form::open(array('route' => array('/classes/member/invite'), 'method' => 'post')) }}
                 <tr>
                 <td>
                 {{Form::label('email','e-mail')}}</td><td>

@@ -5,7 +5,7 @@ Inputs:
    $pageNo          ==> N° of the current page
    $classes         ==> Array of the classes to display in the current page
 
-   See getpublic($page) function in the bottom of ClassController to have an exemple
+   See getPublic($page) function in the bottom of ClassController to have an exemple
 -->
 @extends('layouts.default')
 @section('title')
@@ -16,7 +16,7 @@ Inputs:
         <div class="list-classes">
         @foreach($classes as $class)
         <div class="class-tile color-a">
-            <a href="/class/display/{{$class->id}}" class="class-title-tile color-b hover-color-a">{{$class->name}}</a>
+            <a href="/classes/display/{{$class->id}}" class="class-title-tile color-b hover-color-a">{{$class->name}}</a>
             <table>
                 <tr>
                     <td>Created at </td>
@@ -50,7 +50,7 @@ Inputs:
                     <td></td>
                     <td>
                     @if(Auth::check())
-                        {{ Form::open(array('route' => array('/class/sign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
+                        {{ Form::open(array('route' => array('/classes/sign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                             {{Form::submit('Join', array('class' => 'button'))}}
                         {{ Form::close() }}
                     @endif
@@ -63,9 +63,9 @@ Inputs:
         <div class="page-navigation">
             @for($i = 1;$i < $numberOfPages+1;$i++)
                 @if($i == $pageNo)
-                    <a href="/class/public/{{$i}}" class="page-navigation-current">{{$i}}</a>
+                    <a href="/classes/public/{{$i}}" class="page-navigation-current">{{$i}}</a>
                 @else
-                    <a href="/class/public/{{$i}}" class="page-navigation-not-current">{{$i}}</a>
+                    <a href="/classes/public/{{$i}}" class="page-navigation-not-current">{{$i}}</a>
                 @endif
             @endfor
         </div>

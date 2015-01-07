@@ -1,16 +1,17 @@
 <?php
 
-class UserController extends \BaseController {
+class UserController extends \BaseController
+{
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index()
+    {
 
-	}
+    }
 
     /**
      * Display login form
@@ -26,28 +27,19 @@ class UserController extends \BaseController {
      */
     public function loginHandler()
     {
-        $rulesValidatorUser = array( 'password' => 'required','email' => 'required');
-
+        $rulesValidatorUser = array('password' => 'required', 'email' => 'required|email');
         $input = Input::All();
-
         $validator = Validator::make($input, $rulesValidatorUser);
 
-        if(!$validator->fails())
-        {
-
+        if (!$validator->fails()) {
             $email = Input::get('email');
             $password = Input::get('password');
-
-            if (Auth::attempt(array('email' => $email, 'password' => $password), true))
-            {
-                return Redirect::to('/');
+            if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
+                $error = "This user doesn't exist";
+                return Redirect::to('/')->withErrors($error);
             }
-            return Redirect::to('login')->withInput();
         }
-        else
-        {
-            return Redirect::to('login')->withErrors($validator)->withInput();
-        }
+        return Redirect::to('/')->withErrors($validator)->withInput();
     }
 
     /**
@@ -56,46 +48,39 @@ class UserController extends \BaseController {
     public function logout()
     {
         Auth::logout();
-
         return Redirect::to('/');
     }
-	
 
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-        return View::make('users.create');
-	}
-
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
+    /**
+     * Show the form for creating a new resource.
      *
-	 */
-	public function store()
+     * @return Response
+     */
+    public function create()
+    {
+        return View::make('users.create');
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     *
+     */
+    public function store()
     {
         $input = Input::all();
-
-        $rulesValidatorUser = array( 'firstname' => 'required|min:4','lastname' => 'required', 'password' => 'required|min:8','email' => 'required|email');
-
+        $rulesValidatorUser = array('firstname' => 'required|min:4', 'lastname' => 'required', 'password' => 'required|min:8', 'email' => 'required|email');
         $validator = Validator::make($input, $rulesValidatorUser);
 
-        if(!$validator->fails()) {
+        if (!$validator->fails()) {
 
             $password = $input['password'];
             $password = Hash::make($password);
-
             $user = new User();
-
             $confirmation_code = str_random(30);
-
             $user->email = $input['email'];
             $user->password = $password;
             $user->lastname = $input['lastname'];
@@ -103,91 +88,78 @@ class UserController extends \BaseController {
             $user->confirmation_code = $confirmation_code;
             $user->save();
 
-            Mail::send('emails.verify', array('confirmation_code'=>$confirmation_code), function($message) {
+            //TODO
+            Mail::send('emails.verify', array('confirmation_code' => $confirmation_code), function ($message) {
                 $message->to(Input::get('email'), Input::get('firstname') + " " + Input::get('lastname'))
                     ->subject('Verify your email address')->from('arcnotesnoreply@gmail.com');
             });
-
+            Session::put('toast', array('success', 'You sign successfully. Please check your mail to activate your account !'));
             return Redirect::to('/');
-
-        }
-        else
-        {
+        } else {
             return Redirect::to('user/create')->withErrors($validator)->withInput();
         }
 
 
-	}
-
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-        echo "***";
-        $user = User::find($id);
-        echo "++++";
-        echo $user->lastname;
-	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
-
-    public function test()
-    {
-        echo "PLOP";
-        $this->show(1);
     }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function show($id)
+    {
+        $user = User::find($id);
+        echo $user->lastname;
+    }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function update($id)
+    {
+        //
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
 
     public function confirm($confirmation_code)
     {
-        if( ! $confirmation_code)
-        {
+        if (!$confirmation_code) {
             throw new InvalidConfirmationCodeException;
         }
 
         $user = User::whereConfirmationCode($confirmation_code)->first();
-
-        if ( ! $user)
-        {
+        if (!$user) {
             throw new InvalidConfirmationCodeException;
         }
 

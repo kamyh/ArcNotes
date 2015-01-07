@@ -1,10 +1,9 @@
 @extends('layouts.default')
 @section('title')
-    Write a note
+    Write a new note in {{ $nomcours }}
 @endsection
 @section('body')
-
-    <h1>Write a new note in {{ $nomcours }}</h1>
+    <div class="class-creation-form color-a">
     {{ Form::open(array('route' => array('/notes/save/{idcourse}', 'idcourse' => $idcourse))); }}
     <table class="form">
      @if($errors->has())
@@ -28,6 +27,7 @@
             <td>&nbsp;</td><td>{{ Form::submit('Create !',array('class' => 'button')); }}</td>
         </tr>
     </table>
+    </div>
     {{Form::close();}}
 @stop
 
