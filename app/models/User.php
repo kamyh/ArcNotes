@@ -52,5 +52,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     {
         return $this->attributes['firstname'] .' '. $this->attributes['lastname'];
     }
-    
+
+    public function userCanAddCourse()
+    {
+
+    }
+
+    public function canRead()
+    {
+
+    }
 }
