@@ -127,4 +127,4 @@ Route::post('/notes/upload/{idcourse}', array('as' => '/notes/upload/{idcourse}'
 Route::get('/notes/download/{idfile}', array('as' => '/notes/download/{idfile}', 'uses' => 'NoteController@downloadFile', 'before' => 'auth'))->where('idfile', '[0-9]+');
 Route::post('/notes/deletefile/{idfile}', array('as' => '/notes/deletefile/{idfile}', 'uses' => 'NoteController@removeFileNote', 'before' => 'auth'))->where('idfile', '[0-9]+');
 Route::get('/notes/read/{idnote}', array('as' => '/notes/read/{idnote}', 'uses' => 'NoteController@readNote', 'before' => 'auth'))->where('idnote', '[0-9]+');
-Route::get('/notes/shared/{token}', array('as' => '/notes/shared/{token}', 'uses' => 'NoteController@readSharedNote'))->where('token', '[a-f0-9]+');
+Route::get('/notes/shared/{token}', array('as' => '/notes/shared/{token}', 'uses' => 'NoteController@readSharedNote'))->where('token', '[a-f0-9]+'); //hexadecimal token
