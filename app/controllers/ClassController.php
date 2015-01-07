@@ -157,7 +157,7 @@ class ClassController extends \BaseController
         $user_invited = User::where('email', '=', $input['email'])->first();
         if ($user_invited == null) {
             $error = "No such user registered !";
-            return Redirect::to('/classes/owned')->withErrors($error)->withInput();
+            return Redirect::to('/classes/owned')->withErrors($error);
         } else if($user_invited->id != Auth::id()){
             $permission = new Permissions();
             $permission->id_user = $user_invited->id;

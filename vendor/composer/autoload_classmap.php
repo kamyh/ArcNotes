@@ -1061,7 +1061,7 @@ return array(
     'Psr\\Log\\LoggerTrait' => $vendorDir . '/psr/log/Psr/Log/LoggerTrait.php',
     'Psr\\Log\\NullLogger' => $vendorDir . '/psr/log/Psr/Log/NullLogger.php',
     'RightsTableSeeder' => $baseDir . '/app/database/seeds/RightsTableSeeder.php',
-    'School' => $baseDir . '/app/models/School.php',
+    'School' => $baseDir . '/app/models/Schools.php',
     'SchoolController' => $baseDir . '/app/controllers/SchoolController.php',
     'SchoolsTableSeeder' => $baseDir . '/app/database/seeds/SchoolsTableSeeder.php',
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
