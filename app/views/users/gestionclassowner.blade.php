@@ -65,7 +65,7 @@
                             {{ Form::close() }}
                             </td></tr>
 
-                            {{ Form::open(array('route' => array('/rights/change/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
+                            {{ Form::open(array('route' => array('/classes/rights/change/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
 
                             <table class="form-table">
                                 {{-- comment hack to set a variable (otherwise should use the

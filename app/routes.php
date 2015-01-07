@@ -62,7 +62,7 @@ Route::get('/cities/search/{id_canton}', 'SchoolController@fetch_sub_category');
 /*
  * Routes Gestion Classes
  */
-Route::post('/classes/member/invite', array('as' => '/class/invite', 'uses' => 'ClassController@inviteMember'));
+Route::post('/classes/member/invite', array('as' => '/classes/member/invite', 'uses' => 'ClassController@inviteMember'));
 Route::get('/classes/member/accept/{iduser}/{idclass}', array('before' => 'auth','as' => '/classes/member/accept/{iduser}/{idclass}', 'uses' => 'ClassController@acceptMember'))->where('iduser','[0-9]+');
 Route::get('/classes/member/refuse/{iduser}/{idclass}', array('before' => 'auth','as' => '/classes/member/refuse/{iduser}/{idclass}', 'uses' => 'ClassController@refuseMember'))->where('iduser','[0-9]+');
 Route::get('/courses/remove/{idcourse}', array('before' => 'auth','as' => '/courses/remove/{idcourse}', 'uses' => 'ClassController@removeCourse'))->where('idcourse','[0-9]+');
@@ -80,12 +80,13 @@ Route::get('/classes/participant/{page}', array('before' => 'auth','as' => '/cla
 Route::get('/classes/participant/', function() {
     return Redirect::to('/classes/participant/1');
 });
+Route::get('/classes/owned', array('before' => 'auth','as' => '/classes/owned', 'uses' => 'ClassController@classOwned'));
+
 Route::post('/classes/join', array('as' => '/classes/join', 'uses' => 'ClassController@load'));
 Route::get('/classes/sign/{idclass}', array('before' => 'auth','as' => '/classes/sign/{idclass}', 'uses' => 'ClassController@join'))->where('idclass','[0-9]+');
 Route::resource('classes', 'ClassController');
 Route::get('/classes/create', array('before' => 'auth','as' => '/classes/create', 'uses' => 'ClassController@createClass'));
 
-Route::get('/classes/owned', array('as' => '/classes/owned', 'uses' => 'ClassController@classOwned','before' => 'auth'));
 
 Route::get('/classes/display/{idclass}', array('as' => '/class/display/{idclass}', 'uses' => 'ClassController@selectedClass'));
 
