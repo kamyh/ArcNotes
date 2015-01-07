@@ -24,6 +24,7 @@
                     @endif
                 <div class="class-tile-buttons">
 
+                    <div>
 
                     {{ Form::open(array('route' => array('/classes/visibility/change/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
 
@@ -33,13 +34,12 @@
                             {{Form::submit('Make Public', array('class' => 'button'))}}
                         @endif
                     {{ Form::close() }}
-
+                    </div>
+                    <div>
                     {{ Form::open(array('route' => array('/classes/remove/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                         {{Form::submit('Delete', array('class' => 'button'))}}
                     {{ Form::close() }}
-
-
-
+                    </div>
                 </div>
                 <div class="class-tile-user-title color-b">Pending Users</div>
                 <div class="class-tile-users">

@@ -1,12 +1,12 @@
 @extends('layouts.default')
 @section('title')
-    Read shared note
+    Read Note: {{$title}}
 @endsection
 @section('body')
-
-    <h1>{{$title}}</h1>
-    <div class="author">written by {{$author}} last update the {{$update}}</div>
-    <div class="note-content">{{$content}}</div>
+    <div class = "class-creation-form color-a max-60">
+        <div class="note-content">{{$content}}</div>
+    <div class="note-footer">Written by {{$author}}. <br/>Last update on the {{$update}}.</div>
+    </div>
 @stop
 
 
