@@ -158,14 +158,17 @@ class ClassController extends \BaseController
         if ($user_invited == null) {
             $error = "No such user registered !";
             return Redirect::to('/classes/owned')->withErrors($error)->withInput();
-        } else {
+        } else if($user_invited->id != Auth::id()){
             $permission = new Permissions();
             $permission->id_user = $user_invited->id;
             $permission->id_class = $input['class'];
-            $permission->id_rights = 1;
+            $permission->id_rights = 2;
             $permission->save();
 
             return Redirect::to('/classes/owned');
+        }
+        else{
+            Session::put('toast', array("error", "Your are the owner ! Silly !"));
         }
     }
 
