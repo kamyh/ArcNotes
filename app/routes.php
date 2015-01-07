@@ -18,8 +18,8 @@ Route::get("userTest", array(
 ));
 
 
-Route::get('/testing', function () {
-    return View::make('testing');
+Route::get('/about', function () {
+    return View::make('about');
 });
 
 Route::get('/404', function () {
