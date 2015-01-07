@@ -19,7 +19,7 @@ class CourseController extends \BaseController
      */
     public function createCours($idclass)
     {
-        if(Classes::find($idclass)->canCreate()) {
+        if (Classes::find($idclass)->canCreate()) {
             $schoolList = DB::table('courses')->lists('name', 'id');
             return View::make('courses.createcours')->with(array('idclass' => $idclass, 'schoolList' => $schoolList));
         }
@@ -47,19 +47,23 @@ class CourseController extends \BaseController
     public function store()
     {
         $input = Input::all();
-        $rulesValidatorCourse = array('name' => array('required', 'min:5', 'regex:/^[a-zA-Z0-9-àéèöïêôâî]+$/'), 'matter' => array('required', 'min:3','regex:/^[a-zA-Z0-9-àéèöïêôâî]+$/'));
+        $rulesValidatorCourse = array('name' => array('required', 'min:5', 'regex:/^[a-zA-Z0-9-àéèöïêôâî]+$/'), 'matter' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-àéèöïêôâî]+$/'));
         $validator = Validator::make($input, $rulesValidatorCourse);
+        $class = Classes::find((int)$input['idclass']);
+        if (!is_null($class)) {
+            if (!$validator->fails()) {
+                $course = new Courses();
+                $course->name = $input['name'];
+                $course->matter = $input['matter'];
+                $course->id_class = $class->id;
+                $course->save();
 
-        if (!$validator->fails()) {
-            $course = new Courses();
-            $course->name = $input['name'];
-            $course->matter = $input['matter'];
-            $course->id_class = $input['idclass'];
-            $course->save();
-
-            return Redirect::to('/courses/open/' . $course->getID());
+                return Redirect::to('/courses/open/' . $course->getID());
+            } else {
+                return Redirect::to('courses/create/' . $class->id)->withErrors($validator)->with(array('idclass' => $input['idclass']))->withInput();
+            }
         } else {
-            return Redirect::to('courses/create')->withErrors($validator)->with(array('idclass' => $input['idclass']));
+            return Redirect::to('/404');
         }
     }
 
