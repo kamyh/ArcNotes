@@ -122,7 +122,7 @@ class CourseController extends \BaseController {
     public function search($keyword)
     {
         //todo: get get only courses which are public/accessible?
-        $courses = Courses::where('name', 'LIKE', $keyword)->get();
+        $courses = Courses::where('name', 'LIKE', "%".$keyword."%")->get();
         return View::make('course.searchdisplay')->with(array('courses' => $courses, 'keyword' => $keyword));
     }
 
