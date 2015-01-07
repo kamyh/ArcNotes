@@ -136,3 +136,8 @@ a:hover, a:link, a:visited, a:active
 {
     height: 1.5em;
 }
+
+.error
+{
+    color: #F74B62;
+}

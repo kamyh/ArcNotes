@@ -133,7 +133,7 @@ class ClassController extends \BaseController
     public function search($keyword)
     {
         //todo: get get only classes which are public/accessible?
-        $classes = Classes::where('name', 'LIKE', "%".$keyword."%")->get();
+        $classes = Classes::where('name', 'LIKE', "%" . $keyword . "%")->get();
         return View::make('class.searchdisplay')->with(array('classes' => $classes, 'keyword' => $keyword));
     }
 
@@ -359,26 +359,23 @@ class ClassController extends \BaseController
 
     public function selectedClass($idclass)
     {
-        if (Auth::check()) {
+        $class = Classes::find($idclass);
+        if (!is_null($class)) {
+            if ($class->visibility == 1 || (Auth::check() && $class->canRead())) { //1 => public
+                //Only for the classes's courses
+                $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
 
-            $class = Classes::find($idclass);
-            if (!is_null($class)) {
-                if ($class->visibility == 1 || (Auth::check() && $class->isOwner(Auth::id()))) { //1 => public
-                    //Only for the classes's courses
-                    $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
-
-                    //Class informations
-                    $school = School::find($class->id_school);
-                    $city = DB::table('cities')->find($school->id_location);
-                    $canton = Canton::find($city->id_canton);
-                    return View::make('courses.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $class->name));
-                } else {
-
-                }
+                //Class informations
+                $school = School::find($class->id_school);
+                $city = DB::table('cities')->find($school->id_location);
+                $canton = Canton::find($city->id_canton);
+                return View::make('courses.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $class->name));
             } else {
-                Session::put('toast', array('error', "This class doesn't exist"));
-                return Redirect::to('/classes/public');
+
             }
+        } else {
+            Session::put('toast', array('error', "This class doesn't exist"));
+            return Redirect::to('/classes/public');
         }
         return Redirect::to('/unauthorized');
     }
@@ -444,9 +441,7 @@ class ClassController extends \BaseController
             if (count($classes_public) == 0) {
                 $classes_public = array();
             }
-        }
-        else
-        {
+        } else {
             $classes_public = array();
             $numberOfPages = 0;
         }

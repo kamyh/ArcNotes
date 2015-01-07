@@ -1,10 +1,9 @@
 <?php
 
 
-
 class Classes extends Eloquent
 {
-    protected $fillable = ['name','id_school','scollaryear','degree','domain','previous','visibility'];
+    protected $fillable = ['name', 'id_school', 'scollaryear', 'degree', 'domain', 'previous', 'visibility'];
     private $school;
     private $id_location;
     private $city;
@@ -20,35 +19,29 @@ class Classes extends Eloquent
 
     public function getCourses()
     {
-        return DB::table('courses')->where('id_class','=',$this->id)->get();
+        return DB::table('courses')->where('id_class', '=', $this->id)->get();
     }
 
     public function getUsers()
     {
-        $ids = DB::table('permissions')->where('id_class','=',$this->id)->where('id_rights','!=',15)->lists('id_user');
-        if(count($ids) != 0)
-        {
+        $ids = DB::table('permissions')->where('id_class', '=', $this->id)->where('id_rights', '!=', 15)->lists('id_user');
+        if (count($ids) != 0) {
             return User::whereIn('id', $ids)->get();
-        }
-        else
-        {
+        } else {
             return array();
         }
     }
 
     public function getPermissionsTab($id_user)
     {
-        $perm = DB::table('permissions')->where('id_user','=',$id_user)->where('id_class','=',$this->id)->first();
+        $perm = DB::table('permissions')->where('id_user', '=', $id_user)->where('id_class', '=', $this->id)->first();
 
         $rep = array();
-        if(!is_null($perm))
-        {
+        if (!is_null($perm)) {
             $rep['read'] = ($perm->id_rights & 4) != 0;
             $rep['edit'] = ($perm->id_rights & 2) != 0;
             $rep['create'] = ($perm->id_rights & 1) != 0;
-        }
-        else
-        {
+        } else {
             $rep['read'] = false;
             $rep['edit'] = false;
             $rep['create'] = false;
@@ -80,12 +73,12 @@ class Classes extends Eloquent
 
     public function isOwner($id_user)
     {
-            $perm = DB::table('permissions')->where('id_user', '=', $id_user)->where('id_class', '=', $this->id)->first();
+        $perm = DB::table('permissions')->where('id_user', '=', $id_user)->where('id_class', '=', $this->id)->first();
 
-            if ($perm->id_rights == 15) {
-                return true;
-            }
-            return false;
+        if ($perm->id_rights == 15) {
+            return true;
+        }
+        return false;
 
     }
 
@@ -120,8 +113,7 @@ class Classes extends Eloquent
 
     public function getVisibilityStr()
     {
-        if($this->attributes['visibility'] == 1)
-        {
+        if ($this->attributes['visibility'] == 1) {
             return 'Public';
         }
         return 'Private';
