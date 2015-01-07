@@ -2,6 +2,13 @@
 @section('title')
     {{ $course->name }}
 @endsection
+@section('page-scripts')
+<script type="text/javascript">
+    function copyToClipboard(text) {
+      window.prompt("Copy to clipboard to share: Ctrl+C then Enter", text);
+    }
+</script>
+@endsection
 @section('body')
 
 
@@ -29,10 +36,9 @@
     </table>
     <h2>
                 {{ Form::open(array('route' => array('/notes/write/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
-                    <!--{{ Form::submit('Write Note', array('class' => 'button')); }}-->
                                         Written notes
                                         @if(Auth::check() && $course->getParentClass()->canCreate())
-                                            <button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Write note', array('class' => 'test-image')); }}</button>
+                                            <button title="Write note" type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Write note', array('class' => 'test-image')); }}</button>
                                         @endif
                 {{Form::close();}}</h2>
     <table>
@@ -47,25 +53,20 @@
                  @if(Auth::check() && $course->getParentClass()->canEdit())
                 <td>
                     {{ Form::open(array('route' => array('/notes/edit/{idnote}', 'idnote' => $manuscrit->id),'method' => 'get')); }}
-                        <!--{{ Form::submit('Edit', array('class' => 'button')); }}-->
-                        <button type="submit" class="button-image">{{ HTML::image('img/icons/edit.png', 'Edit', array('class' => 'test-image')); }}</button>
+                        <button title="Edit note" type="submit" class="button-image">{{ HTML::image('img/icons/edit.png', 'Edit', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
                 </td>
                 @endif
                 <td>
                  @if(Auth::check() && $course->getParentClass()->canCreate())
                     {{ Form::open(array('route' => array('/notes/delete/{idnote}', 'idnote' => $manuscrit->id))); }}
-                        <!--{{ Form::submit('Delete', array('class' => 'button')); }}-->
-                        <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
+                        <button title="Delete note" type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
                  @endif
                 </td>
                 <td>
-                 @if(Auth::check() && $course->getParentClass()->canCreate())
-                    {{ Form::open(array('route' => array('/notes/shared/{token}', 'token' => $manuscrit->token),'method' => 'get')); }}
-                        <!--{{ Form::submit('Share', array('class' => 'button')); }}-->
-                        <button type="submit" class="button-image">{{ HTML::image('img/icons/share.png', 'Share', array('class' => 'test-image')); }}</button>
-                    {{Form::close();}}
+                 @if(Auth::check() && $course->getParentClass()->canRead())
+                        <button title="Share note" type="submit" class="button-image" onclick="copyToClipboard('{{ Request::root() . '/notes/shared/' .$manuscrit->token }}')">{{ HTML::image('img/icons/share.png', 'Share', array('class' => 'test-image')); }}</button>
                  @endif
                 </td>
             </tr>
@@ -73,10 +74,9 @@
     </table>
     <h2>
                 {{ Form::open(array('route' => array('/notes/add/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
-                    <!--{{ Form::submit('Add File', array('class' => 'button')); }}-->
                     Files
                     @if(Auth::check() && $course->getParentClass()->canCreate())
-                        <button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Add a new file', array('class' => 'test-image')); }}</button>
+                        <button title="Upload note" type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Add a new file', array('class' => 'test-image')); }}</button>
                     @endif
                 {{Form::close();}}
      </h2>
@@ -91,7 +91,7 @@
                     <td>{{ Files::find($file->id)->getSize(); }}</td>
                     <td>
                         {{Form::open(array('route' => array('/notes/download/{idfile}', 'idfile' => $file->id), 'method' => 'get')); }}
-                        <button type="submit" class="button-image">{{ HTML::image('img/icons/download.png', 'Share', array('class' => 'test-image')); }}</button>                        {{Form::close();}}
+                        <button title="Download note" type="submit" class="button-image">{{ HTML::image('img/icons/download.png', 'Share', array('class' => 'test-image')); }}</button>                        {{Form::close();}}
                     </td>
                     <td>
                         {{ Form::open(array('route' => array('/notes/deletefile/{idfile}', 'idfile' => $file->id))); }}
@@ -100,10 +100,7 @@
                     </td>
                     <td>
                      @if(Auth::check() && $course->getParentClass()->canCreate())
-                        {{ Form::open(array('route' => array('/notes/shared/{token}', 'token' => $file->token),'method' => 'get')); }}
-                            <!--{{ Form::submit('Delete', array('class' => 'button')); }}-->
-                            <button type="submit" class="button-image">{{ HTML::image('img/icons/share.png', 'Share', array('class' => 'test-image')); }}</button>
-                        {{Form::close();}}
+                            <button title="Share note" type="submit" class="button-image" onclick="copyToClipboard('{{Request::root() . '/notes/shared/' .$file->token}}')">{{ HTML::image('img/icons/share.png', 'Share', array('class' => 'test-image')); }}</button>
                      @endif
                     </td>
                 </tr>
