@@ -46,10 +46,10 @@
         @foreach($manuscrits as $manuscrit)
 
             <tr>
-                @if(Auth::check() && $course->getParentClass()->canRead())
+                @if((Auth::check() && $course->getParentClass()->canRead()) || $course->getParentClass()->isPublic())
                     <td><a href="/notes/read/{{$manuscrit->id}}" class="context-menu-tile-class color-a">{{$manuscrit->title}}</a></td>
                 @else
-                    <td><span class="context-menu-tile-class color-a">{{$manuscrit->title}}</span></td>
+                    <td><span href="#" class="context-menu-tile-class color-a">{{$manuscrit->title}}</span></td>
                 @endif
                  @if(Auth::check() && $course->getParentClass()->canEdit())
                 <td>
@@ -84,10 +84,10 @@
      <table>
             @foreach($files as $file)
                 <tr>
-                    @if(Auth::check() && $course->getParentClass()->canRead())
+                    @if((Auth::check() && $course->getParentClass()->canRead()) || $course->getParentClass()->isPublic())
                         <td><a href="/notes/download/{{$file->id}}" class="context-menu-tile-class color-a">{{$file->original_filename}}</a></td>
                     @else
-                        <td><a href="#" class="context-menu-tile-class color-a">{{$file->original_filename}}</a></td>
+                        <td><span href="#" class="context-menu-tile-class color-a">{{$file->original_filename}}</span></td>
                     @endif
                     <td>{{ Files::find($file->id)->getSize(); }}</td>
                     <td>

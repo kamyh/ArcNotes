@@ -118,5 +118,10 @@ class Classes extends Eloquent
         }
         return 'Private';
     }
+
+    public function isPublic()
+    {
+        return $this->attributes['visibility'] == 1;
+    }
 }
 

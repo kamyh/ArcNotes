@@ -267,7 +267,6 @@ class NoteController extends \BaseController
         } else {
             return Redirect::to('/404');
         }
-
     }
 
     /**
