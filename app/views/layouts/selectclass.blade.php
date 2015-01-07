@@ -4,7 +4,7 @@
 @endsection
 @section('body')
     <table>
-        {{ Form::open(array('route' => array('/courses/create/{idclass}','idclass'=> $idclass), 'method' => 'post')) }}
+        {{ Form::open(array('route' => array('/courses/create/{idclass}','idclass'=> $class->id), 'method' => 'post')) }}
             <tr>
             <td>
                 <button type="submit" class="button-image">{{ HTML::image('img/icons/plus.png', 'Invite', array('class' => 'test-image')); }}</button>

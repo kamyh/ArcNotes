@@ -368,10 +368,10 @@ class ClassController extends \BaseController
                     $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
 
                     //Class informations
-                    $school = School::find($class);
+                    $school = School::find($class->id_school);
                     $city = DB::table('cities')->find($school->id_location);
                     $canton = Canton::find($city->id_canton);
-                    return View::make('courses.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school[0]->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $class->name));
+                    return View::make('courses.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $class->name));
                 } else {
 
                 }
