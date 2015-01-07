@@ -5,19 +5,25 @@
 @section('body')
 
 
-        @if($errors->any())
-            <div class="">
-                <a class="error-msg" data-dismiss="alert">&times;</a>
-                {{ implode('', $errors->all('<li class="error">:message</li>')) }}
-            </div>
-        @endif
-
         <div class="list-classes">
+
         @foreach($classesOwned as $class)
-            <div class="class-tile color-a">
+            <div class="class-tile color-a" id="{{$class->id}}" >
+
             @if($class != null)
                     <a href="/classes/display/{{$class->id}}" class="class-title-tile color-b" >{{ $class->name  }} </a>
+
+                    @if($errors->any())
+                        @if(Session::has('errorOrigine') && Session::get('errorOrigine') == $class->id)
+                            <div class="">
+                                <a class="error-msg" data-dismiss="alert">&times;</a>
+                                {{ implode('', $errors->all('<li class="error">:message</li>')) }}
+                            <br/>
+                            </div>
+                        @endif
+                    @endif
                 <div class="class-tile-buttons">
+
 
                     {{ Form::open(array('route' => array('/classes/visibility/change/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
 

@@ -36,7 +36,7 @@ Route::get('/', function () {
 
 
 Route::resource('courses', 'CourseController');
-Route::post('/courses/create/{idclass}', array('before' => 'auth', 'as' => '/courses/create/{idclass}', 'uses' => 'CourseController@createcours'))->where('idclass', '[0-9]+');
+Route::get('/courses/create/{idclass}', array('before' => 'auth', 'as' => '/courses/create/{idclass}', 'uses' => 'CourseController@createcours'))->where('idclass', '[0-9]+');
 
 
 Route::resource('schools', 'SchoolController');

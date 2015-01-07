@@ -166,6 +166,7 @@ class ClassController extends \BaseController
         if ($user_invited == null) {
             $errors = "No such user registered !";
             Session::put('toast', array('error', $errors));
+            Session::put('errorOrigine', $input['class']);
             return Redirect::to('/classes/owned')->withErrors($errors);
         } else if ($user_invited->id != Auth::id()) {
             if (Permissions::where('id_user', '=', $user_invited->id)->where('id_class', '=', $input['class'])->count() == 0) {
