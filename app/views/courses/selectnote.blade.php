@@ -59,6 +59,14 @@
                     {{Form::close();}}
                  @endif
                 </td>
+                <td>
+                 @if(Auth::check() && $course->getParentClass()->canCreate())
+                    {{ Form::open(array('route' => array('/notes/shared/{token}', 'token' => $file->getParent()->token))); }}
+                        <!--{{ Form::submit('Delete', array('class' => 'button')); }}-->
+                        <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
+                    {{Form::close();}}
+                 @endif
+                </td>
             </tr>
         @endforeach
     </table>
