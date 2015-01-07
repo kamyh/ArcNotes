@@ -83,8 +83,8 @@ class ClassController extends \BaseController
                 $permission->id_rights = 15;
                 $permission->id_class = $class->id;
                 $permission->save();
-
-                return Redirect::to('/');
+                Session::put('toast', array('success', "Class " . $class->getName() . " sucessfully added !"));
+                return Redirect::to('/classes/owned');
 
             } else {
                 return Redirect::to('/classes/create')->withErrors($validator)->withInput();
@@ -222,22 +222,39 @@ class ClassController extends \BaseController
     public function removeCourse($idcourse)
     {
         $course = Courses::find($idcourse);
-        $class = Classes::where('id', '=', $course->id_class)->first();
+        $class = Classes::find(id_class);
 
-        if ($class->isOwner(Auth::id()) || $class->canCreate()) {
-            $course->delete();
+        if (!is_null($class)) {
+            if ($class->isOwner(Auth::id()) || $class->canCreate()) {
+                $course->delete();
+                Session::put('toast', array('success', "Course " . $course->getName() . "has been removed from class " . $class->getName() . "."));
+            } else {
+                Session::put('toast', array('error', "Course " . $course->getName() . "You actually can't remove this course from the class " . $class->getName() . "."));
+            }
+        } else {
+            Session::put('toast', array('error', "Course " . $course->getName() . "Class " . $class->getName() . " does not exist."));
         }
-
         return Redirect::to('/classes/owned');
     }
 
     public function removeMember($iduser, $idclass)
     {
         $class = Classes::find($idclass);
-
-        if ($class->isOwner(Auth::id())) {
-            $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
-            $permission->delete();
+        $user = User::find($iduser);
+        if (!is_null($class)) {
+            if (!is_null($user)) {
+                if ($class->isOwner(Auth::id())) {
+                    $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
+                    $permission->delete();
+                    Session::put('toast', array('success', "User  " . $user->getSignature() . "has been removed from class " . $class->getName() . "."));
+                } else {
+                    Session::put('toast', array('error', "You don't have rights to remove users from the class " . $class->getName() . "."));
+                }
+            } else {
+                Session::put('toast', array('error', "This user doesn't exist !"));
+            }
+        } else {
+            Session::put('toast', array('error', "This class doesn't exist !"));
         }
 
         return Redirect::to('/classes/owned');
@@ -246,24 +263,33 @@ class ClassController extends \BaseController
     public function chgtRights($iduser, $idclass)
     {
         $class = Classes::find($idclass);
-
-        if ($class->isOwner(Auth::id())) {
-            $input = Input::all();
-            $rights = 0;
-            if (isset($input['read'])) {
-                $rights += 4;
+        $user = User::find($iduser);
+        if (!is_null($class)) {
+            if ($class->isOwner(Auth::id())) {
+                if (!is_null($user)) {
+                    $input = Input::all();
+                    $rights = 0;
+                    if (isset($input['read'])) {
+                        $rights += 4;
+                    }
+                    if (isset($input['edition'])) {
+                        $rights += 2;
+                    }
+                    if (isset($input['creation'])) {
+                        $rights += 1;
+                    }
+                    $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
+                    $permission->id_rights = $rights;
+                    $permission->save();
+                    Session::put('toast', array('success', "Rigths for member " . $user->getSignature() . " have been updated."));
+                } else {
+                    Session::put('toast', array('error', "This user doesn't exist."));
+                }
+            } else {
+                Session::put('toast', array('error', "You don't have rights to modify user's rights in the class " . $class->getName() . "."));
             }
-            if (isset($input['edition'])) {
-                $rights += 2;
-            }
-            if (isset($input['creation'])) {
-                $rights += 1;
-            }
-
-            $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
-            $permission->id_rights = $rights;
-
-            $permission->save();
+        } else {
+            Session::put('toast', array('error', "This class doesn't exist"));
         }
 
         return Redirect::to('/classes/owned');
@@ -272,16 +298,20 @@ class ClassController extends \BaseController
     public function chgtVisibility($idclass)
     {
         $class = Classes::find($idclass);
-        if ($class->isOwner(Auth::id())) {
-            $class = Classes::where('id', '=', $idclass)->first();
-
-            if ($class->visibility == 'public') {
-                $class->visibility = 'private';
+        if (!is_null($class)) {
+            if ($class->isOwner(Auth::id())) {
+                if ($class->visibility == 1) {
+                    $class->visibility = 0;
+                } else {
+                    $class->visibility = 1;
+                }
+                $class->save();
+                Session::put('toast', array('success', 'Visibility of class ' . $class->getName() . ' changed !'));
             } else {
-                $class->visibility = 'public';
+                Session::put('toast', array('error', "You don't have rights to modify the class " . $class->getName() . " visibility."));
             }
-            $class->save();
-            Session::put('toast', array('success', 'Visibility of class ' . $class->getName() . ' changed !'));
+        } else {
+            Session::put('toast', array('error', "This class doesn't exist"));
         }
 
         return Redirect::to('/classes/owned');
@@ -290,10 +320,16 @@ class ClassController extends \BaseController
     public function removeClass($idclass)
     {
         $class = Classes::find($idclass);
-
-        if ($class->isOwner(Auth::id())) {
-            $class = Classes::find($idclass);
-            $class->delete();
+        if (!is_null($class)) {
+            if ($class->isOwner(Auth::id())) {
+                $class = Classes::find($idclass);
+                $class->delete();
+                Session::put('toast', array('success', 'Class ' . $class->getName() . ' removed !'));
+            } else {
+                Session::put('toast', array('error', "You don't have rights to remove the class " . $class->getName() . " visibility."));
+            }
+        } else {
+            Session::put('toast', array('error', "This class doesn't exist"));
         }
 
         return Redirect::to('/classes/owned');
@@ -309,29 +345,39 @@ class ClassController extends \BaseController
 
     public function open($idclass)
     {
-        $info = DB::table('classes')->where('id', '=', $idclass)->get();
+        $class = Classes::find($idclass);
         $courses = DB::table('courses')->where('id_class', $idclass)->join('classes', 'classes.id', '=', 'courses.id_class')->orderBy('courses.name')->get();
-        $school = DB::table('schools')->where('id', '=', $info[0]->id_school)->get();
-        $city = DB::table('cities')->find($school[0]->id_location);
-        $canton = DB::table('cantons')->find($city->id_canton);
+        $school = School::find($class->id_school);
+        $city = Cities::find($school->id_location);
+        $canton = Canton::find($city->id_canton);
 
-        return View::make('classes.display')->with(array('class' => $info, 'courses' => $courses, 'school_name' => $school[0]->name, 'school_city' => $city->name, 'canton' => $canton->name));
+        return View::make('classes.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school->name, 'school_city' => $city->name, 'canton' => $canton->name));
     }
 
     public function selectedClass($idclass)
     {
         if (Auth::check()) {
-            //$info = DB::table('classes')->where('id', '=', $idclass)->get();
-            $info = Classes::find($idclass);
-            if ($info->visibility == 'public' || (Auth::check() && $info->isOwner(Auth::id()))) {
-                //Only for the classes's courses
-                $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
+            $class = Classes::find($idclass);
+            if(!is_null($class)) {
+                if ($class->visibility == 1 || (Auth::check() && $class->isOwner(Auth::id()))) { //1 => public
+                    //Only for the classes's courses
+                    $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
 
-                //Class informations
-                $school = DB::table('schools')->where('id', '=', $info->id_school)->get();
-                $city = DB::table('cities')->find($school[0]->id_location);
-                $canton = DB::table('cantons')->find($city->id_canton);
-                return View::make('courses.display')->with(array('class' => $info, 'courses' => $courses, 'school_name' => $school[0]->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $info->name));
+                    //Class informations
+                    $school = School::find($class);
+                    $city = DB::table('cities')->find($school->id_location);
+                    $canton = Canton::find($city->id_canton);
+                    return View::make('courses.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school[0]->name, 'school_city' => $city->name, 'canton' => $canton->name, 'title' => $class->name));
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+                Session::put('toast', array('error', "This class doesn't exist"));
+                return Redirect::to('/classes/public');
             }
         }
         return Redirect::to('/unauthorized');
@@ -344,15 +390,17 @@ class ClassController extends \BaseController
         $permission->id_class = $idclass;
         $permission->id_user = Auth::id();
 
-        if ($class->visibility == 'public') {
-            $permission->id_rights = 4;
-        } else {
-            $permission->id_rights = 0;
+        if(!is_null($class)) {
+            if ($class->visibility == 1) {
+                $permission->id_rights = 4;
+            } else {
+                $permission->id_rights = 0;
+            }
+
+            $permission->save();
+
+            Session::put('toast', array('success', 'Class successfully joinged !'));
         }
-
-        $permission->save();
-
-        Session::put('toast', array('success', 'Class successfully joinged !'));
         return Redirect::to('/classes/participant');
     }
 
@@ -363,13 +411,12 @@ class ClassController extends \BaseController
         if (!is_null($classID)) {
             if (count($classID) > 0) {
                 $listClasses = DB::table('classes')->whereIn('id', $classID)->lists('name', 'id');
-
                 $classesOwned = Classes::whereIn('id', $classID)->get();
                 return View::make('users.gestionclassowner')->with(array('listClasses' => $listClasses, 'classesOwned' => $classesOwned));
             }
         }
 
-        Session::put('toast', array('error', 'You own no class, try to create one.'));
+        Session::put('toast', array('notice', 'You own no class, try to create one.'));
         return Redirect::to('/classes/create');
     }
 

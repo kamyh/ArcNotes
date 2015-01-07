@@ -22,8 +22,8 @@
 			</div>
 			<div id="header-menus" class="scroll-x">
 			@if(Auth::check())
-			     <a href="/classes/owned" class="header-menu-tile color-b hover-color-a">My Class Manager</a>
-			     <a href="/classes/participant/1" class="header-menu-tile color-b hover-color-a">Your Classes</a>
+			     <a href="/classes/owned" class="header-menu-tile color-b hover-color-a">Class Manager</a>
+			     <a href="/classes/participant/1" class="header-menu-tile color-b hover-color-a">My Classes</a>
 			     <a href="/classes/create/" class="header-menu-tile color-b hover-color-a">New Class</a>
             @endif
                  <a href="/classes/public/1" class="header-menu-tile color-b hover-color-a">Public Classes</a>

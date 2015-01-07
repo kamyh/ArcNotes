@@ -1,10 +1,10 @@
 @extends('layouts.default')
 @section('title')
-Create a new course
+Index of ArcNotes
 @endsection
 @section('body')
 	<div class="welcome">
-		<img src="img/logo.png" alt="ArcNotes">
+		<p>Welcome on Arcnotes my friends !</p>
 	</div>
 </body>
 </html>
