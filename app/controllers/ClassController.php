@@ -133,9 +133,8 @@ class ClassController extends \BaseController
     public function search($keyword)
     {
         //todo: get get only classes which are public/accessible?
-        //$keyword = Input::get('keyword');
-        $classes = Classes::where('name', 'LIKE', "%".$keyword."%")->get();
-        return View::make('classes.searchdisplay')->with(array('classes' => $classes, 'keyword' => $keyword));
+        $classes = Classes::where('name', 'LIKE', "%" . $keyword . "%")->get();
+        return View::make('class.searchdisplay')->with(array('classes' => $classes, 'keyword' => $keyword));
     }
 
     /**
@@ -198,6 +197,11 @@ class ClassController extends \BaseController
             $user = User::find($iduser);
             if (!is_null($user)) {
                 Session::put('toast', array('success', 'User ' . $user->getSignature() . ' accepted in class ' . $class->getName() . '.'));
+
+                Mail::send('emails.accept', array('class' => $class), function ($message) use ($user) {
+                    $message->to($user->email, $user->firstname + " " + $user->lastname)
+                        ->subject('New member')->from('arcnotesnoreply@gmail.com');
+                });
             }
 
             return Redirect::to('/classes/owned');
@@ -395,6 +399,13 @@ class ClassController extends \BaseController
             $permission->id_rights = 0;
             $permission->save();
             Session::put('toast', array('success', 'Class successfully joinged. Now wait that the owner accepts you !'));
+
+            $classOwner = $class->getOwner();
+
+            Mail::send('emails.join', array('class' => $class,'user' => Auth::user()), function ($message) use ($classOwner) {
+                $message->to($classOwner->email, $classOwner->firstname + " " + $classOwner->lastname)
+                    ->subject('New member')->from('arcnotesnoreply@gmail.com');
+            });
         }
         return Redirect::to('/classes/participant');
     }
@@ -445,9 +456,7 @@ class ClassController extends \BaseController
             if (count($classes_public) == 0) {
                 $classes_public = array();
             }
-        }
-        else
-        {
+        } else {
             $classes_public = array();
             $numberOfPages = 0;
         }

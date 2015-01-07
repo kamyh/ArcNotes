@@ -126,5 +126,11 @@ class Classes extends Eloquent
         }
         return 'Private';
     }
+
+    public function getOwner()
+    {
+        $premOwner = DB::table('permissions')->where('id_rights', '=', 15)->where('id_class', '=', $this->attributes['id'])->first();
+        return User::find($premOwner->id_user);
+    }
 }
 
