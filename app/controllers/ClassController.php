@@ -372,7 +372,7 @@ class ClassController extends \BaseController
     }
 
     /**
-     *
+     *  Delete a class
      *
      * @param $idclass
      * @return mixed
@@ -395,6 +395,12 @@ class ClassController extends \BaseController
         return Redirect::to('/classes/owned');
     }
 
+    /**
+     * Resign from a class
+     *
+     * @param $idclass
+     * @return mixed
+     */
     public function resignClass($idclass)
     {
         $permission = Permissions::where('id_class', '=', $idclass)->where('id_user', '=', Auth::id());
@@ -403,6 +409,12 @@ class ClassController extends \BaseController
         return Redirect::to('/classes/participant');
     }
 
+    /**
+     * Display the courses from a class
+     *
+     * @param $idclass
+     * @return mixed
+     */
     public function open($idclass)
     {
         $class = Classes::find($idclass);
@@ -414,6 +426,12 @@ class ClassController extends \BaseController
         return View::make('classes.display')->with(array('class' => $class, 'courses' => $courses, 'school_name' => $school->name, 'school_city' => $city->name, 'canton' => $canton->name));
     }
 
+    /**
+     * Display the courses from a class
+     *
+     * @param $idclass
+     * @return mixed
+     */
     public function selectedClass($idclass)
     {
         $class = Classes::find($idclass);
@@ -437,6 +455,12 @@ class ClassController extends \BaseController
         }
     }
 
+    /**
+     * Hanle the request of a user to join a class
+     *
+     * @param $idclass
+     * @return mixed
+     */
     public function join($idclass)
     {
         $class = Classes::find($idclass);
@@ -459,6 +483,10 @@ class ClassController extends \BaseController
         return Redirect::to('/classes/participant');
     }
 
+    /**
+     * Display classes owned by the user in session
+     * @return mixed
+     */
     public function classOwned()
     {
         $classID = DB::table('permissions')->where('id_user', '=', Auth::id())->where('id_rights', '=', 15)->lists('id_class');
@@ -475,6 +503,12 @@ class ClassController extends \BaseController
         return Redirect::to('/classes/create');
     }
 
+    /**
+     * Make the page to display all public classes that the user in session isn't already part of.
+     *
+     * @param $page
+     * @return mixed
+     */
     public function getPublic($page)
     {
         $take = 12;
@@ -492,6 +526,12 @@ class ClassController extends \BaseController
         return View::make('classes.public')->with(array('classes' => $classes_public, 'numberOfPages' => $numberOfPages, 'pageNo' => $page, 'title' => 'Public Classes'));
     }
 
+    /**
+     * Display the class you are in.
+     *
+     * @param $page
+     * @return mixed
+     */
     public function classParticipant($page)
     {
         $take = 12;
