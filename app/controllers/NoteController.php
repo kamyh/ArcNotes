@@ -260,7 +260,7 @@ class NoteController extends \BaseController
                     $author_string = 'unknown author';
                 }
                 $last_update = $note->updated_at;
-                return View::make('notes.readnote')->with(array('author' => $author_string, 'update' => $last_update, 'title' => $note->title, 'content' => $note->content, 'idcourse' => 1));
+                return View::make('notes.readnote')->with(array('author' => $author_string, 'update' => $last_update, 'title' => $note->title, 'content' => $note->content, 'idcourse' => $basenote->id_cours));
             } else {
                 return Redirect::to('/unauthorized');
             }

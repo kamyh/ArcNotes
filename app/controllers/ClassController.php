@@ -132,9 +132,9 @@ class ClassController extends \BaseController
 
     public function search($keyword)
     {
-        //todo: get get only courses which are public/accessible?
-        $classes = Classes::where('name', 'LIKE', $keyword)->get();
-        return View::make('classes.searchdisplay')->with(array('classes' => $classes, 'keyword' => $keyword));
+        //todo: get get only classes which are public/accessible?
+        $classes = Classes::where('name', 'LIKE', "%".$keyword."%")->get();
+        return View::make('class.searchdisplay')->with(array('classes' => $classes, 'keyword' => $keyword));
     }
 
     /**
@@ -248,7 +248,7 @@ class ClassController extends \BaseController
                 if ($class->isOwner(Auth::id())) {
                     $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
                     $permission->delete();
-                    Session::put('toast', array('success', "User  " . $user->getSignature() . "has been removed from class " . $class->getName() . "."));
+                    Session::put('toast', array('success', "User  " . $user->getSignature() . " has been removed from class " . $class->getName() . "."));
                 } else {
                     Session::put('toast', array('error', "You don't have rights to remove users from the class " . $class->getName() . "."));
                 }
