@@ -31,7 +31,6 @@
 @endsection
 @section('body')
 
-    <h1>Update a note</h1>
     <div class="class-creation-form color-a">
     {{ Form::open(array('route' => array('/notes/update/{idnote}', 'idnote' => $idnote))); }}
     <table class="form">
