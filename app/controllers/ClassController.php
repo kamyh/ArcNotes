@@ -81,6 +81,7 @@ class ClassController extends \BaseController
                 $id_school = (int)$input['school'];
                 $unique_class = Classes::where('name', '=', $input['name'])->where('id_school', '=', $id_school)->where('scollaryear', '=', $input['scollaryear'])->first();
                 if (is_null($unique_class)) {
+
                     $school = Schools::find($id_school);
                     if (!is_null($school)) {
                         $class = new Classes();

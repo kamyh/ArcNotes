@@ -30,7 +30,11 @@
                 {{Form::label('school','School',array('class' => 'label-form'))}}
                 </td>
                 <td>
-                {{ Form::select('school', $schoolList, null, array('class' => 'select')) }}
+                @if(Session::has('selectSchool'))
+                    {{ Form::select('school', $schoolList, Session::pull('selectSchool'), array('class' => 'select')) }}
+                @else
+                    {{ Form::select('school', $schoolList, null, array('class' => 'select')) }}
+                @endif
                 </td>
             </tr>
             <tr>

@@ -125,6 +125,7 @@ class SchoolController extends \BaseController
                     $school->id_location = $id_city;
                     $school->save();
                     Session::put('toast', array('success', "School successfully created !"));
+                    Session::put('selectSchool',$school->id);
                     return Redirect::to('/classes/create')->withInput();
                 }
                 else{

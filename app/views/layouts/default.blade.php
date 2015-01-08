@@ -87,7 +87,7 @@
                                     <td>{{Form::submit('Login', array('class' => 'button'))}}</td>
                                 </tr>
                             <tr>
-                                 <td><a href="/user/create" class="color-a">Sign up.</a></td>
+                                 <td><a href="/signup" class="color-a">Sign up.</a></td>
                             </tr>
                             </table>
                         {{ Form::close() }}
