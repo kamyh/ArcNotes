@@ -130,7 +130,20 @@
                     </div>
                 @endforeach
                 </div>
-                <div class="class-tile-course-title color-b">Courses</div>
+                <div class="class-tile-course-title color-b">
+                    <table>
+                        <tr>
+                            <td>
+                                Courses
+                            </td>
+                            <td>
+                                {{ Form::open(array('route' => array('/courses/create/{idclass}', 'idclass' => $class->id),'method' => 'get')); }}
+                                    <button type="submit" class="button-image" title="Create a course">{{ HTML::image('img/icons/plus.png', 'Invite', array('class' => 'test-image')); }}</button>
+                                {{Form::close();}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
                 <div class="class-tile-courses">
 
                 @foreach($class->getCourses() as $course)
@@ -138,7 +151,7 @@
                     <div>
                         <table>
                             <tr>
-                            <td>
+                                <td>
                                 {{ $course->name }}
                                 </td>
                                 <td>
@@ -158,7 +171,7 @@
                 @endforeach
                 </div>
 
-                <div class="class-tile-course-title color-b">Invite someone!</div>
+                <div class="class-tile-course-title color-b">Invite someone</div>
                 <div class="class-tile-invite">
 
             <table>

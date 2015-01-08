@@ -190,7 +190,7 @@ class ClassController extends \BaseController
             if ($input['school'] < 0) {
                 return View::make('schools.school')->with(array('input' => $input));
             } else {
-                $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-àéèöïîêôâ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
+                $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-_àéèöïçîêôâ ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
                 $validator = Validator::make($input, $rulesValidatorUser);
                 if (!$validator->fails()) {
                     $id_school = (int)$input['school'];
@@ -358,9 +358,9 @@ class ClassController extends \BaseController
             if (!is_null($class)) {
                 if ($class->isOwner(Auth::id()) || $class->canCreate()) {
                     $course->delete();
-                    Session::put('toast', array('success', "Course " . $course->getName() . "has been removed from class " . $class->getName() . "."));
+                    Session::put('toast', array('success', "Course " . $course->getName() . " has been removed from class " . $class->getName() . "."));
                 } else {
-                    Session::put('toast', array('error', "Course " . $course->getName() . "You actually can't remove this course from the class " . $class->getName() . "."));
+                    Session::put('toast', array('error', "Course " . $course->getName() . " You actually can't remove this course from the class " . $class->getName() . "."));
                 }
             } else {
                 Session::put('toast', array('error', "Class " . $class->getName() . " does not exist."));

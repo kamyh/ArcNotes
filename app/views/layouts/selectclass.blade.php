@@ -1,6 +1,19 @@
 @extends('layouts.default')
 @section('title')
-    {{{$title}}}
+    <table>
+        <tr>
+            <td>
+                {{{$title}}}
+            </td>
+            <td>
+                @if($class->isNotIn())
+                    {{ Form::open(array('route' => array('/classes/sign/{idclass}','idclass'=>$class->id),'method' => 'get')); }}
+                    <button type="submit" class="button-image" title="Create a course">{{ HTML::image('img/icons/join.png', 'Invite', array('class' => 'test-image')); }}</button>
+                    {{Form::close();}}
+                @endif
+            </td>
+        </tr>
+    </table>
 @endsection
 @section('body')
     <div class ="class-creation-form color-a">

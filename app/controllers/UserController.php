@@ -48,8 +48,9 @@ class UserController extends \BaseController
                         return Redirect::to('/')->withErrors($error)->withInput();
                     }
                 } else {
+                    $error = "Account not activated.";
                     Session::put('toast', array('error', 'Please check your email to verify your account !'));
-                    return Redirect::to('/');
+                    return Redirect::to('/')->withErrors($error);
                 }
             } else {
                 $error = "Wrong e-mail address !";
@@ -57,6 +58,30 @@ class UserController extends \BaseController
             }
         }
         return Redirect::to('/')->withErrors($validator)->withInput();
+    }
+
+    public function changePassword()
+    {
+        if (Auth::check()) {
+            $currentUser = Auth::user();
+            $rulesValidation = array( 'new-password-1' => 'required|between:8,32', 'new-password-2' => 'required|between:8,32');
+            $input = Input::All();
+            $validator = Validator::make($input, $rulesValidation);
+            if (!$validator->fails()) {
+                if (Input::get('new-password-1') === Input::get('new-password-2')) {
+                    $currentUser->password = Hash::make(Input::get('new-password-1'));
+                    $currentUser->save();
+                    Session::put('toast', array('success', 'Password changed!'));
+                } else {
+                    return Redirect::to('/changepassword')->withErrors("The two passwords don't match.")->withInput();
+                }
+            } else {
+                return Redirect::to('/changepassword')->withErrors($validator)->withInput();
+            }
+        } else {
+            Session::put('toast', array('error', "You're not logged in."));
+        }
+        return Redirect::to('/changepassword');
     }
 
     /**
