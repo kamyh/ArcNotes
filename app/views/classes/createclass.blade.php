@@ -71,6 +71,8 @@
             </tr>
             <tr>
                 <td>
+                </td>
+                <td>
                 {{Form::submit('Create', array('class' => 'button'))}}
                 </td>
             </tr>

@@ -59,7 +59,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="/changepassword" class="color-a hover-color-a">Change password.</a>
+                                        <a href="/changepassword" class="link color-a">Change password.</a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -92,7 +92,7 @@
                                     <td>{{Form::submit('Login', array('class' => 'button'))}}</td>
                                 </tr>
                             <tr>
-                                 <td><a href="/signup" class="color-a">Sign up.</a></td>
+                                 <td><a href="/signup" class="color-a link">Sign up.</a></td>
                             </tr>
                             </table>
                         {{ Form::close() }}

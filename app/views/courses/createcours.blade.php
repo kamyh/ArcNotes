@@ -35,6 +35,7 @@
             <tr>
                 <td>
                 {{ Form::hidden('idclass', $idclass) }}
+                    </td><td>
                 {{Form::submit('Create', array('class' => 'button'))}}
                 </td>
             </tr>
