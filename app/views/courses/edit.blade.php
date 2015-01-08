@@ -1,11 +1,11 @@
-@extends('...layouts.default')
+﻿@extends('...layouts.default')
 @section('title')
     Edit course
 @endsection
 @section('body')
 <div class="">
         <div class="class-creation-form color-a">
-        <table>
+        <table class="color-a">
             {{ Form::open(array('route' => array('/courses/update'), 'method' => 'post')) }}
             @if($errors->has())
             <tr>

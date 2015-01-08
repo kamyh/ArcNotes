@@ -1,4 +1,4 @@
-@extends('layouts.default')
+﻿@extends('layouts.default')
 @section('title')
     {{ $course->name }}
 @endsection
@@ -12,7 +12,7 @@
 @section('body')
 
 <div class="class-creation-form color-a">
-    <table>
+    <table class="color-a">
         <tr>
             <td>Created at</td>
             <td>{{$course->created_at}}</td>
@@ -37,7 +37,7 @@
                       @endif
         {{Form::close();}}
     </h2>
-    <table>
+    <table class="color-b">
     @if(count($manuscrits) > 0)
         @foreach($manuscrits as $manuscrit)
 
@@ -81,7 +81,7 @@
                     @endif
                 {{Form::close();}}
      </h2>
-     <table>
+     <table class="color-b">
         @if(count($files) > 0)
             @foreach($files as $file)
                 <tr class="color-a">

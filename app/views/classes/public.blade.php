@@ -1,4 +1,4 @@
-
+﻿
 @extends('layouts.default')
 @section('title')
     {{$title}}
@@ -10,7 +10,7 @@
         @foreach($classes as $class)
         <div class="class-tile color-a">
             <a href="/classes/display/{{$class->id}}" class="class-title-tile color-b hover-color-a">{{$class->name}}</a>
-            <table>
+            <table class="color-a">
                 <tr>
                     <td>Created at </td>
                     <td> {{ $class->created_at }} </td>
@@ -42,7 +42,7 @@
                 <tr>
                     <td></td>
                     <td>
-                    @if(Auth::check())
+                    @if(Auth::check() && $class->isNotIn())
                         {{ Form::open(array('route' => array('/classes/sign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                             {{Form::submit('Join', array('class' => 'button'))}}
                         {{ Form::close() }}

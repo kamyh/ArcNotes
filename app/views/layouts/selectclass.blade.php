@@ -1,6 +1,6 @@
-@extends('layouts.default')
+﻿@extends('layouts.default')
 @section('title')
-    <table>
+    <table class="color-a">
         <tr>
             <td>
                 {{{$title}}}
@@ -17,7 +17,7 @@
 @endsection
 @section('body')
     <div class ="class-creation-form color-a">
-    <table>
+    <table class="color-a">
             <tr>
                 <td>Created at </td>
                 <td> {{{ $class->created_at }}} </td>
@@ -50,7 +50,7 @@
         </table>
     </div>
     <div class="course-title">
-        <table>
+        <table class="color-b">
             <tr><td>
                     <h2>Courses in {{{$class->name}}}</h2>
                 </td>

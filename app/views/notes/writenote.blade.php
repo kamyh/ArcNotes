@@ -1,4 +1,4 @@
-@extends('layouts.default')
+﻿@extends('layouts.default')
 @section('title')
     Write a new note in {{{ $nomcours }}}
 @endsection
@@ -16,11 +16,11 @@
        </tr>
      @endif
         <tr>
-            <td>{{ Form::label('title', 'Title', array('class' => 'form-label')) }}</td>
+            <td class="color-a">{{ Form::label('title', 'Title', array('class' => 'form-label')) }}</td>
             <td>{{ Form::text('title', null, array('class' => 'text-input')); }}</td>
         </tr>
         <tr>
-            <td>{{ Form::label('content','Content', array('class' => 'form-label')); }}</td>
+            <td class="color-a">{{ Form::label('content','Content', array('class' => 'form-label')); }}</td>
             <td>{{ Form::textarea('content', null, array('class' => 'textarea-input')); }}</td>
         </tr>
         <tr>

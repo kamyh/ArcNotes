@@ -1,11 +1,11 @@
-@extends('layouts.default')
+﻿@extends('layouts.default')
 @section('title')
     Change your password
 @endsection
 @section('body')
     <div class="class-creation-form color-a">
     {{ Form::open(array('url' => 'changepassword', 'method' => 'post')) }}
-    <table>
+    <table class="color-a">
         @if($errors->has())
             <tr>
                 <td colspan="2">

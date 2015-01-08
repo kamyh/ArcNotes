@@ -1,4 +1,4 @@
-@extends('...layouts.default')
+﻿@extends('...layouts.default')
 @section('title')
     Class Manager
 @endsection
@@ -60,7 +60,7 @@
 
 
                         @if($user->getUserPermForClass($class->id) < 1)
-                            <td>{{ $user->firstname }} {{ $user->lastname }} </td>
+                            <td class="color-a">{{ $user->firstname }} {{ $user->lastname }} </td>
 
                             <td>
                             {{ Form::open(array('route' => array('/classes/member/accept/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
@@ -87,7 +87,7 @@
                      <table>
                          <tr>
                         @if($user->getUserPermForClass($class->id) != 15 && $user->getUserPermForClass($class->id) > 1)
-                        <td>{{ $user->firstname }} {{ $user->lastname }} </td>
+                        <td class="color-a">{{ $user->firstname }} {{ $user->lastname }} </td>
 
                             <td>
                             {{ Form::open(array('route' => array('/classes/member/remove/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
@@ -103,17 +103,17 @@
                                  ?php tag): --}}
                                 {{--*/ $permissionsTab = $class->getPermissionsTab($user->id) /*--}}
                                 <tr>
-                                    <td>
+                                    <td class="color-a">
                                     {{Form::checkbox('read', '4',$permissionsTab['read'])}}
                                     {{Form::label('read','Read')}}
                                     </td>
                                 </tr><tr>
-                                    <td>
+                                    <td class="color-a">
                                     {{Form::checkbox('edition', '2',$permissionsTab['edit'])}}
                                     {{Form::label('edition','Edition')}}
                                     </td>
                                 </tr><tr>
-                                    <td>
+                                    <td class="color-a">
                                     {{Form::checkbox('creation', '1',$permissionsTab['create'])}}
                                     {{Form::label('creation','Creation')}}
                                     </td>
@@ -131,25 +131,14 @@
                 @endforeach
                 </div>
                 <div class="class-tile-course-title color-b">
-                    <table>
-                        <tr>
-                            <td>
-                                Courses
-                            </td>
-                            <td>
-                                {{ Form::open(array('route' => array('/courses/create/{idclass}', 'idclass' => $class->id),'method' => 'get')); }}
-                                    <button type="submit" class="button-image" title="Create a course">{{ HTML::image('img/icons/plus.png', 'Invite', array('class' => 'test-image')); }}</button>
-                                {{Form::close();}}
-                            </td>
-                        </tr>
-                    </table>
+                        Courses
                 </div>
                 <div class="class-tile-courses">
 
                 @foreach($class->getCourses() as $course)
                     @if($course != null)
                     <div>
-                        <table>
+                        <table class="color-a">
                             <tr>
                                 <td>
                                 {{ $course->name }}
@@ -160,7 +149,7 @@
                                     {{ Form::close() }}
                                 </td>
                                 <td>
-                                    {{ Form::open(array('route' => array('/courses/edit/{idclass}/{idcourse}','idclass'=>$class->id,'idcourse'=>$course->id), 'method' => 'get')) }}
+                                    {{ Form::open(array('route' => array('/courses/edit/{idcourse}/{idclass}','idclass'=>$class->id,'idcourse'=>$course->id), 'method' => 'get')) }}
                                         <button type="submit" class="button-image">{{ HTML::image('img/icons/edit.png', 'Remove', array('class' => 'test-image')); }}</button>
                                     {{ Form::close() }}
                                 </td>
@@ -174,10 +163,10 @@
                 <div class="class-tile-course-title color-b">Invite someone</div>
                 <div class="class-tile-invite">
 
-            <table>
+            <table class="color-a">
             {{ Form::open(array('route' => array('/classes/member/invite'), 'method' => 'post')) }}
                 <tr>
-                <td>
+                <td class="color-a">
                 {{Form::label('email','e-mail')}}</td><td>
                 {{Form::text('email', null,array('class' => ''))}}</td><td>
                 {{ Form::hidden('class', $class->id) }}
