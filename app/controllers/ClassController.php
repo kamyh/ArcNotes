@@ -105,7 +105,7 @@ class ClassController extends \BaseController
                         return Redirect::to('/classes/create')->withInput();
                     }
                 } else {
-                    Session::put('toast', array('error', "Class " . $unique_class->getName() . " already exist in this school for " . e($input['scollaryear']) . '.'));
+                    Session::put('toast', array('error', "Class " . $unique_class->getName() . " already exists in this school for " . e($input['scollaryear']) . '.'));
                     return Redirect::to('/classes/create')->withInput();
                 }
 
@@ -429,7 +429,7 @@ class ClassController extends \BaseController
                     $permission = Permissions::where('id_user', '=', $iduser)->where('id_class', '=', $idclass)->first();
                     $permission->id_rights = $rights;
                     $permission->save();
-                    Session::put('toast', array('success', "Rigths for member " . $user->getSignature() . " have been updated."));
+                    Session::put('toast', array('success', "Rights for member " . $user->getSignature() . " have been updated."));
                 } else {
                     Session::put('toast', array('error', "This user doesn't exist."));
                 }
@@ -508,7 +508,7 @@ class ClassController extends \BaseController
             $permission->delete();
             Session::put('toast', array("success", "Class resign success !"));
         } else {
-            Session::put('toast', array("error", "You cannot resign your own classes !"));
+            Session::put('toast', array("error", "You cannot resign from your own classes !"));
         }
         return Redirect::to('/classes/participant');
     }
@@ -575,7 +575,7 @@ class ClassController extends \BaseController
         if (!is_null($class)) {
             $permission->id_rights = 0;
             $permission->save();
-            Session::put('toast', array('success', 'Class successfully joinged. Now wait that the owner accepts you !'));
+            Session::put('toast', array('success', 'Class successfully joined. Now wait for the owner to accept your request !'));
 
             $classOwner = $class->getOwner();
 

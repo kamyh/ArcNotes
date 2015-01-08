@@ -8,6 +8,8 @@ Index of ArcNotes
     	    <div class="descr_content">ArcNotes is a website designed around sharing notes and documents with your classmates.</div>
     	    @if(!Auth::check())
                 <div class="descr_content">Create an account, create a new class, and start sharing and improving!</div>
+            @else
+                <div class="descr_content">Create a new class, and start sharing and improving!</div>
             @endif
     	    <br/>
             <div class="copyrights_title"><h5>Copyrights 2014-2015</h5></div>

@@ -69,7 +69,7 @@
             </tr>
         @endforeach
     @else
-    <tr><td colspan="2">No written notes found yet !</td></tr>
+    <tr><td colspan="2">No written note found yet !</td></tr>
     @endif
 
     </table>
@@ -108,7 +108,7 @@
                 </tr>
             @endforeach
         @else
-            <tr><td colspan="2">No files found yet !</td></tr>
+            <tr><td colspan="2">No file found yet !</td></tr>
         @endif
      </table>
 </div>

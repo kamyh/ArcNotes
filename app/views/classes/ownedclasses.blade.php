@@ -69,7 +69,7 @@
                             </td>
                             <td>
                             {{ Form::open(array('route' => array('/classes/member/refuse/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
-                               <!-- {{Form::submit('Refuse', array('class' => 'button'))}}-->
+                               <!-- {{Form::submit('Decline', array('class' => 'button'))}}-->
                                <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Refuse', array('class' => 'test-image')); }}</button>
                             {{ Form::close() }}
                             </td></tr>
@@ -196,23 +196,3 @@
         @endif
         </div>
 @stop
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
