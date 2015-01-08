@@ -132,7 +132,7 @@ class CourseController extends \BaseController
 
                 if (count($manuscrits) == 0) $manuscrits = array();
                 if (count($files) == 0) $files = array();
-                return View::make('courses.selectnote')->with(array('course' => $course, 'manuscrits' => $manuscrits, 'files' => $files));
+                return View::make('courses.listnotes')->with(array('course' => $course, 'manuscrits' => $manuscrits, 'files' => $files));
             }
             return Redirect::to('/404');
         } else {

@@ -37,7 +37,7 @@ class SchoolController extends \BaseController
     /**
      * @return mixed
      */
-    public function fetch_sub_category()
+    public function fetchSubCategory()
     {
         $input = Input::get('id_canton');
         $cities = DB::table('cities')->where('id_canton', '=', $input)->get();
@@ -57,19 +57,7 @@ class SchoolController extends \BaseController
      */
     public function store()
     {
-        $inputs = Input::all();
-        $rulesValidatorSchool = array('name_school' => 'required|min:4');
-        $validator = Validator::make($inputs, $rulesValidatorSchool);
 
-        if (!$validator->fails()) {
-            $school = new Schools();
-            $school->name = $inputs['name_school'];
-            $school->save();
-
-            return Redirect::to('/classes/create')->withInput();
-        } else {
-            return Redirect::to('/schools')->withErrors($validator)->withInput();
-        }
     }
 
 
@@ -120,5 +108,21 @@ class SchoolController extends \BaseController
         //
     }
 
+    public function saveSchool()
+    {
+        $inputs = Input::all();
+        $rulesValidatorSchool = array('name_school' => array('required','min:4','regex:/^[a-zA-Z-àéèöïîêôâ]+$/'));
+        $validator = Validator::make($inputs, $rulesValidatorSchool);
+
+        if (!$validator->fails()) {
+            $school = new Schools();
+            $school->name = $inputs['name_school'];
+            $school->save();
+
+            return Redirect::to('/classes/create')->withInput();
+        } else {
+            return Redirect::to('/schools')->withErrors($validator)->withInput();
+        }
+    }
 
 }

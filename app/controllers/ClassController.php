@@ -60,15 +60,11 @@ class ClassController extends \BaseController
     public function store()
     {
         $input = Input::all();
-
-        if ($input['school'] == 0) {
-            return View::make('schools.school')->with(array('input' => $input));
-        } else if ($input['school'] == 1) {
+        if ($input['school'] == 0 || $input['school'] == 1) {
             return View::make('schools.school')->with(array('input' => $input));
         } else {
-            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:[a-zA-Z-àéèöïîêôâ]'), 'scollaryear' => array('required', 'numeric'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
+            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z-àéèöïîêôâ]+$/'), 'scollaryear' => array('required', 'numeric'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
             $validator = Validator::make($input, $rulesValidatorUser);
-
             if (!$validator->fails()) {
                 $class = new Classes();
                 $class->name = $input['name'];
@@ -499,7 +495,7 @@ class ClassController extends \BaseController
             if (count($classID) > 0) {
                 $listClasses = DB::table('classes')->whereIn('id', $classID)->lists('name', 'id');
                 $classesOwned = Classes::whereIn('id', $classID)->get();
-                return View::make('users.gestionclassowner')->with(array('listClasses' => $listClasses, 'classesOwned' => $classesOwned));
+                return View::make('classes.ownedclasses')->with(array('listClasses' => $listClasses, 'classesOwned' => $classesOwned));
             }
         }
 

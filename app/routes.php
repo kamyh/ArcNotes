@@ -11,36 +11,38 @@
 |
 */
 
-
-Route::get("userTest", array(
-    "as" => "userTest",
-    "uses" => "UserController@test"
-));
-
-
+/**
+ * About
+ */
 Route::get('/about', function () {
     return View::make('about');
 });
 
+/**
+ * Not found
+ */
 Route::get('/404', function () {
     return View::make('error.404');
 });
 
+/**
+ * Access Denied
+ */
 Route::get('/unauthorized', function () {
     return View::make('error.unauthorized');
 });
 
+/**
+ * Index
+ */
 Route::get('/', function () {
     return View::make('hello');
 });
 
 
-Route::resource('courses', 'CourseController');
-Route::get('/courses/create/{idclass}', array('before' => 'auth', 'as' => '/courses/create/{idclass}', 'uses' => 'CourseController@createcours'))->where('idclass', '[0-9]+');
-
 
 Route::resource('schools', 'SchoolController');
-Route::post('/schools', array('as' => '/schools', 'uses' => 'SchoolController@school'));
+Route::post('/schools/create', array('as' => '/schools/create', 'uses' => 'SchoolController@saveSchool', 'before' => 'auth'));
 
 
 /**
@@ -52,7 +54,7 @@ Route::get('/login', array('as' => 'login', 'uses' => 'UserController@login'));
 Route::post('/login', array('as' => 'login', 'uses' => 'UserController@loginHandler'));
 Route::post('/logout', array('as' => 'logout', 'uses' => 'UserController@logout'));
 
-Route::get('/cities/search/{id_canton}', 'SchoolController@fetch_sub_category');
+Route::get('/cities/search/{id_canton}', 'SchoolController@fetchSubCategory');
 
 /*
  * Routes Gestion Classes
@@ -66,7 +68,7 @@ Route::get('/classes/resign/{idclass}', array('before' => 'auth', 'as' => '/clas
 Route::get('/classes/member/remove/{iduser}/{idclass}', array('before' => 'auth', 'as' => '/classes/member/remove/{iduser}/{idclass}', 'uses' => 'ClassController@removeMember'))->where('idclass', '[0-9]+');
 Route::get('/classes/rights/change/{iduser}/{idclass}', array('before' => 'auth', 'as' => '/classes/rights/change/{iduser}/{idclass}', 'uses' => 'ClassController@chgtRights'))->where('iduser', '[0-9]+');
 Route::get('/classes/visibility/change/{idclass}', array('before' => 'auth', 'as' => '/classes/visibility/change/{idclass}', 'uses' => 'ClassController@chgtVisibility'))->where('idclass', '[0-9]+');
-//Route::get('/class/open/{idclass}',array('before' => 'auth','as'=> '/class/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
+Route::get('/classes/open/{idclass}',array('before' => 'auth','as'=> '/classes/open/{idnote}', 'uses' => 'ClassController@open'))->where('idclass','[0-9]+');
 Route::get('/classes/public/{page}', array('as' => '/classes/public/{page}', 'uses' => 'ClassController@getPublic'))->where('idclass', '[0-9]+');
 Route::get('/classes/public', function () {
     return Redirect::to('classes/public/1');
@@ -76,42 +78,33 @@ Route::get('/classes/participant/', function () {
     return Redirect::to('/classes/participant/1');
 });
 Route::get('/classes/owned', array('before' => 'auth', 'as' => '/classes/owned', 'uses' => 'ClassController@classOwned'));
-
 Route::post('/classes/join', array('as' => '/classes/join', 'uses' => 'ClassController@load'));
 Route::get('/classes/sign/{idclass}', array('before' => 'auth', 'as' => '/classes/sign/{idclass}', 'uses' => 'ClassController@join'))->where('idclass', '[0-9]+');
 Route::resource('classes', 'ClassController');
 Route::get('/classes/create', array('before' => 'auth', 'as' => '/classes/create', 'uses' => 'ClassController@createClass'));
-
-
 Route::get('/classes/display/{idclass}', array('as' => '/class/display/{idclass}', 'uses' => 'ClassController@selectedClass'));
 
-/* verify email */
+
+/* Registration and confirmations */
 Route::get('/register/verify/{confirmationCode}', array('as' => '/register/verify/{confirmationCode}','uses' => 'UserController@confirm'))->where('confirmationCode', '[a-bA-B0-9]+');
-
 Route::get('/verify/{token}', array('as' => '/verify/{token}', 'uses' => 'UserController@confirm'));
+Route::get('/signup', array('as' => '/signup', 'uses' => 'UserController@create'));
+
 
 /*
- * TEST Routes
- */
-
-Route::get("lists_classes_courses", array(
-    "as" => "lists_classes_courses",
-    "uses" => "ClassController@lists_classes_courses"
-));
-
-Route::get("lists_classes", array(
-    "as" => "lists_classes",
-    "uses" => "ClassController@lists_classes"
-));
-
-/*
- * Course
+ * Courses
  */
 Route::get('/courses/open/{idcourse}', array('as' => '/courses/open/{course}', 'uses' => 'CourseController@open', 'before' => 'auth'))->where('idcourse', '[0-9]+');
+Route::resource('courses', 'CourseController');
+Route::get('/courses/create/{idclass}', array('before' => 'auth', 'as' => '/courses/create/{idclass}', 'uses' => 'CourseController@createcours'))->where('idclass', '[0-9]+');
 
+/**
+ * research routes
+ */
 Route::get('/search', 'BaseController@getSearch');
 Route::get('/courses/search/{keyword}', 'CourseController@search');
 Route::get('/classes/search/{keyword}', 'ClassController@search');
+
 
 /*
  * notes management routes

@@ -5,8 +5,6 @@ class Schools extends Eloquent
 {
     protected $fillable = ['name'];
 
-    private $name;
-
     /**
      * The database table used by the model.
      *
