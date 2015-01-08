@@ -128,4 +128,17 @@ class Classes extends Eloquent
         $premOwner = DB::table('permissions')->where('id_rights', '=', 15)->where('id_class', '=', $this->attributes['id'])->first();
         return User::find($premOwner->id_user);
     }
+
+    public function isNotIn()
+    {
+        $perm = Permissions::where('id_user','=',Auth::id())->where('id_class','=',$this->attributes['id'])->get();
+
+        if(count($perm) == 0)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
