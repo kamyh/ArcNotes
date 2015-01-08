@@ -15,10 +15,6 @@
                     <td>{{$course->created_at}}</td>
                 </tr>
                 <tr>
-                    <td>Last update </td>
-                    <td>{{$course->updated_at}}</td>
-                </tr>
-                <tr>
                     <td>Matter</td>
                     <td>{{$course->matter}}</td>
                 </tr>

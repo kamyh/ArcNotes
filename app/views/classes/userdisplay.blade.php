@@ -14,10 +14,6 @@
                 <td> {{{ $class->created_at }}} </td>
             </tr>
             <tr>
-                <td>Last update </td>
-                <td> {{{ $class->updated_at }}} </td>
-            </tr>
-            <tr>
                 <td>{{{$class->getSchoolName()}}}</td>
                 <td>{{{$class->getCityName()}}} {{{$class->getCantonName()}}}</td>
             </tr>
