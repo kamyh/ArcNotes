@@ -551,6 +551,10 @@ class ClassController extends \BaseController
                 $classes_public = Classes::where('visibility', '=', 1)->whereNotIn('id', $listClass)->skip($skip)->take($take)->get();
                 $numberOfPages = Classes::where('visibility', '=', 1)->whereNotIn('id', $listClass)->count();
             }
+            else{
+                $classes_public = Classes::where('visibility', '=', 1)->skip($skip)->take($take)->get();
+                $numberOfPages = Classes::where('visibility', '=', 1)->count();
+            }
 
         } else {
             $classes_public = Classes::where('visibility', '=', 1)->skip($skip)->take($take)->get();
