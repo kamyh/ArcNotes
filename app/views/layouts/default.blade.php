@@ -59,7 +59,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="/changepassword" class="link color-a">Change password.</a>
+                                        <a href="/changepassword" class="link hover-color-b color-a">Change password.</a>
                                     </td>
                                 </tr>
                                 <tr>

@@ -179,9 +179,9 @@ class NoteController extends \BaseController
                 $idclass = $course->getClassID();
                 $class = Classes::find($idclass);
                 $classname = $class->getName();
-                $schollaryear = $class->getSchollarName();
+                $schollaryear = $class->getSchollarYear();
                 $schoolname = $class->getSchoolName();
-                $city = $class->getCitie();
+                $city = $class->getCityName();
                 $file = Input::file('file');
                 $path = '/uploads' . '/' . $city . '/' . $schoolname . '/' . $schollaryear . '/' . $classname;
                 $destinationPath = public_path() . $path;
@@ -191,7 +191,7 @@ class NoteController extends \BaseController
                 $fileMIME = $file->getMimeType();
 
                 //files validator : max filesize and extensions
-                $rules = array('file' => 'required|max:10000|mimes:doc,docx,txt,pdf,xls,xlsx,odt');
+                $rules = array('file' => 'required|max:10000|mimes:doc,docx,txt,pdf,xls,xlsx,odt,ppt,pptx,jpeg,jpg,png,ods');
                 $validator = Validator::make(Input::all(), $rules);
 
                 if (!$validator->fails()) {
