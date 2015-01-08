@@ -67,7 +67,7 @@ class NoteController extends \BaseController
                 $token = bin2hex(BaseNotes::getNewToken()); //generate a new token
                 $note = BaseNotes::firstOrCreate(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token)); //write in basenote
                 Manuscrits::firstOrCreate(array('id_basenotes' => $note->getID(), 'content' => e(Input::get('content')), 'title' => e(Input::get('title')))); //store in manuscrits
-                Session::put('toast', array('success', 'The note was created')); //insert message in session for toast message
+                Session::put('toast', array('success', 'The note has been created.')); //insert message in session for toast message
                 return Redirect::to('/courses/open/' . $idcourse);
             } else {
                 return Redirect::to('/notes/write/' . $idcourse)->withErrors($validator)->withInput();
@@ -96,7 +96,7 @@ class NoteController extends \BaseController
                     $note->save();
                     $basenote = $note->getParent();
                     $idcourse = $basenote->id_cours;
-                    Session::put('toast', array('success', 'The note was updated')); //toast message
+                    Session::put('toast', array('success', 'The note has been updated.')); //toast message
                     return Redirect::to('courses/open/' . $idcourse);
                 } else {
                     return Redirect::to('/notes/edit/' . $idnote)->withErrors($validator)->withInput();
@@ -154,7 +154,7 @@ class NoteController extends \BaseController
                 $idcourse = $basenote->id_cours;
                 $basenote->delete();
                 $note->delete();
-                Session::put('toast', array('success', 'The note was deleted'));
+                Session::put('toast', array('success', 'The note has been deleted.'));
                 return Redirect::to('/courses/open/' . $idcourse);
             } else {
                 return Redirect::to('/unauthorized');
@@ -179,9 +179,9 @@ class NoteController extends \BaseController
                 $idclass = $course->getClassID();
                 $class = Classes::find($idclass);
                 $classname = $class->getName();
-                $schollaryear = $class->getSchollarYear();
+                $schollaryear = $class->getSchollarName();
                 $schoolname = $class->getSchoolName();
-                $city = $class->getCityName();
+                $city = $class->getCitie();
                 $file = Input::file('file');
                 $path = '/uploads' . '/' . $city . '/' . $schoolname . '/' . $schollaryear . '/' . $classname;
                 $destinationPath = public_path() . $path;
@@ -191,7 +191,7 @@ class NoteController extends \BaseController
                 $fileMIME = $file->getMimeType();
 
                 //files validator : max filesize and extensions
-                $rules = array('file' => 'required|max:10000|mimes:doc,docx,txt,pdf,xls,xlsx,odt,ppt,pptx,jpeg,jpg,png,ods');
+                $rules = array('file' => 'required|max:10000|mimes:doc,docx,txt,pdf,xls,xlsx,odt');
                 $validator = Validator::make(Input::all(), $rules);
 
                 if (!$validator->fails()) {
@@ -203,7 +203,7 @@ class NoteController extends \BaseController
                             $token = bin2hex(BaseNotes::getNewToken());
                             $note = BaseNotes::firstOrCreate(array('id_author' => Auth::id(), 'id_cours' => $idcourse, 'token' => $token));
                             $file = Files::firstOrCreate(array('id_basenotes' => $note->getID(), 'path' => $path . '/' . $filename, 'original_filename' => $original_filename, 'mime' => $fileMIME));
-                            Session::put('toast', array('success', 'The file was uploaded'));
+                            Session::put('toast', array('success', 'The file has been uploaded.'));
                             return Redirect::to('/courses/open/' . $idcourse);
                         } else {
                             return Redirect::to('/notes/add/' . $idcourse)->withErrors(array('the file upload failed'));
@@ -327,7 +327,7 @@ class NoteController extends \BaseController
                 $idcourse = $basenote->id_cours;
                 $basenote->delete();
                 $file->delete();
-                Session::put('toast', array('success', 'The file was deleted'));
+                Session::put('toast', array('success', 'The file has been deleted.'));
                 return Redirect::to('courses/open/' . $idcourse);
             } else {
                 return Redirect::to('/unauthorized');
