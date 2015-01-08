@@ -13,7 +13,7 @@ class CreateManuscritsTable extends Migration {
 	public function up()
 	{
 		Schema::create('manuscrits', function(Blueprint $table) {
-			$table->increments('id')->unique();
+			$table->increments('id');
 			$table->timestamps();
 			$table->integer('id_basenotes')->unsigned();
             $table->text('content');

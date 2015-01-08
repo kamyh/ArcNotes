@@ -13,7 +13,7 @@ class CreateCitiesTable extends Migration {
 	public function up()
 	{
 		Schema::create('cities', function(Blueprint $table) {
-			$table->increments('id')->unique();
+			$table->increments('id');
 			$table->string('name',255);
 			$table->integer('id_canton')->references('id')->on('cantons');
 			$table->integer('zipcode');

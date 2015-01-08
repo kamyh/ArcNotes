@@ -13,7 +13,7 @@ class CreateFilesTable extends Migration {
 	public function up()
 	{
 		Schema::create('files', function(Blueprint $table) {
-			$table->increments('id')->unique();
+			$table->increments('id');
 			$table->timestamps();
 			$table->integer('id_basenotes')->unsigned();
 			$table->string('path', 255)->unique();

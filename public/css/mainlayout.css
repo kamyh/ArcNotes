@@ -159,3 +159,8 @@ a:hover, a:link, a:visited, a:active
 {
     color: #F74B62;
 }
+
+.copyrights_content
+{
+    font-size: 0.8em;
+}
