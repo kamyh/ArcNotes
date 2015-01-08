@@ -51,7 +51,7 @@
             </div>
         @endforeach
         @else
-        <div class="class-creation-form color-a">No classes yet.</div>
+        <div class="class-creation-form color-a">No class yet.</div>
         @endif
         </div>
 @stop

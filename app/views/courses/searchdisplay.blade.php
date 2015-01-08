@@ -12,7 +12,7 @@
             @endif
         @endforeach
     @else
-        <div class="class-creation-form color-a">No results.</div>
+        <div class="class-creation-form color-a">No result.</div>
     @endif
     </div>
 @endsection

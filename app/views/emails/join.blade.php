@@ -9,7 +9,7 @@
         <div>
             <p>{{$user->firstname}} {{$user->lastname}}</p>
             <p>joined the class {{$class->name}}</p>
-            <p>Logged in your ArcNotes account to accept or refuse this person</p>
+            <p>Log into your ArcNotes account to accept or decline this request</p>
         </div>
     </body>
 </html>
