@@ -179,9 +179,9 @@ class NoteController extends \BaseController
                 $idclass = $course->getClassID();
                 $class = Classes::find($idclass);
                 $classname = $class->getName();
-                $schollaryear = $class->getSchollarName();
+                $schollaryear = $class->getSchollarYear();
                 $schoolname = $class->getSchoolName();
-                $city = $class->getCitie();
+                $city = $class->getCityName();
                 $file = Input::file('file');
                 $path = '/uploads' . '/' . $city . '/' . $schoolname . '/' . $schollaryear . '/' . $classname;
                 $destinationPath = public_path() . $path;
