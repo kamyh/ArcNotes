@@ -576,7 +576,7 @@ class ClassController extends \BaseController
     {
         $take = 12;
         $skip = ($page - 1) * $take;
-        $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->lists('id_class');
+        $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->where('id_rights','>','0')->lists('id_class');
         if (count($listClass) != 0) {
             $classes_public = Classes::whereIn('id', $listClass)->skip($skip)->take($take)->get();
             $numberOfPages = Classes::whereIn('id', $listClass)->count();
