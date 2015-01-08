@@ -5,7 +5,7 @@ About
 @section('body')
 	<div class="class-creation-form color-a">
 	    <div class="descr_title"><h3>Arc Notes</h3></div>
-	    <div class="descr_content">Write and share all your personal course notes with your classmates.</div>
+	    <div class="descr_content">Write and share all your personal notes with your classmates.</div>
 	    <div class="descr_content">Access to all others classmates personal notes.</div>
 	    <br/>
         <div class="origin_title"><h3>Origin</h3></div>
