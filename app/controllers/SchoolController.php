@@ -131,5 +131,4 @@ class SchoolController extends \BaseController
             return Redirect::to('/schools')->withErrors($validator)->withInput();
         }
     }
-
 }
