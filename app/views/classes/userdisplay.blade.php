@@ -4,6 +4,7 @@
 @endsection
 @section('body')
         <div class="list-classes">
+        @if(count($classes_public) > 0)
         @foreach($classes_public as $class)
         <div class="class-tile color-a">
             <a href="/classes/display/{{{$class->id}}}" class="class-title-tile color-b hover-color-a">{{{$class->name}}}</a>
@@ -49,6 +50,9 @@
             </table>
             </div>
         @endforeach
+        @else
+        <div class="class-creation-form color-a">No classes yet.</div>
+        @endif
         </div>
 @stop
 

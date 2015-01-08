@@ -192,7 +192,7 @@
 
         @endforeach
         @else
-        <p>No class owned</p>
+           <div class="class-creation-form color-a">No classes owned.</div>
         @endif
         </div>
 @stop

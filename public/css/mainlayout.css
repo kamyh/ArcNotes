@@ -164,3 +164,8 @@ a:hover, a:link, a:visited, a:active
 {
     font-size: 0.8em;
 }
+
+a.link
+{
+    text-decoration: underline;
+}
