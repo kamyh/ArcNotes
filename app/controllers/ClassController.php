@@ -19,19 +19,31 @@ class ClassController extends \BaseController
      */
     public function createClass()
     {
-        $schoolList = DB::table('schools')->lists('name', 'id');
-        array_unshift($schoolList, "------------");
-        array_unshift($schoolList, "New School");
-        $visibilityList = ['public' => 1, 'private' => 0];
+        $query = "SELECT schools.id, schools.name, cities.name AS city, cantons.name AS canton FROM schools INNER JOIN cities ON cities.id = schools.id_location INNER JOIN cantons ON cantons.id = cities.id_canton ORDER BY schools.name";
+        $schoolList = DB::select($query);//->get()->lists('schoools.name', 'schools.id');
 
-        $schollarYears = [];
-        $currentYear = Date("Y") - 2;
-
-        for ($i = 6; $i > 0; $i--) {
-            array_unshift($schollarYears, ($currentYear + $i) . "-" . ($currentYear + $i + 1));
+        $formatted_schoolList = array();
+        if (count($schoolList) > 0) {
+            foreach ($schoolList as $infos_school) {
+                if (!is_null($infos_school)) {
+                    $formatted_schoolList[$infos_school->id] = $infos_school->name . ', ' . $infos_school->city . ' ' . $infos_school->canton;
+                }
+            }
         }
 
-        return View::make('classes.createclass')->with(array('schoolList' => $schoolList, 'visibilityList' => $visibilityList, 'schollarYears' => $schollarYears));
+        array_unshift($formatted_schoolList, "------------");
+        array_unshift($formatted_schoolList, "New School");
+        $visibilityList = [1 => 'public', 0 => 'private'];
+
+        $schollarYears = [];
+        $from = Date("Y") - 2;
+        $to = Date("Y") + 6;
+
+        for ($i = $from; $i < $to; $i++) {
+            $schollarYears[($i . "-" . ($i + 1))] = (($i . "-" . ($i + 1)));
+        }
+
+        return View::make('classes.createclass')->with(array('schoolList' => $formatted_schoolList, 'visibilityList' => $visibilityList, 'schollarYears' => $schollarYears));
     }
 
     public function load()
@@ -63,24 +75,37 @@ class ClassController extends \BaseController
         if ($input['school'] == 0 || $input['school'] == 1) {
             return View::make('schools.school')->with(array('input' => $input));
         } else {
-            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z-àéèöïîêôâ]+$/'), 'scollaryear' => array('required', 'numeric'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
+            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z-àéèöïîêôâ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
             $validator = Validator::make($input, $rulesValidatorUser);
             if (!$validator->fails()) {
-                $class = new Classes();
-                $class->name = $input['name'];
-                $class->scollaryear = $input['scollaryear'];
-                $class->id_school = $input['school'];
-                $class->degree = $input['degree'];
-                $class->domain = $input['domain'];
-                $class->visibility = $input['visibility'];
-                $class->save();
-                $permission = new Permissions();
-                $permission->id_user = Auth::id();
-                $permission->id_rights = 15;
-                $permission->id_class = $class->id;
-                $permission->save();
-                Session::put('toast', array('success', "Class " . $class->getName() . " sucessfully added !"));
-                return Redirect::to('/classes/owned');
+                $id_school = (int)$input['school'];
+                $unique_class = Classes::where('name', '=', $input['name'])->where('id_school', '=', $id_school)->where('scollaryear', '=', $input['scollaryear'])->first();
+                if (is_null($unique_class)) {
+                    $school = Schools::find($id_school);
+                    if (!is_null($school)) {
+                        $class = new Classes();
+                        $class->name = $input['name'];
+                        $class->scollaryear = $input['scollaryear'];
+                        $class->id_school = $id_school;
+                        $class->degree = $input['degree'];
+                        $class->domain = $input['domain'];
+                        $class->visibility = (int)$input['visibility'];
+                        $class->save();
+                        $permission = new Permissions();
+                        $permission->id_user = Auth::id();
+                        $permission->id_rights = 15; // 15 = owner
+                        $permission->id_class = $class->id;
+                        $permission->save();
+                        Session::put('toast', array('success', "Class " . $class->getName() . " sucessfully added !"));
+                        return Redirect::to('/classes/owned');
+                    } else {
+                        Session::put('toast', array('error', "This school does not exist ! Impossible to create class."));
+                        return Redirect::to('/classes/create');
+                    }
+                } else {
+                    Session::put('toast', array('error', "Class " . $unique_class->getName() . " already exist in this school for " . e($input['scollaryear']).'.'));
+                    return Redirect::to('/classes/create');
+                }
 
             } else {
                 return Redirect::to('/classes/create/')->withErrors($validator)->withInput();
@@ -131,7 +156,7 @@ class ClassController extends \BaseController
     public function search($keyword)
     {
         //todo: get get only classes which are public/accessible?
-        $classes = Classes::where('name', 'LIKE', "%" . $keyword . "%")->get();
+        $classes = Classes::where('name', 'LIKE', "%" . $keyword . "%")->where("visibility", '=', "1")->get();
         return View::make('classes.searchdisplay')->with(array('classes' => $classes, 'keyword' => $keyword));
     }
 

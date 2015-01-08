@@ -30,7 +30,7 @@
                 {{Form::label('school','School',array('class' => 'label-form'))}}
                 </td>
                 <td>
-                {{ Form::select('school', $schoolList, null, array('class' => '')) }}
+                {{ Form::select('school', $schoolList, null, array('class' => 'select')) }}
                 </td>
             </tr>
             <tr>

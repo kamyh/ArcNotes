@@ -113,13 +113,29 @@ class SchoolController extends \BaseController
         $inputs = Input::all();
         $rulesValidatorSchool = array('name_school' => array('required','min:4','regex:/^[a-zA-Z-àéèöïîêôâ]+$/'));
         $validator = Validator::make($inputs, $rulesValidatorSchool);
+        $id_city = (int)$inputs['city'];
 
         if (!$validator->fails()) {
-            $school = new Schools();
-            $school->name = $inputs['name_school'];
-            $school->save();
-
-            return Redirect::to('/classes/create')->withInput();
+            $school = Schools::where('name', '=', $inputs['name_school'])->where('id_location', '=',$id_city)->first();
+            if(is_null($school)) {
+                $city = Cities::find($id_city);
+                if (!is_null($city)) {
+                    $school = new Schools();
+                    $school->name = $inputs['name_school'];
+                    $school->id_location = $id_city;
+                    $school->save();
+                    Session::put('toast', array('success', "School successfully created !"));
+                    return Redirect::to('/classes/create')->withInput();
+                }
+                else{
+                    Session::put('toast', array('error', "This location does not exist, impossible to create school"));
+                    return Redirect::to('/classes/create')->withInput();
+                }
+            }
+            else{
+                Session::put('toast', array('error', "This school already exists"));
+                return Redirect::to('/classes/create')->withInput();
+            }
         } else {
             return Redirect::to('/schools')->withErrors($validator)->withInput();
         }

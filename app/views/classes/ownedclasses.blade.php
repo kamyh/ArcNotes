@@ -28,7 +28,7 @@
 
                     {{ Form::open(array('route' => array('/classes/visibility/change/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
 
-                        @if($class->visibility == 'public')
+                        @if($class->visibility == 1) <!-- 1 = public -->
                             {{Form::submit('Make Private', array('class' => 'button'))}}
                         @else
                             {{Form::submit('Make Public', array('class' => 'button'))}}

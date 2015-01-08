@@ -29,7 +29,7 @@
                  <a href="/classes/public/1" class="header-menu-tile color-b hover-color-a">Public Classes</a>
                  <a href="/about/" class="header-menu-tile color-b hover-color-a">About</a>
             @if(!Auth::check())
-                 <a href="/users/create" class="header-menu-tile color-b hover-color-a">Register</a>
+                 <a href="/signup" class="header-menu-tile color-b hover-color-a">Register</a>
             @endif
 			</div>
 			<div id="header-search">

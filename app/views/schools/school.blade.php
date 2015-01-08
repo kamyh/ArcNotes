@@ -24,14 +24,7 @@
                 {{Form::text('name_school', null,array('class' => ''))}}
                 </td>
             </tr>
-            <tr>
-                <td>
-                {{Form::label('canton','Canton')}}
-                </td>
-                <td>
-                {{ Form::select('canton', (new Canton())->getList(), null, array('class' => '' , 'id' => 'selectCanton')) }}
-                </td>
-            </tr>
+
             <tr>
                 <td>
                 {{Form::label('city','City')}}
