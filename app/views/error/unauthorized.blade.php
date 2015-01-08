@@ -5,5 +5,9 @@
 
 @section("body")
 
-    401, motorless tractor
+    <div class="class-creation-form color-a">
+        <p>401, motorless tractor</p>
+        <p>Maybe you're not connected, maybe you don't have rights, maybe E.T. telephone home. <br />Try to connect and/or join the class to access what you're looking for. Kiss and love !</p>
+        {{HTML::image('img/unauthorized.png')}}
+    </div>
 @endsection

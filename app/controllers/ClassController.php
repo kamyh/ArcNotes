@@ -492,7 +492,6 @@ class ClassController extends \BaseController
         } else {
             Session::put('toast', array('error', "This class doesn't exist"));
         }
-
         return Redirect::to('/classes/owned');
     }
 
