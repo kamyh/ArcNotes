@@ -44,7 +44,8 @@ class UserController extends \BaseController
                         Session::put('toast', array('success', 'You are logged in !'));
                         return Redirect::to('/')->withErrors($error);
                     } else {
-                        return Redirect::to('/')->withErrors($validator)->withInput();
+                        $error = "Authentication failed !";
+                        return Redirect::to('/')->withErrors($error)->withInput();
                     }
                 } else {
                     Session::put('toast', array('error', 'Please check your email to verify your account !'));
