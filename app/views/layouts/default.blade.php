@@ -54,7 +54,12 @@
 				            <table>
                                 <tr>
                                     <td>
-                                        Welcome: {{$user->firstname}} {{$user->lastname}}
+                                        Welcome {{$user->firstname}} {{$user->lastname}}!
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="/changepassword" class="color-a hover-color-a">Change password.</a>
                                     </td>
                                 </tr>
                                 <tr>

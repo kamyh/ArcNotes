@@ -54,6 +54,10 @@ Route::get('/login', array('as' => 'login', 'uses' => 'UserController@login'));
 Route::post('/login', array('as' => 'login', 'uses' => 'UserController@loginHandler'));
 Route::post('/logout', array('as' => 'logout', 'uses' => 'UserController@logout'));
 
+Route::post('/changepassword', 'UserController@changePassword');
+Route::get('/changepassword', function () {
+    return View::make('users.changepassword');
+});
 Route::get('/cities/search/{id_canton}', 'SchoolController@fetchSubCategory');
 
 /*
