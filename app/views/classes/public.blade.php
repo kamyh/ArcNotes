@@ -53,7 +53,7 @@
         </div>
         @endforeach
         @else
-            <div class="class-creation-form">No public class exists.</div>
+            <div class="class-creation-form color-a">No public class exists.</div>
         @endif
         </div>
 @stop
