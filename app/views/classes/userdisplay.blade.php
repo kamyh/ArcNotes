@@ -39,9 +39,11 @@
             <tr>
                 <td></td>
                 <td>
+                    @if(!$class->isOwner(Auth::id()))
                     {{ Form::open(array('route' => array('/classes/resign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                         {{Form::submit('Resign', array('class' => 'button'))}}
                     {{ Form::close() }}
+                    @endif
                 </td>
             </tr>
             </table>

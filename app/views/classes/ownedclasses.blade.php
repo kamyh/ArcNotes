@@ -11,8 +11,16 @@
             <div class="class-tile color-a" id="{{$class->id}}" >
 
             @if($class != null)
-                    <a href="/classes/display/{{$class->id}}" class="class-title-tile color-b" >{{ $class->name  }} </a>
-
+                <table class="class-title-tile color-b">
+                    <tr>
+                        <td><a href="/classes/display/{{$class->id}}" class="class-title-tile color-b" >{{ $class->name  }} </a></td>
+                        <td>
+                            {{ Form::open(array('route' => array('/classes/edit/{idClass}','idClass'=>$class->id), 'method' => 'get')) }}
+                               <button type="submit" class="button-image">{{ HTML::image('img/icons/edit.png', 'Accept', array('class' => 'test-image')); }}</button>
+                            {{ Form::close() }}
+                        </td>
+                    </tr>
+                </table>
                     @if($errors->any())
                         @if(Session::has('errorOrigine') && Session::get('errorOrigine') == $class->id)
                             <div class="">
@@ -55,7 +63,6 @@
 
                             <td>
                             {{ Form::open(array('route' => array('/classes/member/accept/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
-                                <!--{{Form::submit('Accept', array('class' => 'button'))}}-->
                                <button type="submit" class="button-image">{{ HTML::image('img/icons/accept.png', 'Accept', array('class' => 'test-image')); }}</button>
                             {{ Form::close() }}
                             </td>
@@ -132,12 +139,18 @@
                             <tr>
                             <td>
                                 {{ $course->name }}
-                                </td><td>
-                                {{ Form::open(array('route' => array('/courses/remove/{idcourse}','idcourse'=>$course->id), 'method' => 'get')) }}
-                                    {{--{{Form::submit('Remove', array('class' => 'button'))}}--}}
-                                    <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Remove', array('class' => 'test-image')); }}</button>
-                                {{ Form::close() }}
-                            </td></tr>
+                                </td>
+                                <td>
+                                    {{ Form::open(array('route' => array('/courses/remove/{idcourse}','idcourse'=>$course->id), 'method' => 'get')) }}
+                                        <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Remove', array('class' => 'test-image')); }}</button>
+                                    {{ Form::close() }}
+                                </td>
+                                <td>
+                                    {{ Form::open(array('route' => array('/courses/edit/{idclass}/{idcourse}','idclass'=>$class->id,'idcourse'=>$course->id), 'method' => 'get')) }}
+                                        <button type="submit" class="button-image">{{ HTML::image('img/icons/edit.png', 'Remove', array('class' => 'test-image')); }}</button>
+                                    {{ Form::close() }}
+                                </td>
+                            </tr>
                         </table>
                         </div>
                     @endif
