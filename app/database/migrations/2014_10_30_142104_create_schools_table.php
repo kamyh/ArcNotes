@@ -13,7 +13,7 @@ class CreateSchoolsTable extends Migration {
 	public function up()
 	{
 		Schema::create('schools', function(Blueprint $table) {
-			$table->increments('id')->unique();
+			$table->increments('id');
 			$table->timestamps();
 			$table->integer('id_location')->references('id')->on('cities');
 			$table->string('name', 255);

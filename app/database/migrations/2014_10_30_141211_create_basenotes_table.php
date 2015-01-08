@@ -13,7 +13,7 @@ class CreateBasenotesTable extends Migration {
 	public function up()
 	{
 		Schema::create('basenotes', function(Blueprint $table) {
-			$table->increments('id')->unique();
+			$table->increments('id');
 			$table->timestamps();
             $table->integer('id_author')->references('id')->on('users');
             $table->integer('id_cours')->references('id')->on('courses');

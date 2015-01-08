@@ -13,7 +13,7 @@ class CreateRightsTable extends Migration {
 	public function up()
 	{
 		Schema::create('rights', function(Blueprint $table) {
-			$table->increments('id')->unique();
+			$table->increments('id');
 			$table->timestamps();
 			$table->integer('code');
 			$table->string('name', 255);

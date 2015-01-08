@@ -17,7 +17,6 @@ class CreatePermissionsTable extends Migration {
 			$table->integer('id_user')->unsigned();
 			$table->integer('id_rights');
 			$table->integer('id_class')->unsigned();
-            $table->increments('id')->unique();
 		});
 
         Schema::table('permissions', function($table) {
