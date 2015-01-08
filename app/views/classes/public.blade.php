@@ -1,4 +1,4 @@
-
+﻿
 @extends('layouts.default')
 @section('title')
     {{$title}}
@@ -10,7 +10,7 @@
         @foreach($classes as $class)
         <div class="class-tile color-a">
             <a href="/classes/display/{{$class->id}}" class="class-title-tile color-b hover-color-a">{{$class->name}}</a>
-            <table>
+            <table class="color-a">
                 <tr>
                     <td>Created at </td>
                     <td> {{ $class->created_at }} </td>

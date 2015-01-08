@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>@yield('title')</title>
@@ -53,7 +53,7 @@
 				            ?>
 				            <table>
                                 <tr>
-                                    <td>
+                                    <td class="color-a">
                                         Welcome {{$user->firstname}} {{$user->lastname}}!
                                     </td>
                                 </tr>

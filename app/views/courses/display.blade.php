@@ -1,4 +1,4 @@
-@extends('layouts.selectclass')
+﻿@extends('layouts.selectclass')
 @section('display')
     <div class="list-classes">
     @if(count($courses) > 0)
@@ -9,7 +9,7 @@
             @else
                 <div class="class-title-tile color-b">{{$course->name}}</div>
             @endif
-            <table>
+            <table class="color-a">
                 <tr>
                     <td>Created at </td>
                     <td>{{$course->created_at}}</td>

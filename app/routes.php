@@ -103,7 +103,7 @@ Route::get('/signup', array('as' => '/signup', 'uses' => 'UserController@create'
 Route::get('/courses/open/{idcourse}', array('as' => '/courses/open/{course}', 'uses' => 'CourseController@open', 'before' => 'auth'))->where('idcourse', '[0-9]+');
 Route::resource('courses', 'CourseController');
 Route::get('/courses/create/{idclass}', array('before' => 'auth', 'as' => '/courses/create/{idclass}', 'uses' => 'CourseController@createcours'))->where('idclass', '[0-9]+');
-Route::get('/courses/edit/{idclass}/{idcourse}', array('before' => 'auth', 'as' => '/courses/edit/{idclass}/{idcourse}', 'uses' => 'CourseController@edit'))->where('idcourse', '[0-9]+');
+Route::get('/courses/edit/{idcourse}/{idclass}', array('before' => 'auth', 'as' => '/courses/edit/{idcourse}/{idclass}', 'uses' => 'CourseController@edit'))->where('idcourse', '[0-9]+');
 Route::post('/courses/update', array('before' => 'auth', 'as' => '/courses/update', 'uses' => 'CourseController@update'));
 
 /**

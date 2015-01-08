@@ -1,4 +1,4 @@
-@extends('layouts.default')
+﻿@extends('layouts.default')
 @section('title')
     Upload note in {{{$course}}}
 @endsection
@@ -17,8 +17,8 @@
        </tr>
      @endif
         <tr>
-            <td>{{ Form::label('file', 'Select a file', array('class' => 'form-label')) }}</td>
-            <td>{{ Form::file('file', array('class' => 'file-input')); }}</td>
+            <td class="color-a">{{ Form::label('file', 'Select a file', array('class' => 'form-label')) }}</td>
+            <td class="color-a">{{ Form::file('file', array('class' => 'file-input')); }}</td>
             <td>{{ Form::submit('Upload !',array('class' => 'button')); }}</td>
         </tr>
     </table>

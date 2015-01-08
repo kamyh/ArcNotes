@@ -1,11 +1,11 @@
-@extends('...layouts.default')
+﻿@extends('...layouts.default')
 @section('title')
     Create a new course
 @endsection
 @section('body')
 <div class="">
         <div class="class-creation-form color-a">
-        <table>
+        <table class="color-a">
             {{ Form::open(array('route' => array('courses.store'), 'method' => 'post')) }}
             @if($errors->has())
             <tr>
