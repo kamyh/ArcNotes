@@ -101,7 +101,7 @@ class SchoolController extends \BaseController
     public function saveSchool()
     {
         $inputs = Input::all();
-        $rulesValidatorSchool = array('name_school' => array('required','min:4','regex:/^[a-zA-Z-àéèöïîêôâ]+$/'));
+        $rulesValidatorSchool = array('name_school' => array('required','min:4','regex:/^[a-zA-Z-_àéèöïîêôâ ]+$/'));
         $validator = Validator::make($inputs, $rulesValidatorSchool);
         $id_city = (int)$inputs['city'];
 

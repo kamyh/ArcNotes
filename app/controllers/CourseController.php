@@ -47,7 +47,7 @@ class CourseController extends \BaseController
     public function store()
     {
         $input = Input::all();
-        $rulesValidatorCourse = array('name' => array('required', 'min:5', 'regex:/^[a-zA-Z0-9-àéèöïêôâî]+$/'), 'matter' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-àéèöïêôâî]+$/'));
+        $rulesValidatorCourse = array('name' => array('required', 'between:3,120', 'regex:/^[a-zA-Z0-9-àéèöïêôâîüç ]+$/'), 'matter' => array('required', 'between:3,120', 'regex:/^[a-zA-Z0-9-àéèöïêôâîüç ]+$/'));
         $validator = Validator::make($input, $rulesValidatorCourse);
         $class = Classes::find((int)$input['idclass']);
         if (!is_null($class)) {
@@ -86,9 +86,14 @@ class CourseController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($id)
+    public function edit($idcourse,$idclass)
     {
-        //
+        if (Classes::find($idclass)->canCreate()) {
+            $course = Courses::find($idcourse);
+            $schoolList = DB::table('courses')->lists('name', 'id');
+            return View::make('courses.edit')->with(array('course' => $course,'idclass' => $idclass, 'schoolList' => $schoolList));
+        }
+        return Redirect::to('/unauthorized');
     }
 
 
@@ -98,9 +103,27 @@ class CourseController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function update($id)
+    public function update()
     {
-        //
+        $input = Input::all();
+        $rulesValidatorCourse = array('name' => array('required', 'min:5', 'regex:/^[a-zA-Z0-9-àéèöïêôâî]+$/'), 'matter' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-àéèöïêôâî]+$/'));
+        $validator = Validator::make($input, $rulesValidatorCourse);
+        $class = Classes::find((int)$input['idclass']);
+        if (!is_null($class)) {
+            if (!$validator->fails()) {
+                $course = Courses::find($input['idcourse']);
+                $course->name = $input['name'];
+                $course->matter = $input['matter'];
+                $course->id_class = $class->id;
+                $course->save();
+
+                return Redirect::to('/courses/open/' . $course->getID());
+            } else {
+                return Redirect::to('courses/create/' . $class->id)->withErrors($validator)->with(array('idclass' => $input['idclass']))->withInput();
+            }
+        } else {
+            return Redirect::to('/404');
+        }
     }
 
 

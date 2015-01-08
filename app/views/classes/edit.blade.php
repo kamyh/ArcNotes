@@ -1,18 +1,18 @@
 @extends('...layouts.default')
 
 @section('title')
-    Create a new class
+    Edit Class
 @endsection
 @section('body')
 <div class="class-creation-form color-a">
         <div>
         <table>
-            {{ Form::open(array('route' => array('classes.store'), 'method' => 'post')) }}
+            {{ Form::open(array('route' => array('classes/update'), 'method' => 'post')) }}
             @if($errors->has())
             <tr>
                 <td colspan="2">
                 @foreach ($errors->all() as $error)
-                   <div class="error">{{{ $error }}}</div>
+                   <div class="error">{{ $error }}</div>
                 @endforeach
                 </td>
            </tr>
@@ -22,7 +22,7 @@
                     {{Form::label('name','Name',array('class' => 'label-form'))}}
                 </td>
                 <td>
-                    {{Form::text('name', null,array('class' => ''))}}
+                    {{Form::text('name', $class->name,array('class' => ''))}}
                 </td>
             </tr>
             <tr>
@@ -30,11 +30,8 @@
                 {{Form::label('school','School',array('class' => 'label-form'))}}
                 </td>
                 <td>
-                @if(Session::has('selectSchool'))
-                    {{ Form::select('school', $schoolList, Session::pull('selectSchool'), array('class' => 'select')) }}
-                @else
-                    {{ Form::select('school', $schoolList, null, array('class' => 'select')) }}
-                @endif
+                    {{ Form::select('school', $schoolList, $class->id_school, array('class' => 'select')) }}
+
                 </td>
             </tr>
             <tr>
@@ -42,7 +39,7 @@
                 {{Form::label('degree','Degree',array('class' => 'label-form'))}}
                 </td>
                 <td>
-                {{Form::text('degree', null,array('class' => ''))}}
+                {{Form::text('degree', $class->degree,array('class' => ''))}}
                 </td>
             </tr>
             <tr>
@@ -50,7 +47,7 @@
                 {{Form::label('scollaryear','Scollar Year',array('class' => 'label-form'))}}
                 </td>
                 <td>
-                {{ Form::select('scollaryear', $schollarYears, null, array('class' => '')) }}
+                {{ Form::select('scollaryear', $schollarYears, $class->scollaryear, array('class' => '')) }}
                 </td>
             </tr>
             <tr>
@@ -58,7 +55,7 @@
                 {{Form::label('domain','Domain',array('class' => 'label-form'))}}
                 </td>
                 <td>
-                {{Form::text('domain', null,array('class' => ''))}}
+                {{Form::text('domain', $class->domain,array('class' => ''))}}
                 </td>
             </tr>
             <tr>
@@ -66,17 +63,17 @@
                 {{Form::label('visibility','Visibility',array('class' => 'label-form'))}}
                 </td>
                 <td>
-                {{ Form::select('visibility', $visibilityList, null, array('class' => '')) }}
+                {{ Form::select('visibility', $visibilityList, $class->visibility, array('class' => '')) }}
                 </td>
             </tr>
             <tr>
                 <td>
-                {{Form::submit('Create', array('class' => 'button'))}}
+                {{ Form::hidden('id', $class->id) }}
+                {{Form::submit('Save', array('class' => 'button'))}}
                 </td>
             </tr>
             {{ Form::close() }}
         </table>
-    </div>
-</div>
+</div></div>
 @stop
 

@@ -38,6 +38,7 @@
         {{Form::close();}}
     </h2>
     <table>
+    @if(count($manuscrits) > 0)
         @foreach($manuscrits as $manuscrit)
 
             <tr class="color-a">
@@ -67,6 +68,10 @@
                 </td>
             </tr>
         @endforeach
+    @else
+    <tr><td colspan="2">No written notes found yet !</td></tr>
+    @endif
+
     </table>
     <h2>
                 {{ Form::open(array('route' => array('/notes/add/{idcourse}', 'idcourse' => $course->id),'method' => 'get')); }}
@@ -77,6 +82,7 @@
                 {{Form::close();}}
      </h2>
      <table>
+        @if(count($files) > 0)
             @foreach($files as $file)
                 <tr class="color-a">
                     @if((Auth::check() && $course->getParentClass()->canRead()) || $course->getParentClass()->isPublic())
@@ -101,6 +107,9 @@
                     </td>
                 </tr>
             @endforeach
+        @else
+            <tr><td colspan="2">No files found yet !</td></tr>
+        @endif
      </table>
 </div>
 @stop

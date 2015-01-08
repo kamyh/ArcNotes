@@ -35,7 +35,7 @@ class ClassController extends \BaseController
         $array_default = array();
         $array_default[-1] = "New School";
         $array_default[0] = "------------";
-        $final_schoollist = $array_default+$formatted_schoolList;
+        $final_schoollist = $array_default + $formatted_schoolList;
 
         $visibilityList = [1 => 'public', 0 => 'private'];
         $schollarYears = [];
@@ -77,15 +77,13 @@ class ClassController extends \BaseController
         if ($input['school'] < 0) {
             return View::make('schools.school')->with(array('input' => $input));
         } else {
-            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-àéèöïîêôâ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
+            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-_àéèöïçîêôâ ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
             $validator = Validator::make($input, $rulesValidatorUser);
             if (!$validator->fails()) {
                 $id_school = (int)$input['school'];
                 $unique_class = Classes::where('name', '=', $input['name'])->where('id_school', '=', $id_school)->where('scollaryear', '=', $input['scollaryear'])->first();
                 if (is_null($unique_class)) {
-
                     $school = Schools::find($id_school);
-
                     if (!is_null($school)) {
                         $class = new Classes();
                         $class->name = $input['name'];
@@ -107,7 +105,7 @@ class ClassController extends \BaseController
                         return Redirect::to('/classes/create')->withInput();
                     }
                 } else {
-                    Session::put('toast', array('error', "Class " . $unique_class->getName() . " already exist in this school for " . e($input['scollaryear']).'.'));
+                    Session::put('toast', array('error', "Class " . $unique_class->getName() . " already exist in this school for " . e($input['scollaryear']) . '.'));
                     return Redirect::to('/classes/create')->withInput();
                 }
 
@@ -138,7 +136,42 @@ class ClassController extends \BaseController
      */
     public function edit($id)
     {
-        //
+        $permission = Permissions::where('id_class', '=', $id)->where('id_user', '=', Auth::id())->first();
+
+        if ($permission->id_rights == 15) {
+            $query = "SELECT schools.id AS id_school, schools.name, cities.name AS city, cantons.name AS canton FROM schools INNER JOIN cities ON cities.id = schools.id_location INNER JOIN cantons ON cantons.id = cities.id_canton ORDER BY schools.name";
+            $schoolList = DB::select($query);//->get()->lists('schoools.name', 'schools.id');
+
+            $formatted_schoolList = array();
+            if (count($schoolList) > 0) {
+                foreach ($schoolList as $infos_school) {
+                    if (!is_null($infos_school)) {
+                        $formatted_schoolList[(string)$infos_school->id_school] = $infos_school->name . ', ' . $infos_school->city . ' ' . $infos_school->canton;
+                    }
+                }
+            }
+
+            //return var_dump($formatted_schoolList);
+            $array_default = array();
+            $array_default[-1] = "New School";
+            $array_default[0] = "------------";
+            $final_schoollist = $array_default + $formatted_schoolList;
+
+            $visibilityList = [1 => 'public', 0 => 'private'];
+            $schollarYears = [];
+            $from = Date("Y") - 2;
+            $to = Date("Y") + 6;
+            for ($i = $from; $i < $to; $i++) {
+                $schollarYears[($i . "-" . ($i + 1))] = (($i . "-" . ($i + 1)));
+            }
+
+            $class = Classes::find($id);
+
+            return View::make('classes.edit')->with(array('class' => $class, 'schoolList' => $final_schoollist, 'visibilityList' => $visibilityList, 'schollarYears' => $schollarYears));
+        }
+        else{
+            return Redirect::to('/unauthorized');
+        }
     }
 
 
@@ -148,9 +181,48 @@ class ClassController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function update($id)
+    public function update()
     {
-        //
+        $input = Input::all();
+        $permission = Permissions::where('id_class', '=', $input['id'])->where('id_user', '=', Auth::id())->first();
+
+        if ($permission->id_rights == 15) {
+            if ($input['school'] < 0) {
+                return View::make('schools.school')->with(array('input' => $input));
+            } else {
+                $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-àéèöïîêôâ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
+                $validator = Validator::make($input, $rulesValidatorUser);
+                if (!$validator->fails()) {
+                    $id_school = (int)$input['school'];
+                    $unique_class = Classes::where('name', '=', $input['name'])->where('id_school', '=', $id_school)->where('scollaryear', '=', $input['scollaryear'])->first();
+
+                    $school = Schools::find($id_school);
+
+                    if (!is_null($school)) {
+                        $class = Classes::find($input['id']);
+                        $class->name = $input['name'];
+                        $class->scollaryear = $input['scollaryear'];
+                        $class->id_school = $id_school;
+                        $class->degree = $input['degree'];
+                        $class->domain = $input['domain'];
+                        $class->visibility = (int)$input['visibility'];
+                        $class->save();
+
+                        Session::put('toast', array('success', "Class " . $class->getName() . " sucessfully edited !"));
+                        return Redirect::to('/classes/owned');
+                    } else {
+                        Session::put('toast', array('error', "This school does not exist ! Impossible to create class."));
+                        return Redirect::to('/classes/create')->withInput();
+                    }
+
+
+                } else {
+                    return Redirect::to('/classes/create/')->withErrors($validator)->withInput();
+                }
+            }
+        } else {
+            return Redirect::to('/unauthorized');
+        }
     }
 
     /**
@@ -286,9 +358,9 @@ class ClassController extends \BaseController
             if (!is_null($class)) {
                 if ($class->isOwner(Auth::id()) || $class->canCreate()) {
                     $course->delete();
-                    Session::put('toast', array('success', "Course " . $course->getName() . "has been removed from class " . $class->getName() . "."));
+                    Session::put('toast', array('success', "Course " . $course->getName() . " has been removed from class " . $class->getName() . "."));
                 } else {
-                    Session::put('toast', array('error', "Course " . $course->getName() . "You actually can't remove this course from the class " . $class->getName() . "."));
+                    Session::put('toast', array('error', "Course " . $course->getName() . " You actually can't remove this course from the class " . $class->getName() . "."));
                 }
             } else {
                 Session::put('toast', array('error', "Class " . $class->getName() . " does not exist."));
@@ -432,9 +504,13 @@ class ClassController extends \BaseController
      */
     public function resignClass($idclass)
     {
-        $permission = Permissions::where('id_class', '=', $idclass)->where('id_user', '=', Auth::id());
-        $permission->delete();
-        Session::put('toast', array("success", "Class resign success !"));
+        $permission = Permissions::where('id_class', '=', $idclass)->where('id_user', '=', Auth::id())->first();
+        if ($permission->id_rights != 15) {
+            $permission->delete();
+            Session::put('toast', array("success", "Class resign success !"));
+        } else {
+            Session::put('toast', array("error", "You cannot resign your own classes !"));
+        }
         return Redirect::to('/classes/participant');
     }
 
@@ -467,7 +543,7 @@ class ClassController extends \BaseController
         if (!is_null($class)) {
             if ($class->visibility == 1 || (Auth::check() && $class->canRead())) { //1 => public
                 //Only for the classes's courses
-                $courses = DB::table('courses')->where('id_class', $idclass)->orderBy('courses.name')->get();
+                $courses = Courses::where('id_class', $idclass)->orderBy('courses.name')->get();
 
                 //Class informations
                 $school = Schools::find($class->id_school);
@@ -550,8 +626,7 @@ class ClassController extends \BaseController
             if (count($listClass) != 0) {
                 $classes_public = Classes::where('visibility', '=', 1)->whereNotIn('id', $listClass)->skip($skip)->take($take)->get();
                 $numberOfPages = Classes::where('visibility', '=', 1)->whereNotIn('id', $listClass)->count();
-            }
-            else{
+            } else {
                 $classes_public = Classes::where('visibility', '=', 1)->skip($skip)->take($take)->get();
                 $numberOfPages = Classes::where('visibility', '=', 1)->count();
             }
@@ -576,7 +651,7 @@ class ClassController extends \BaseController
     {
         $take = 12;
         $skip = ($page - 1) * $take;
-        $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->where('id_rights','>','0')->lists('id_class');
+        $listClass = DB::table('permissions')->where('id_user', '=', Auth::id())->where('id_rights', '>', '0')->lists('id_class');
         if (count($listClass) != 0) {
             $classes_public = Classes::whereIn('id', $listClass)->skip($skip)->take($take)->get();
             $numberOfPages = Classes::whereIn('id', $listClass)->count();

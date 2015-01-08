@@ -1,12 +1,4 @@
-<!--
-Inputs:
-   $title           ==> Page title
-   $numberOfPage    ==> Number total of page needed to display all classes
-   $pageNo          ==> N° of the current page
-   $classes         ==> Array of the classes to display in the current page
 
-   See getPublic($page) function in the bottom of ClassController to have an exemple
--->
 @extends('layouts.default')
 @section('title')
     {{$title}}
@@ -14,6 +6,7 @@ Inputs:
 @section('body')
 
         <div class="list-classes">
+        @if(count($classes) > 0)
         @foreach($classes as $class)
         <div class="class-tile color-a">
             <a href="/classes/display/{{$class->id}}" class="class-title-tile color-b hover-color-a">{{$class->name}}</a>
@@ -59,6 +52,9 @@ Inputs:
             </table>
         </div>
         @endforeach
+        @else
+            <div class="class-creation-form">No public class exists.</div>
+        @endif
         </div>
 @stop
 

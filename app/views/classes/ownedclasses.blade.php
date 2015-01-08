@@ -7,12 +7,21 @@
 
         <div class="list-classes">
 
+        @if(count($classesOwned))
         @foreach($classesOwned as $class)
             <div class="class-tile color-a" id="{{$class->id}}" >
 
             @if($class != null)
-                    <a href="/classes/display/{{$class->id}}" class="class-title-tile color-b" >{{ $class->name  }} </a>
-
+                <table class="class-title-tile color-b">
+                    <tr>
+                        <td><a href="/classes/display/{{$class->id}}" class="class-title-tile color-b" >{{ $class->name  }} </a></td>
+                        <td>
+                            {{ Form::open(array('route' => array('/classes/edit/{idClass}','idClass'=>$class->id), 'method' => 'get')) }}
+                               <button type="submit" class="button-image">{{ HTML::image('img/icons/edit.png', 'Accept', array('class' => 'test-image')); }}</button>
+                            {{ Form::close() }}
+                        </td>
+                    </tr>
+                </table>
                     @if($errors->any())
                         @if(Session::has('errorOrigine') && Session::get('errorOrigine') == $class->id)
                             <div class="">
@@ -55,7 +64,6 @@
 
                             <td>
                             {{ Form::open(array('route' => array('/classes/member/accept/{iduser}/{idclass}','iduser'=>$user->id,'idclass'=>$class->id), 'method' => 'get')) }}
-                                <!--{{Form::submit('Accept', array('class' => 'button'))}}-->
                                <button type="submit" class="button-image">{{ HTML::image('img/icons/accept.png', 'Accept', array('class' => 'test-image')); }}</button>
                             {{ Form::close() }}
                             </td>
@@ -122,7 +130,20 @@
                     </div>
                 @endforeach
                 </div>
-                <div class="class-tile-course-title color-b">Courses</div>
+                <div class="class-tile-course-title color-b">
+                    <table>
+                        <tr>
+                            <td>
+                                Courses
+                            </td>
+                            <td>
+                                {{ Form::open(array('route' => array('/courses/create/{idclass}', 'idclass' => $class->id),'method' => 'get')); }}
+                                    <button type="submit" class="button-image" title="Create a course">{{ HTML::image('img/icons/plus.png', 'Invite', array('class' => 'test-image')); }}</button>
+                                {{Form::close();}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
                 <div class="class-tile-courses">
 
                 @foreach($class->getCourses() as $course)
@@ -130,21 +151,27 @@
                     <div>
                         <table>
                             <tr>
-                            <td>
+                                <td>
                                 {{ $course->name }}
-                                </td><td>
-                                {{ Form::open(array('route' => array('/courses/remove/{idcourse}','idcourse'=>$course->id), 'method' => 'get')) }}
-                                    {{--{{Form::submit('Remove', array('class' => 'button'))}}--}}
-                                    <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Remove', array('class' => 'test-image')); }}</button>
-                                {{ Form::close() }}
-                            </td></tr>
+                                </td>
+                                <td>
+                                    {{ Form::open(array('route' => array('/courses/remove/{idcourse}','idcourse'=>$course->id), 'method' => 'get')) }}
+                                        <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Remove', array('class' => 'test-image')); }}</button>
+                                    {{ Form::close() }}
+                                </td>
+                                <td>
+                                    {{ Form::open(array('route' => array('/courses/edit/{idclass}/{idcourse}','idclass'=>$class->id,'idcourse'=>$course->id), 'method' => 'get')) }}
+                                        <button type="submit" class="button-image">{{ HTML::image('img/icons/edit.png', 'Remove', array('class' => 'test-image')); }}</button>
+                                    {{ Form::close() }}
+                                </td>
+                            </tr>
                         </table>
                         </div>
                     @endif
                 @endforeach
                 </div>
 
-                <div class="class-tile-course-title color-b">Invite someone!</div>
+                <div class="class-tile-course-title color-b">Invite someone</div>
                 <div class="class-tile-invite">
 
             <table>
@@ -164,6 +191,9 @@
             </div>
 
         @endforeach
+        @else
+        <p>No class owned</p>
+        @endif
         </div>
 @stop
 

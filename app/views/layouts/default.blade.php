@@ -78,7 +78,7 @@
                                 <tr>
                                     <td colspan="2">
                                 @foreach ($errors->all() as $error)
-                                    <div class="error">{{ $error }}</div>
+                                    <div class="error">{{{ $error }}}</div>
                                 @endforeach
                                     </td>
                                 </tr>
@@ -102,9 +102,9 @@
 				 @if(Auth::check())
                     @foreach(Auth::user()->getClasses() as $class)
 
-                            <a href="/classes/display/{{$class->id}}" class="context-menu-tile-class color-b hover-color-a">{{$class->name}}</a>
+                            <a href="/classes/display/{{{$class->id}}}" class="context-menu-tile-class color-b hover-color-a">{{{$class->name}}}</a>
                             @foreach($class->getCourses() as $course)
-                                <a href="/courses/open/{{$course->id}}" class="context-menu-tile-course hover-color-b color-a ">{{$course->name}}</a></br>
+                                <a href="/courses/open/{{{$course->id}}}" class="context-menu-tile-course hover-color-b color-a ">{{{$course->name}}}</a></br>
                             @endforeach
                     @endforeach
                  @endif

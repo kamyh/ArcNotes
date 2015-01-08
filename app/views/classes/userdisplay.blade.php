@@ -6,31 +6,31 @@
         <div class="list-classes">
         @foreach($classes_public as $class)
         <div class="class-tile color-a">
-            <a href="/classes/display/{{$class->id}}" class="class-title-tile color-b hover-color-a">{{$class->name}}</a>
+            <a href="/classes/display/{{{$class->id}}}" class="class-title-tile color-b hover-color-a">{{{$class->name}}}</a>
         <table>
             <tr>
                 <td>Created at </td>
-                <td> {{ $class->created_at }} </td>
+                <td> {{{ $class->created_at }}} </td>
             </tr>
             <tr>
                 <td>Last update </td>
-                <td> {{ $class->updated_at }} </td>
+                <td> {{{ $class->updated_at }}} </td>
             </tr>
             <tr>
-                <td>{{$class->getSchoolName()}}</td>
-                <td>{{$class->getCityName()}} {{$class->getCantonName()}}</td>
+                <td>{{{$class->getSchoolName()}}}</td>
+                <td>{{{$class->getCityName()}}} {{{$class->getCantonName()}}}</td>
             </tr>
             <tr>
                 <td>Schollar year</td>
-                <td>{{$class->scollaryear}}</td>
+                <td>{{{$class->scollaryear}}}</td>
             </tr>
             <tr>
                 <td>Degree</td>
-                <td>{{$class->degree}}</td>
+                <td>{{{$class->degree}}}</td>
             </tr>
             <tr>
                 <td>Domain</td>
-                <td>{{$class->domain}}</td>
+                <td>{{{$class->domain}}}</td>
             </tr>
             <tr>
                 <td>Visibility</td>
@@ -39,9 +39,11 @@
             <tr>
                 <td></td>
                 <td>
+                    @if(!$class->isOwner(Auth::id()))
                     {{ Form::open(array('route' => array('/classes/resign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                         {{Form::submit('Resign', array('class' => 'button'))}}
                     {{ Form::close() }}
+                    @endif
                 </td>
             </tr>
             </table>
