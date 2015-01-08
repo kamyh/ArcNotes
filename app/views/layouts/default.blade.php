@@ -23,7 +23,7 @@
 			<div id="header-menus" class="scroll-x">
 			@if(Auth::check())
 			     <a href="/classes/owned" class="header-menu-tile color-b hover-color-a">My Classes</a>
-			     <a href="/classes/participant/1" class="header-menu-tile color-b hover-color-a">Classes Joigned</a>
+			     <a href="/classes/participant/1" class="header-menu-tile color-b hover-color-a">Joigned Classes</a>
 			     <a href="/classes/create/" class="header-menu-tile color-b hover-color-a">New Class</a>
             @endif
                  <a href="/classes/public/1" class="header-menu-tile color-b hover-color-a">Public Classes</a>
@@ -59,7 +59,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="/changepassword" class="link color-a">Change password.</a>
+                                        <a href="/changepassword" class="link hover-color-b color-a">Change password.</a>
                                     </td>
                                 </tr>
                                 <tr>

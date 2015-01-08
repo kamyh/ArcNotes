@@ -44,7 +44,7 @@
             </tr>
             <tr>
                 <td>
-                {{Form::label('scollaryear','Scollar Year',array('class' => 'label-form'))}}
+                {{Form::label('scollaryear','Scholar Year',array('class' => 'label-form'))}}
                 </td>
                 <td>
                 {{ Form::select('scollaryear', $schollarYears, $class->scollaryear, array('class' => '')) }}

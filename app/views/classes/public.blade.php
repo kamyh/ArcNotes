@@ -24,7 +24,7 @@
                     <td>{{$class->getCityName()}} {{$class->getCantonName()}}</td>
                 </tr>
                 <tr>
-                    <td>Schollar year</td>
+                    <td>Scholar year</td>
                     <td>{{$class->scollaryear}}</td>
                 </tr>
                 <tr>

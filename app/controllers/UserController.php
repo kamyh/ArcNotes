@@ -136,7 +136,7 @@ class UserController extends \BaseController
                     $message->to(Input::get('email'), Input::get('firstname') + " " + Input::get('lastname'))
                         ->subject('Verify your email address')->from('arcnotesnoreply@gmail.com');
                 });
-                Session::put('toast', array('success', 'You signed successfully. Please check your mail to activate your account !'));
+                Session::put('toast', array('success', 'You signed up successfully. Please check your mail to activate your account !'));
                 return Redirect::to('/');
             }
             else {
@@ -210,7 +210,7 @@ class UserController extends \BaseController
         if ($user) {
             $user->confirmation_code = -1;
             $user->save();
-            Session::put('toast', array('success', 'Your account have been succesfully verify !'));
+            Session::put('toast', array('success', 'Your account have been successfully verified !'));
         }
 
 
