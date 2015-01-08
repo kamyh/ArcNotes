@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('title')
-    Upload note in {{$course}}
+    Upload note in {{{$course}}}
 @endsection
 @section('body')
 
@@ -11,7 +11,7 @@
         <tr>
             <td colspan="2">
         @foreach ($errors->all() as $error)
-           <div class="error">{{ $error }}</div>
+           <div class="error">{{{ $error }}}</div>
        @endforeach
         </td>
        </tr>

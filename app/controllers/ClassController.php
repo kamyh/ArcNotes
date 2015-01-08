@@ -77,15 +77,13 @@ class ClassController extends \BaseController
         if ($input['school'] < 0) {
             return View::make('schools.school')->with(array('input' => $input));
         } else {
-            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-àéèöïîêôâ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
+            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-_àéèöïçîêôâ ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
             $validator = Validator::make($input, $rulesValidatorUser);
             if (!$validator->fails()) {
                 $id_school = (int)$input['school'];
                 $unique_class = Classes::where('name', '=', $input['name'])->where('id_school', '=', $id_school)->where('scollaryear', '=', $input['scollaryear'])->first();
                 if (is_null($unique_class)) {
-
                     $school = Schools::find($id_school);
-
                     if (!is_null($school)) {
                         $class = new Classes();
                         $class->name = $input['name'];

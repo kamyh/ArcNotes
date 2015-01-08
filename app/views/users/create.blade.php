@@ -6,10 +6,10 @@
 <div class="class-creation-form color-a">
     <table>
         {{ Form::open(array('route' => array('users.store'), 'method' => 'post')) }}
-        @if($errors->has())
+        @if($errors->signup->has())
             <tr>
                 <td colspan="2">
-                @foreach ($errors->all() as $error)
+                @foreach ($errors->signup->all() as $error)
                    <div class="error">{{ $error }}</div>
                 @endforeach
                 </td>

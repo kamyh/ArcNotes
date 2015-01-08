@@ -34,19 +34,25 @@ class UserController extends \BaseController
         if (!$validator->fails()) {
             $email = Input::get('email');
             $password = Input::get('password');
-            if (User::where('email', '=', Input::get('email'))->first()->isActivated()) {
-                if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
-                    $error = "This user doesn't exist";
+            $user = User::where('email', '=', Input::get('email'))->first();
 
-                    Session::put('toast', array('success', 'You are logged in !'));
-                    return Redirect::to('/')->withErrors($error);
+            if (!is_null($user)) {
+                if ($user->isActivated()) {
+                    if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
+                        $error = "This user doesn't exist";
+
+                        Session::put('toast', array('success', 'You are logged in !'));
+                        return Redirect::to('/')->withErrors($error);
+                    } else {
+                        return Redirect::to('/')->withErrors($validator)->withInput();
+                    }
                 } else {
-                    return Redirect::to('/')->withErrors($validator)->withInput();
+                    Session::put('toast', array('error', 'Please check your email to verify your account !'));
+                    return Redirect::to('/');
                 }
             } else {
-                Session::put('toast', array('error', 'Please check your email to verify your account !'));
-                return Redirect::to('/');
-
+                $error = "Wrong e-mail address !";
+                return Redirect::to('/')->withInput()->withErrors($error);
             }
         }
         return Redirect::to('/')->withErrors($validator)->withInput();
@@ -81,38 +87,39 @@ class UserController extends \BaseController
      * @return Response
      *
      */
-    public
-    function store()
+    public function store()
     {
         $input = Input::all();
-        $rulesValidatorUser = array('firstname' => 'required|min:4', 'lastname' => 'required', 'password' => 'required|min:8', 'email' => 'required|email');
+        $rulesValidatorUser = array('firstname' => 'required|regex:/^[a-zA-Z-éàöüïäàçéöèôêâî ]+$/','unique:users,email', 'lastname' => 'required|regex:/^[a-zA-Z-éàöüïçäàéöèôêâî ]+$/', 'password' => 'required|between:8,32', 'email' => 'required|email');
         $validator = Validator::make($input, $rulesValidatorUser);
 
         if (!$validator->fails()) {
-
-            $password = $input['password'];
-            $password = Hash::make($password);
-            $user = new User();
-            $confirmation_code = str_random(30);
-            $user->email = $input['email'];
-            $user->password = $password;
-            $user->lastname = $input['lastname'];
-            $user->firstname = $input['firstname'];
-            $user->confirmation_code = $confirmation_code;
-            $user->save();
-
-            //TODO
-            Mail::send('emails.verify', array('confirmation_code' => $confirmation_code), function ($message) {
-                $message->to(Input::get('email'), Input::get('firstname') + " " + Input::get('lastname'))
-                    ->subject('Verify your email address')->from('arcnotesnoreply@gmail.com');
-            });
-            Session::put('toast', array('success', 'You sign successfully. Please check your mail to activate your account !'));
-            return Redirect::to('/');
+            $user = User::where('email','=',Input::get('email'))->first();
+            if(is_null($user)) {
+                $password = $input['password'];
+                $password = Hash::make($password); //crypting password
+                $user = new User();
+                $confirmation_code = str_random(30);
+                $user->email = $input['email'];
+                $user->password = $password;
+                $user->lastname = $input['lastname'];
+                $user->firstname = $input['firstname'];
+                $user->confirmation_code = $confirmation_code;
+                $user->save();
+                Mail::send('emails.verify', array('confirmation_code' => $confirmation_code), function ($message) {
+                    $message->to(Input::get('email'), Input::get('firstname') + " " + Input::get('lastname'))
+                        ->subject('Verify your email address')->from('arcnotesnoreply@gmail.com');
+                });
+                Session::put('toast', array('success', 'You signed successfully. Please check your mail to activate your account !'));
+                return Redirect::to('/');
+            }
+            else {
+                $error = "This e-mail adress is already used.";
+                return Redirect::to('/signup')->withErrors($error,'signup')->withInput();
+            }
         } else {
-            return Redirect::to('user/create')->withErrors($validator)->withInput();
+            return Redirect::to('/signup')->withErrors($validator,'signup')->withInput();
         }
-
-
     }
 
 

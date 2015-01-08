@@ -1,6 +1,6 @@
 @extends('layouts.default')
 @section('title')
-    Write a new note in {{ $nomcours }}
+    Write a new note in {{{ $nomcours }}}
 @endsection
 @section('body')
     <div class="class-creation-form color-a">
@@ -10,7 +10,7 @@
         <tr>
             <td colspan="2">
         @foreach ($errors->all() as $error)
-           <div class="error">{{ $error }}</div>
+           <div class="error">{{{ $error }}}</div>
        @endforeach
         </td>
        </tr>

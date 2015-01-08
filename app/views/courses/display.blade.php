@@ -1,6 +1,7 @@
 @extends('layouts.selectclass')
 @section('display')
     <div class="list-classes">
+    @if(count($courses) > 0)
         @foreach($courses as $course)
         <div class="class-tile color-a">
             @if(/*$course->getParentClass()->canRead()*/false)
@@ -25,4 +26,7 @@
         </div>
         @endforeach
         </div>
+    @else
+        <div class="class-creation-form">No course found yet.</div>
+    @endif
 @endsection

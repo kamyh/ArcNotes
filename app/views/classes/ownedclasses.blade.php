@@ -7,6 +7,7 @@
 
         <div class="list-classes">
 
+        @if(count($classesOwned))
         @foreach($classesOwned as $class)
             <div class="class-tile color-a" id="{{$class->id}}" >
 
@@ -164,6 +165,9 @@
             </div>
 
         @endforeach
+        @else
+        <p>No class owned</p>
+        @endif
         </div>
 @stop
 
