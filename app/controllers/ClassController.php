@@ -358,9 +358,9 @@ class ClassController extends \BaseController
             if (!is_null($class)) {
                 if ($class->isOwner(Auth::id()) || $class->canCreate()) {
                     $course->delete();
-                    Session::put('toast', array('success', "Course " . $course->getName() . "has been removed from class " . $class->getName() . "."));
+                    Session::put('toast', array('success', "Course " . $course->getName() . " has been removed from class " . $class->getName() . "."));
                 } else {
-                    Session::put('toast', array('error', "Course " . $course->getName() . "You actually can't remove this course from the class " . $class->getName() . "."));
+                    Session::put('toast', array('error', "Course " . $course->getName() . " You actually can't remove this course from the class " . $class->getName() . "."));
                 }
             } else {
                 Session::put('toast', array('error', "Class " . $class->getName() . " does not exist."));
