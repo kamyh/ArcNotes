@@ -42,7 +42,7 @@
                 <tr>
                     <td></td>
                     <td>
-                    @if(Auth::check())
+                    @if(Auth::check() && $class->isNotIn())
                         {{ Form::open(array('route' => array('/classes/sign/{idclass}','idclass'=>$class->id), 'method' => 'get')) }}
                             {{Form::submit('Join', array('class' => 'button'))}}
                         {{ Form::close() }}
