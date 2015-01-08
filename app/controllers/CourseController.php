@@ -140,7 +140,7 @@ class CourseController extends \BaseController
 
     public function search($keyword)
     {
-        $query = "SELECT courses.id AS id_course, courses.name AS course, classes.name AS class, schools.name AS school, cities.name AS city, cantons.name AS canton FROM courses INNER JOIN classes ON classes.id=courses.id_class INNER JOIN schools on Schools.id=classes.id_school INNER JOIN cities ON cities.id = schools.id_location INNER JOIN cantons ON cantons.id = cities.id_canton WHERE classes.visibility=1 AND courses.name LIKE '%$keyword%' ORDER BY schools.name";
+        $query = "SELECT courses.id AS id_course, courses.name AS course, classes.name AS class, classes.id AS id_class, schools.name AS school, cities.name AS city, cantons.name AS canton FROM courses INNER JOIN classes ON classes.id=courses.id_class INNER JOIN schools on Schools.id=classes.id_school INNER JOIN cities ON cities.id = schools.id_location INNER JOIN cantons ON cantons.id = cities.id_canton WHERE classes.visibility=1 AND courses.name LIKE '%$keyword%' ORDER BY schools.name";
         $courses = DB::select($query);//->get()->lists('schoools.name', 'schools.id');
         return View::make('courses.searchdisplay')->with(array('courses' => $courses, 'keyword' => $keyword));
     }

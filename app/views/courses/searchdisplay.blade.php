@@ -8,7 +8,7 @@
     @if(count($courses) > 0)
         @foreach ($courses as $course)
             @if($course != null)
-                <a href="/courses/open/{{{$course->id_course}}}" class="search-result color-a hover-color-b">{{{$course->course}}} <br/>in class {{{$course->class}}} at {{{$course->school .' '.$course->city}}}</a>
+                <div class="search-result color-a"><a href="/courses/open/{{{$course->id_course}}}" class="color-a link hover-color-b" title="open course">{{{$course->course}}}</a><br/>in class <a href="/classes/display/{{{$course->id_class}}}" class="color-a link hover-color-b" title="show class">{{{$course->class}}}</a> at {{{$course->school .' '.$course->city}}}</div>
             @endif
         @endforeach
     @else
