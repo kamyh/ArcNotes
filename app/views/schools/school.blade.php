@@ -29,7 +29,7 @@
                 <td>
                 {{Form::label('city','City')}}
                 </td><td>
-                {{ Form::select('city', (new Cities())->getList(), null, array('class' => '', 'id' => 'selectCities')) }}
+                {{ Form::select('city', (new Cities())->getList(), null, array('class' => 'select', 'id' => 'selectCities')) }}
                 </td>
             </tr>
 

@@ -19,31 +19,33 @@ class ClassController extends \BaseController
      */
     public function createClass()
     {
-        $query = "SELECT schools.id, schools.name, cities.name AS city, cantons.name AS canton FROM schools INNER JOIN cities ON cities.id = schools.id_location INNER JOIN cantons ON cantons.id = cities.id_canton ORDER BY schools.name";
+        $query = "SELECT schools.id AS id_school, schools.name, cities.name AS city, cantons.name AS canton FROM schools INNER JOIN cities ON cities.id = schools.id_location INNER JOIN cantons ON cantons.id = cities.id_canton ORDER BY schools.name";
         $schoolList = DB::select($query);//->get()->lists('schoools.name', 'schools.id');
 
         $formatted_schoolList = array();
         if (count($schoolList) > 0) {
             foreach ($schoolList as $infos_school) {
                 if (!is_null($infos_school)) {
-                    $formatted_schoolList[$infos_school->id] = $infos_school->name . ', ' . $infos_school->city . ' ' . $infos_school->canton;
+                    $formatted_schoolList[(string)$infos_school->id_school] = $infos_school->name . ', ' . $infos_school->city . ' ' . $infos_school->canton;
                 }
             }
         }
 
-        array_unshift($formatted_schoolList, "------------");
-        array_unshift($formatted_schoolList, "New School");
-        $visibilityList = [1 => 'public', 0 => 'private'];
+        //return var_dump($formatted_schoolList);
+        $array_default = array();
+        $array_default[-1] = "New School";
+        $array_default[0] = "------------";
+        $final_schoollist = $array_default+$formatted_schoolList;
 
+        $visibilityList = [1 => 'public', 0 => 'private'];
         $schollarYears = [];
         $from = Date("Y") - 2;
         $to = Date("Y") + 6;
-
         for ($i = $from; $i < $to; $i++) {
             $schollarYears[($i . "-" . ($i + 1))] = (($i . "-" . ($i + 1)));
         }
 
-        return View::make('classes.createclass')->with(array('schoolList' => $formatted_schoolList, 'visibilityList' => $visibilityList, 'schollarYears' => $schollarYears));
+        return View::make('classes.createclass')->with(array('schoolList' => $final_schoollist, 'visibilityList' => $visibilityList, 'schollarYears' => $schollarYears));
     }
 
     public function load()
@@ -72,10 +74,10 @@ class ClassController extends \BaseController
     public function store()
     {
         $input = Input::all();
-        if ($input['school'] == 0 || $input['school'] == 1) {
+        if ($input['school'] < 0) {
             return View::make('schools.school')->with(array('input' => $input));
         } else {
-            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z-àéèöïîêôâ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
+            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-àéèöïîêôâ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
             $validator = Validator::make($input, $rulesValidatorUser);
             if (!$validator->fails()) {
                 $id_school = (int)$input['school'];
@@ -83,6 +85,7 @@ class ClassController extends \BaseController
                 if (is_null($unique_class)) {
 
                     $school = Schools::find($id_school);
+
                     if (!is_null($school)) {
                         $class = new Classes();
                         $class->name = $input['name'];
@@ -101,11 +104,11 @@ class ClassController extends \BaseController
                         return Redirect::to('/classes/owned');
                     } else {
                         Session::put('toast', array('error', "This school does not exist ! Impossible to create class."));
-                        return Redirect::to('/classes/create');
+                        return Redirect::to('/classes/create')->withInput();
                     }
                 } else {
                     Session::put('toast', array('error', "Class " . $unique_class->getName() . " already exist in this school for " . e($input['scollaryear']).'.'));
-                    return Redirect::to('/classes/create');
+                    return Redirect::to('/classes/create')->withInput();
                 }
 
             } else {

@@ -18,20 +18,10 @@ class SchoolController extends \BaseController
         return View::make('schools.school');
     }
 
-    public function school()
-    {
-        return View::make('schools.school');
-    }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
-        return View::make('schools.create');
+
     }
 
     /**
