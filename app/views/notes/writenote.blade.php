@@ -1,4 +1,4 @@
-﻿@extends('layouts.default')
+@extends('layouts.default')
 @section('title')
     Write a new note in {{{ $nomcours }}}
 @endsection
