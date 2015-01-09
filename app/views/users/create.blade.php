@@ -4,7 +4,7 @@
 @endsection
 @section('body')
 <div class="class-creation-form color-a">
-    <table>
+    <table class="color-a">
         {{ Form::open(array('route' => array('users.store'), 'method' => 'post')) }}
         @if($errors->signup->has())
             <tr>
