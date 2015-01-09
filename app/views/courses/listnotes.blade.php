@@ -42,30 +42,30 @@
         @foreach($manuscrits as $manuscrit)
 
             <tr class="color-a">
-                @if((Auth::check() && $course->getParentClass()->canRead()) || $course->getParentClass()->isPublic())
+                 @if((Auth::check() && $course->getParentClass()->canRead()) || $course->getParentClass()->isPublic())
                     <td><a href="/notes/read/{{$manuscrit->id}}" class="context-menu-tile-class color-a">{{$manuscrit->title}}</a></td>
-                @else
+                 @else
                     <td><span href="#" class="context-menu-tile-class color-a">{{$manuscrit->title}}</span></td>
-                @endif
+                 @endif
                  @if(Auth::check() && $course->getParentClass()->canEdit())
-                <td>
+                 <td>
                     {{ Form::open(array('route' => array('/notes/edit/{idnote}', 'idnote' => $manuscrit->id),'method' => 'get')); }}
                         <button title="Edit note" type="submit" class="button-image">{{ HTML::image('img/icons/edit.png', 'Edit', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
-                </td>
-                @endif
-                 <td>
-                     @if(Auth::check() && $course->getParentClass()->canRead())
-                        <button title="Share note" type="submit" class="button-image" onclick="copyToClipboard('{{ Request::root() . '/notes/shared/' .$manuscrit->token }}')">{{ HTML::image('img/icons/share.png', 'Share', array('class' => 'test-image')); }}</button>
-                     @endif
                  </td>
+                 @endif
+                 @if(Auth::check() && $course->getParentClass()->canRead())
                  <td>
+                        <button title="Share note" type="submit" class="button-image" onclick="copyToClipboard('{{ Request::root() . '/notes/shared/' .$manuscrit->token }}')">{{ HTML::image('img/icons/share.png', 'Share', array('class' => 'test-image')); }}</button>
+                 </td>
+                 @endif
                  @if(Auth::check() && $course->getParentClass()->canCreate())
+                 <td>
                     {{ Form::open(array('route' => array('/notes/delete/{idnote}', 'idnote' => $manuscrit->id))); }}
                         <button title="Delete note" type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
                     {{Form::close();}}
+                 </td>
                  @endif
-                </td>
             </tr>
         @endforeach
     @else
@@ -95,18 +95,19 @@
                         {{Form::open(array('route' => array('/notes/download/{idfile}', 'idfile' => $file->id), 'method' => 'get')); }}
                         <button title="Download note" type="submit" class="button-image">{{ HTML::image('img/icons/download.png', 'Share', array('class' => 'test-image')); }}</button>                        {{Form::close();}}
                     </td>
-                    @if(Auth::check() && $course->getParentClass()->canRead()))
+                    @if(Auth::check() && $course->getParentClass()->canRead())
+                    <td>
+
+                            <button title="Share note" type="submit" class="button-image" onclick="copyToClipboard('{{Request::root() . '/notes/shared/' .$file->token}}')">{{ HTML::image('img/icons/share.png', 'Share', array('class' => 'test-image')); }}</button>
+                    </td>
+                    @endif
+                    @if(Auth::check() && $course->getParentClass()->canCreate())
                     <td>
                         {{ Form::open(array('route' => array('/notes/deletefile/{idfile}', 'idfile' => $file->id))); }}
                             <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
                         {{Form::close();}}
                     </td>
                     @endif
-                    <td>
-                     @if(Auth::check() && $course->getParentClass()->canRead())
-                            <button title="Share note" type="submit" class="button-image" onclick="copyToClipboard('{{Request::root() . '/notes/shared/' .$file->token}}')">{{ HTML::image('img/icons/share.png', 'Share', array('class' => 'test-image')); }}</button>
-                     @endif
-                    </td>
                 </tr>
             @endforeach
         @else
