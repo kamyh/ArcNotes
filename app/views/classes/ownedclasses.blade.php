@@ -129,7 +129,7 @@
                                 {{ Form::close() }}
                     @endif
                     </table>
-                    </div>
+                    </div>&nbsp;
                 @endforeach
                 </div>
                 <div class="class-tile-course-title color-b">
