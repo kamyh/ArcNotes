@@ -1,4 +1,4 @@
-﻿@extends('layouts.default')
+@extends('layouts.default')
 @section('title')
     Read note: {{$title}}
 @endsection
@@ -8,5 +8,3 @@
         <div class="note-footer">Written by {{$author}}.<br/> Last update on the {{$update}}.<a href="/courses/open/{{$idcourse}}" title="go back to course" alt="go back to course" class="note-footer-link color-b">Go back to course</a></div>
     </div>
 @stop
-
-

@@ -1,4 +1,4 @@
-﻿@extends('layouts.selectclass')
+@extends('layouts.selectclass')
 @section('display')
     <div class="list-classes">
     @if(count($courses) > 0)
