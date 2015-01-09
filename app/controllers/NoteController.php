@@ -191,7 +191,7 @@ class NoteController extends \BaseController
                 $fileMIME = $file->getMimeType();
 
                 //files validator : max filesize and extensions
-                $rules = array('file' => 'required|max:10000|mimes:doc,docx,txt,pdf,xls,xlsx,jpeg,odt');
+                $rules = array('file' => 'required|max:10000|mimes:doc,docx,txt,pdf,xls,xlsx,odt,jpeg,xml,png,jpg');
                 $validator = Validator::make(Input::all(), $rules);
 
                 if (!$validator->fails()) {

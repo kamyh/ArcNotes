@@ -47,7 +47,7 @@ class CourseController extends \BaseController
     public function store()
     {
         $input = Input::all();
-        $rulesValidatorCourse = array('name' => array('required', 'between:3,120', 'regex:/^[a-zA-Z0-9-àéèöïêôâîü\/ç ]+$/'), 'matter' => array('required', 'between:3,120', 'regex:/^[a-zA-Z0-9-àéèöï\/êôâîüç ]+$/'));
+        $rulesValidatorCourse = array('name' => array('required', 'between:3,120', 'regex:/^[a-zA-Z0-9-àéèöïêôâîü\/ç\' ]+$/'), 'matter' => array('required', 'between:3,120', 'regex:/^[a-zA-Z0-9-àéèöï\/êôâîüç ]+$/'));
         $validator = Validator::make($input, $rulesValidatorCourse);
         $class = Classes::find((int)$input['idclass']);
         if (!is_null($class)) {
@@ -106,7 +106,7 @@ class CourseController extends \BaseController
     public function update()
     {
         $input = Input::all();
-        $rulesValidatorCourse = array('name' => array('required', 'between:3,120', 'regex:/^[a-zA-Z0-9-àéèöïêôâîü\/ç ]+$/'), 'matter' => array('required', 'between:3,120', 'regex:/^[a-zA-Z0-9-àéèöï\/êôâîüç ]+$/'));
+        $rulesValidatorCourse = array('name' => array('required', 'between:3,120', 'regex:/^[a-zA-Z0-9-àéèöïêôâîü\/ç\' ]+$/'), 'matter' => array('required', 'between:3,120', 'regex:/^[a-zA-Z0-9-àéèöï\/êôâîüç ]+$/'));
         $validator = Validator::make($input, $rulesValidatorCourse);
         $class = Classes::find((int)$input['idclass']);
         if (!is_null($class)) {

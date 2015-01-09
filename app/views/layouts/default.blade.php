@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <title>@yield('title')</title>
 	{{HTML::style('css/mainlayout.css');}}
 	{{HTML::style('css/header.css');}}
