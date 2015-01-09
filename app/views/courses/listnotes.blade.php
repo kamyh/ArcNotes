@@ -95,13 +95,15 @@
                         {{Form::open(array('route' => array('/notes/download/{idfile}', 'idfile' => $file->id), 'method' => 'get')); }}
                         <button title="Download note" type="submit" class="button-image">{{ HTML::image('img/icons/download.png', 'Share', array('class' => 'test-image')); }}</button>                        {{Form::close();}}
                     </td>
+                    @if(Auth::check() && $course->getParentClass()->canRead()))
                     <td>
                         {{ Form::open(array('route' => array('/notes/deletefile/{idfile}', 'idfile' => $file->id))); }}
-                            <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Share', array('class' => 'test-image')); }}</button>
+                            <button type="submit" class="button-image">{{ HTML::image('img/icons/delete.png', 'Delete', array('class' => 'test-image')); }}</button>
                         {{Form::close();}}
                     </td>
+                    @endif
                     <td>
-                     @if(Auth::check() && $course->getParentClass()->canCreate())
+                     @if(Auth::check() && $course->getParentClass()->canRead())
                             <button title="Share note" type="submit" class="button-image" onclick="copyToClipboard('{{Request::root() . '/notes/shared/' .$file->token}}')">{{ HTML::image('img/icons/share.png', 'Share', array('class' => 'test-image')); }}</button>
                      @endif
                     </td>
