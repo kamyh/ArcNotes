@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
@@ -23,14 +23,14 @@
 			</div>
 			<div id="header-menus" class="scroll-x">
 			@if(Auth::check())
-			     <a href="/classes/owned" class="header-menu-tile color-b hover-color-a">My Classes</a>
-			     <a href="/classes/participant/1" class="header-menu-tile color-b hover-color-a">Joined Classes</a>
-			     <a href="/classes/create/" class="header-menu-tile color-b hover-color-a">New Class</a>
+			     <a href="/classes/owned" title="My classes" class="header-menu-tile color-b hover-color-a">My Classes</a>
+			     <a href="/classes/participant/1" title="Joined Classes" class="header-menu-tile color-b hover-color-a">Joined Classes</a>
+			     <a href="/classes/create/" title="Create a new class" class="header-menu-tile color-b hover-color-a">New Class</a>
             @endif
-                 <a href="/classes/public/1" class="header-menu-tile color-b hover-color-a">Public Classes</a>
+                 <a href="/classes/public/1" title="View public classes" class="header-menu-tile color-b hover-color-a">Public Classes</a>
                  <a href="/about/" class="header-menu-tile color-b hover-color-a">About</a>
             @if(!Auth::check())
-                 <a href="/signup" class="header-menu-tile color-b hover-color-a">Register</a>
+                 <a href="/signup" title="Sign up" class="header-menu-tile color-b hover-color-a">Register</a>
             @endif
 			</div>
 			<div id="header-search">
@@ -39,7 +39,7 @@
                     <table>
                         <tr><td>{{ Form::text('keyword', null, array('placeholder' => 'Search')) }}</td>
                             <td>{{ Form::select('type', array('courses' => 'Course', 'classes' => 'Class')) }}</td>
-                            <td><button type="submit" class="button-image">{{ HTML::image('img/icons/search.png', 'Search', array('class' => 'test-image')); }}</button>
+                            <td><button type="submit" class="button-image" title="Search">{{ HTML::image('img/icons/search.png', 'Search', array('class' => 'test-image')); }}</button>
                             </td>
                         </tr> </table>
                     {{ Form::close() }}</div>
@@ -60,13 +60,13 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="/changepassword" class="link hover-color-b color-a">Change password.</a>
+                                        <a href="/changepassword" title="Change your password" class="link hover-color-b color-a">Change password.</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                     {{ Form::open(array('route' => 'logout', 'method' => 'post')) }}
-                                        {{Form::submit('Logout', array('class' => 'button'))}}
+                                        {{Form::submit('Logout', array('class' => 'button','title' => 'Logout'))}}
                                     {{ Form::close() }}
                                     </td>
                                 </tr>
@@ -90,7 +90,7 @@
                                     <td>{{Form::password('password',array('class' => '', 'placeholder' => 'Password'))}}</td>
                                 </tr>
                                 <tr>
-                                    <td>{{Form::submit('Login', array('class' => 'button'))}}</td>
+                                    <td>{{Form::submit('Login', array('class' => 'button','title' => 'Login'))}}</td>
                                 </tr>
                             <tr>
                                  <td><a href="/signup" class="color-a link">Sign up.</a></td>
