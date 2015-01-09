@@ -77,7 +77,7 @@ class ClassController extends \BaseController
         if ($input['school'] < 0) {
             return View::make('schools.school')->with(array('input' => $input));
         } else {
-            $rulesValidatorUser = array('name' => array('required', 'min:3', 'regex:/^[a-zA-Z0-9-_àéèöïçîêôâ ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
+            $rulesValidatorUser = array('name' => array('required', 'min:2', 'regex:/^[a-zA-Z0-9-_àéèöïçîêôâ ]+$/'), 'scollaryear' => array('required', 'regex:/^\d{4}-\d{4}$/'), 'school' => 'required', 'degree' => 'required|AlphaNum', 'domain' => 'required|AlphaNum');
             $validator = Validator::make($input, $rulesValidatorUser);
             if (!$validator->fails()) {
                 $id_school = (int)$input['school'];
@@ -311,7 +311,7 @@ class ClassController extends \BaseController
 
                 Mail::send('emails.accept', array('class' => $class), function ($message) use ($user) {
                     $message->to($user->email, $user->firstname + " " + $user->lastname)
-                        ->subject('New member')->from('arcnotesnoreply@gmail.com');
+                        ->subject('Invite accepted on ArcNotes')->from('arcnotesnoreply@gmail.com');
                 });
             }
 
