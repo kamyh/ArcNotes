@@ -1,19 +1,6 @@
 @extends('layouts.default')
 @section('title')
-    <table class="color-a">
-        <tr>
-            <td>
-                {{{$title}}}
-            </td>
-            <td>
-                @if($class->isNotIn())
-                    {{ Form::open(array('route' => array('/classes/sign/{idclass}','idclass'=>$class->id),'method' => 'get')); }}
-                    <button type="submit" class="button-image" title="Create a course">{{ HTML::image('img/icons/join.png', 'Invite', array('class' => 'test-image')); }}</button>
-                    {{Form::close();}}
-                @endif
-            </td>
-        </tr>
-    </table>
+            {{{$title}}}
 @endsection
 @section('body')
     <div class ="class-creation-form color-a">
@@ -23,13 +10,8 @@
                 <td> {{{ $class->created_at }}} </td>
             </tr>
             <tr>
-                <td>Last update </td>
-                <td> {{ $class->updated_at }} </td>
-            </tr>
-            <tr>
                 <td>{{{$school_name}}}</td>
-                <td>{{{$school_city}}}</td>
-                <td>{{{$canton}}}</td>
+                <td>{{{$school_city." - ".$canton}}}</td>
             </tr>
             <tr>
                 <td>Scholar year</td>
@@ -47,6 +29,17 @@
                 <td>Visibility</td>
                 <td>{{{$class->getVisibilityStr()}}}</td>
             </tr>
+
+                @if($class->isNotIn())
+                <tr>
+                    <td></td>
+                    <td>
+                        {{ Form::open(array('route' => array('/classes/sign/{idclass}','idclass'=>$class->id),'method' => 'get')); }}
+                            {{Form::submit('Join', array('class' => 'button'))}}
+                        {{Form::close();}}
+                    </td>
+                </tr>
+                @endif
         </table>
     </div>
     <div class="course-title">
